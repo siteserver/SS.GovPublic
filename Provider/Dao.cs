@@ -22,11 +22,11 @@ namespace SS.GovPublic.Provider
         {
             DepartmentInfo departmentInfo = null;
 
-            var sqlString = "SELECT DepartmentID, DepartmentName, Code, ParentID, ParentsPath, ParentsCount, ChildrenCount, IsLastNode, Taxis, AddDate, Summary, CountOfAdmin FROM bairong_Department WHERE DepartmentID = @DepartmentID";
+            var sqlString = "SELECT Id, DepartmentName, Code, ParentId, ParentsPath, ParentsCount, ChildrenCount, IsLastNode, Taxis, AddDate, Summary, CountOfAdmin FROM siteserver_Department WHERE Id = @Id";
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(DepartmentInfo.DepartmentId), departmentId)
+                _helper.GetParameter(nameof(DepartmentInfo.Id), departmentId)
             };
 
             using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters))
@@ -60,7 +60,7 @@ namespace SS.GovPublic.Provider
             var departmentInfo = new DepartmentInfo();
 
             var i = 0;
-            departmentInfo.DepartmentId = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
+            departmentInfo.Id = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
             i++;
             departmentInfo.DepartmentName = rdr.IsDBNull(i) ? string.Empty : rdr.GetString(i);
             i++;
@@ -91,7 +91,7 @@ namespace SS.GovPublic.Provider
         {
             var list = new List<DepartmentInfo>();
 
-            var sqlString = "SELECT DepartmentID, DepartmentName, Code, ParentID, ParentsPath, ParentsCount, ChildrenCount, IsLastNode, Taxis, AddDate, Summary, CountOfAdmin FROM bairong_Department ORDER BY TAXIS";
+            var sqlString = "SELECT Id, DepartmentName, Code, ParentId, ParentsPath, ParentsCount, ChildrenCount, IsLastNode, Taxis, AddDate, Summary, CountOfAdmin FROM siteserver_Department ORDER BY Taxis";
             using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
             {
                 while (rdr.Read())

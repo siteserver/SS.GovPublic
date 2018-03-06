@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections.Generic;
 using SiteServer.Plugin;
 using SS.GovPublic.Core;
 using SS.GovPublic.Model;
@@ -56,30 +54,29 @@ namespace SS.GovPublic
             {
                 var identifier = e.Form.GetString(nameof(ContentAttribute.Identifier));
                 return $@"
-                    <div class=""form-group"">
-                        <label class=""col-sm-1 control-label"">信息分类</label>
-                        <div class=""col-sm-6"">
-                            {ContentDao.GetCategoriesHtml(e.SiteId, e.ChannelId, e.Form)}
-                        </div>
-                        <div class=""col-sm-5"">
-                        </div>
-                    </div>
-                    <div class=""form-group"">
-                        <label class=""col-sm-1 control-label"">索引号</label>
-                        <div class=""col-sm-6"">
-                            <input id=""displayOnly{ContentAttribute.Identifier}"" name=""displayOnly{ContentAttribute.Identifier}"" type=""text"" class=""form-control"" disabled=""disabled"" value=""{identifier}"">
-                            <input id=""{ContentAttribute.Identifier}"" name=""{ContentAttribute.Identifier}"" type=""hidden"" value=""{identifier}"">
-                        </div>
-                        <div class=""col-sm-5"">
-                            <span class=""help-block"">索引号由系统自动生成</span>
-                        </div>
-                    </div>
+<div class=""form-group form-row"">
+    <label class=""col-sm-1 col-form-label text-right"">信息分类</label>
+    <div class=""col-sm-10"">
+        {ContentDao.GetCategoriesHtml(e.SiteId, e.ChannelId, e.Form)}
+    </div>
+    <div class=""col-sm-1"">
+       
+    </div>
+</div>
+<div class=""form-group form-row"">
+    <label class=""col-sm-1 col-form-label text-right"">索引号</label>
+    <div class=""col-sm-6"">
+        <input id=""displayOnly{ContentAttribute.Identifier}"" name=""displayOnly{ContentAttribute.Identifier}"" type=""text"" class=""form-control"" disabled=""disabled"" value=""{identifier}"">
+        <input id=""{ContentAttribute.Identifier}"" name=""{ContentAttribute.Identifier}"" type=""hidden"" value=""{identifier}"">
+    </div>
+    <div class=""col-sm-5"">
+       <span class=""form-text text-muted"">索引号由系统自动生成</span>
+    </div>
+</div>
                     ";
-            } 
-            else
-            {
-                return string.Empty;
             }
+
+            return null;
         }
 
         private void Service_ContentFormSubmited(object sender, ContentFormSubmitEventArgs e)

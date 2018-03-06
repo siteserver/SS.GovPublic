@@ -34,7 +34,7 @@
                 <div class="form-group">
                   <label class="col-sm-3 control-label">生成索引号栏目</label>
                   <div class="col-sm-3">
-                    <asp:DropDownList ID="DdlNodeId" class="form-control" runat="server"></asp:DropDownList>
+                    <asp:DropDownList ID="DdlChannelId" class="form-control" runat="server"></asp:DropDownList>
                   </div>
                   <div class="col-sm-6">
                     <span class="help-block">选择需要重新生成索引号的栏目</span>

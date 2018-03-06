@@ -104,6 +104,7 @@
     <Compile Include="Core\Utils.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Model\ConfigInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\CategoryDao.cs" />
     <Compile Include="Provider\CategoryClassDao.cs" />
     <Compile Include="Provider\Dao.cs" />
@@ -112,11 +113,75 @@
     <Compile Include="Provider\IdentifierSeqDao.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\plugin-utils\fonts\fontawesome-webfont.eot" />
+    <None Include="assets\plugin-utils\fonts\fontawesome-webfont.ttf" />
+    <None Include="assets\plugin-utils\fonts\fontawesome-webfont.woff" />
+    <None Include="assets\plugin-utils\fonts\fontawesome-webfont.woff2" />
+    <None Include="assets\plugin-utils\fonts\FontAwesome.otf" />
+    <None Include="assets\plugin-utils\fonts\ionicons.eot" />
+    <None Include="assets\plugin-utils\fonts\ionicons.ttf" />
+    <None Include="assets\plugin-utils\fonts\ionicons.woff" />
     <None Include="packages.config" />
     <None Include="SS.GovPublic.nuspec" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <Content Include="assets\css\style.css" />
+    <Content Include="assets\datePicker\calendar.js" />
+    <Content Include="assets\datePicker\lang\en.js" />
+    <Content Include="assets\datePicker\lang\zh-cn.js" />
+    <Content Include="assets\datePicker\lang\zh-tw.js" />
+    <Content Include="assets\datePicker\skin\datePicker.gif" />
+    <Content Include="assets\datePicker\skin\default\datepicker.css" />
+    <Content Include="assets\datePicker\skin\default\img.gif" />
+    <Content Include="assets\datePicker\skin\WdatePicker.css" />
+    <Content Include="assets\datePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="assets\datePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="assets\datePicker\skin\whyGreen\img.gif" />
+    <Content Include="assets\datePicker\WdatePicker.js" />
+    <Content Include="assets\images\channel_alipay.gif" />
+    <Content Include="assets\images\channel_jdpay.gif" />
+    <Content Include="assets\images\channel_weixin.gif" />
+    <Content Include="assets\images\close.png" />
+    <Content Include="assets\images\pay_cut.png" />
+    <Content Include="assets\js\bootstrap.min.js" />
+    <Content Include="assets\js\device.min.js" />
+    <Content Include="assets\js\jquery.min.js" />
+    <Content Include="assets\js\sweetalert.min.js" />
+    <Content Include="assets\js\vue.min.js" />
+    <Content Include="assets\layer\extend\layer.ext.js" />
+    <Content Include="assets\layer\layer.min.js" />
+    <Content Include="assets\layer\skin\default\icon_ext.png" />
+    <Content Include="assets\layer\skin\default\textbg.png" />
+    <Content Include="assets\layer\skin\default\xubox_ico0.png" />
+    <Content Include="assets\layer\skin\default\xubox_loading0.gif" />
+    <Content Include="assets\layer\skin\default\xubox_loading1.gif" />
+    <Content Include="assets\layer\skin\default\xubox_loading2.gif" />
+    <Content Include="assets\layer\skin\default\xubox_loading3.gif" />
+    <Content Include="assets\layer\skin\default\xubox_title0.png" />
+    <Content Include="assets\layer\skin\layer.css" />
+    <Content Include="assets\layer\skin\layer.ext.css" />
+    <Content Include="assets\plugin-utils\css\bootstrap.min.css" />
+    <Content Include="assets\plugin-utils\css\font-awesome.min.css" />
+    <Content Include="assets\plugin-utils\css\ionicons.min.css" />
+    <Content Include="assets\plugin-utils\css\plugin-utils.css" />
+    <Content Include="assets\plugin-utils\fonts\fontawesome-webfont.svg" />
+    <Content Include="assets\plugin-utils\fonts\ionicons.svg" />
+    <Content Include="logo.png" />
+    <Content Include="modalCategoryAdd.aspx" />
+    <Content Include="modalCategoryClassAdd.aspx" />
+    <Content Include="modalIdentifierRuleAdd.aspx" />
+    <Content Include="pageBlank.html" />
+    <Content Include="pageCategory.aspx" />
+    <Content Include="pageCategoryClass.aspx" />
+    <Content Include="pageCategoryMain.aspx" />
+    <Content Include="pageContent.aspx" />
+    <Content Include="pageContentAdd.aspx" />
+    <Content Include="pageContentAddAfter.aspx" />
+    <Content Include="pageIdentifierCreate.aspx" />
+    <Content Include="pageIdentifierRule.aspx" />
+    <Content Include="pageRecords.aspx" />
+    <Content Include="PageSettings.aspx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

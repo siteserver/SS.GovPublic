@@ -6,7 +6,7 @@
     <meta charset="utf-8">
   </head>
   <frameset framespacing="0" border="false" cols="40%,60%" frameborder="0" scrolling="yes">
-    <frame scrolling="auto" marginwidth="0" marginheight="0" src="pageCategoryClass.aspx?PublishmentSystemID=<%=PublishmentSystemId%>">
+    <frame scrolling="auto" marginwidth="0" marginheight="0" src="pageCategoryClass.aspx?SiteId=<%=SiteId%>">
       <frame name="category" scrolling="auto" marginwidth="0" marginheight="0" src="pageBlank.html">
   </frameset>
 

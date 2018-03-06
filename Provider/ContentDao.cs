@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Text;
 using System.Web.UI.WebControls;
 using SiteServer.Plugin;
@@ -244,7 +243,7 @@ namespace SS.GovPublic.Provider
             foreach (var departmentInfo in departmentInfoList)
             {
                 var listItem = new ListItem(Utils.GetSelectOptionText(departmentInfo.DepartmentName, departmentInfo.ParentsCount, departmentInfo.IsLastNode, isLastNodeArray),
-                    departmentInfo.DepartmentId.ToString());
+                    departmentInfo.Id.ToString());
                 ddlDepartmentId.Items.Add(listItem);
             }
             Utils.SelectSingleItem(ddlDepartmentId, attributes.GetString(nameof(ContentAttribute.DepartmentId)));

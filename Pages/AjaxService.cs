@@ -18,14 +18,14 @@ namespace SS.GovPublic.Pages
             if (type == CategoryTreeItem.TypeGetLoadingGovPublicCategories)
             {
                 var classCode = Request["classCode"];
-                var siteId = Utils.ToInt(Request["publishmentSystemID"]);
+                var siteId = Utils.ToInt(Request["siteId"]);
                 var parentId = Utils.ToInt(Request["parentID"]);
                 var loadingType = Request["loadingType"];
                 retString = GetLoadingGovPublicCategories(siteId, classCode, parentId, loadingType);
             }
             //else if (type == NodeTreeItem.TypeGetLoadingChannels)
             //{
-            //    var siteId = Utils.ToInt(Request["publishmentSystemID"]);
+            //    var siteId = Utils.ToInt(Request["siteId"]);
             //    var parentId = Utils.ToInt(Request["parentID"]);
             //    var loadingType = Request["loadingType"];
             //    var additional = Request["additional"];
@@ -48,7 +48,7 @@ namespace SS.GovPublic.Pages
         //{
         //    return TranslateUtils.NameValueCollectionToString(new NameValueCollection
         //    {
-        //        {"publishmentSystemID", siteId.ToString() },
+        //        {"siteId", siteId.ToString() },
         //        {"loadingType", ELoadingTypeUtils.GetValue(loadingType)},
         //        {"additional", TranslateUtils.EncryptStringBySecretKey(TranslateUtils.NameValueCollectionToString(additional))}
         //    });

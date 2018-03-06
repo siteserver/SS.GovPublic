@@ -74,7 +74,7 @@ namespace SS.GovPublic.Pages
             //    PageUtils.GetRedirectStringWithCheckBoxValueAndAlert(
             //        PageUtils.GetWcmUrl(nameof(PageCategory), new NameValueCollection
             //        {
-            //            {"PublishmentSystemID", SiteId.ToString()},
+            //            {"SiteId", SiteId.ToString()},
             //            {"ClassCode", _categoryClassInfo.ClassCode},
             //            {"Delete", true.ToString()},
             //        }), "CategoryIDCollection", "CategoryIDCollection", "请选择需要删除的节点！", "此操作将删除对应节点以及所有下级节点，确认删除吗？"));

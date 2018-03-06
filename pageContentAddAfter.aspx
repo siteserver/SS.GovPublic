@@ -26,18 +26,18 @@
         </tr>
       </table>
 
-      <asp:PlaceHolder id="phPublishmentSystemID" runat="server">
+      <asp:PlaceHolder id="phSiteId" runat="server">
       <table class="table noborder table-hover">
         <tr>
           <td width="160">选择站点：</td>
-          <td><asp:DropDownList ID="PublishmentSystemIDDropDownList" runat="server" AutoPostBack="true" OnSelectedIndexChanged="PublishmentSystemID_SelectedIndexChanged"></asp:DropDownList></td>
+          <td><asp:DropDownList ID="SiteIdDropDownList" runat="server" AutoPostBack="true" OnSelectedIndexChanged="SiteId_SelectedIndexChanged"></asp:DropDownList></td>
         </tr>
         <tr>
           <td>投稿到：</td>
           <td>
-            <asp:ListBox ID="NodeIDListBox" SelectionMode="Multiple" Height="320" width="400" runat="server"></asp:ListBox>
+            <asp:ListBox ID="SiteIdListBox" SelectionMode="Multiple" Height="320" width="400" runat="server"></asp:ListBox>
             <asp:RequiredFieldValidator
-              ControlToValidate="NodeIDListBox"
+              ControlToValidate="SiteIdListBox"
               ErrorMessage=" *" foreColor="red"
               Display="Dynamic"
               runat="server"

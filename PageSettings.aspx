@@ -34,7 +34,7 @@
                 <div class="form-group">
                   <label class="col-sm-3 control-label">主题分类根栏目</label>
                   <div class="col-sm-3">
-                    <asp:DropDownList ID="DdlGovPublicNodeId" class="form-control" runat="server"></asp:DropDownList>
+                    <asp:DropDownList ID="DdlGovPublicChannelId" class="form-control" runat="server"></asp:DropDownList>
                   </div>
                   <div class="col-sm-6">
                   </div>

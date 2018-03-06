@@ -303,8 +303,8 @@ function loadingChannels(tr, img, div, classID){{
 
 function loadingChannelsOnLoad(paths){{
     if (paths && paths.length > 0){{
-        var nodeIDs = paths.split(',');
-        var classID = nodeIDs[0];
+        var siteIds = paths.split(',');
+        var classID = siteIds[0];
         var img = $('#' + classID);
         if (img.attr('isOpen') == 'false'){{
             displayChildren(img[0]);

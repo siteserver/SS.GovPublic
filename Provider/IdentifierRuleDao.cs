@@ -279,7 +279,7 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
         public bool UpdateTaxisToUp(int ruleId, int siteId)
         {
             //string sqlString =
-            //    $"SELECT TOP 1 RuleID, Taxis FROM wcm_GovPublicIdentifierRule WHERE ((Taxis > (SELECT Taxis FROM wcm_GovPublicIdentifierRule WHERE RuleID = {ruleId})) AND PublishmentSystemID ={siteId}) ORDER BY Taxis";
+            //    $"SELECT TOP 1 RuleID, Taxis FROM wcm_GovPublicIdentifierRule WHERE ((Taxis > (SELECT Taxis FROM wcm_GovPublicIdentifierRule WHERE RuleID = {ruleId})) AND SiteId ={siteId}) ORDER BY Taxis";
             var sqlString = _helper.ToTopSqlString(TableName,
                 $"{nameof(IdentifierRuleInfo.Id)}, {nameof(IdentifierRuleInfo.Taxis)}",
                 $"WHERE (({nameof(IdentifierRuleInfo.Taxis)} > (SELECT {nameof(IdentifierRuleInfo.Taxis)} FROM {TableName} WHERE {nameof(IdentifierRuleInfo.Id)} = {ruleId})) AND {nameof(IdentifierRuleInfo.SiteId)} ={siteId})",
@@ -312,7 +312,7 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
         public bool UpdateTaxisToDown(int ruleId, int siteId)
         {
             //string sqlString =
-            //    $"SELECT TOP 1 RuleID, Taxis FROM wcm_GovPublicIdentifierRule WHERE ((Taxis < (SELECT Taxis FROM wcm_GovPublicIdentifierRule WHERE RuleID = {ruleId})) AND PublishmentSystemID = {siteId}) ORDER BY Taxis DESC";
+            //    $"SELECT TOP 1 RuleID, Taxis FROM wcm_GovPublicIdentifierRule WHERE ((Taxis < (SELECT Taxis FROM wcm_GovPublicIdentifierRule WHERE RuleID = {ruleId})) AND SiteId = {siteId}) ORDER BY Taxis DESC";
             var sqlString = _helper.ToTopSqlString(TableName,
                 $"{nameof(IdentifierRuleInfo.Id)}, {nameof(IdentifierRuleInfo.Taxis)}",
                 $"WHERE (({nameof(IdentifierRuleInfo.Taxis)} < (SELECT {nameof(IdentifierRuleInfo.Taxis)} FROM {TableName} WHERE {nameof(IdentifierRuleInfo.Id)} = {ruleId})) AND {nameof(IdentifierRuleInfo.SiteId)} = {siteId})",
