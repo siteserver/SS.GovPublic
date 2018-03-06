@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>SS.GovPublic</id>
+    <version>$version$</version>
+    <title>信息公开插件</title>
+    <authors>SiteServer CMS</authors>
+    <owners>siteserver</owners>
+    <licenseUrl>https://github.com/siteserver/SS.GovPublic/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/siteserver/SS.GovPublic</projectUrl>
+    <iconUrl>https://github.com/siteserver/SS.GovPublic/raw/master/logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <releaseNotes>Bug fixes and performance improvements</releaseNotes>
+    <description>SiteServer CMS 信息公开插件</description>
+    <copyright>Copyright ©2018 SiteServer CMS</copyright>
+    <tags>SiteServer CMS GovPublic Plugin</tags>
+  </metadata>
+</package>

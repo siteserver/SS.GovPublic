@@ -1,2 +1,2 @@
-# SS.GovPublic
-SiteServer CMS 主动信息公开插件
+# ss-govPublic
+主动信息公开SiteServer CMS插件
