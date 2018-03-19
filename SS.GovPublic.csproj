@@ -40,8 +40,8 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SiteServer.Plugin, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\SiteServer.Plugin.1.4.0\lib\net45\SiteServer.Plugin.dll</HintPath>
+    <Reference Include="SiteServer.Plugin, Version=1.4.45.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\SiteServer.Plugin.1.4.45-beta\lib\net45\SiteServer.Plugin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -57,9 +57,10 @@
   <ItemGroup>
     <Compile Include="Controls\DateTimeTextBox.cs" />
     <Compile Include="Controls\SqlPager.cs" />
+    <Compile Include="Core\AlertUtils.cs" />
     <Compile Include="Core\CacheUtils.cs" />
     <Compile Include="Core\CategoryItem.cs" />
-    <Compile Include="Core\GovPublicManager.cs" />
+    <Compile Include="Core\PublicManager.cs" />
     <Compile Include="Model\CategoryClassInfo.cs" />
     <Compile Include="Model\CategoryInfo.cs" />
     <Compile Include="Model\ContentAttribute.cs" />
@@ -98,6 +99,12 @@
     <Compile Include="Pages\PageIdentifierRule.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Pages\PageInit.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\PageMain.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Pages\PageSettings.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -113,6 +120,9 @@
     <Compile Include="Provider\IdentifierSeqDao.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\fonts\ionicons.eot" />
+    <None Include="assets\fonts\ionicons.ttf" />
+    <None Include="assets\fonts\ionicons.woff" />
     <None Include="assets\plugin-utils\fonts\fontawesome-webfont.eot" />
     <None Include="assets\plugin-utils\fonts\fontawesome-webfont.ttf" />
     <None Include="assets\plugin-utils\fonts\fontawesome-webfont.woff" />
@@ -126,6 +136,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="assets\css\bootstrap.min.css" />
+    <Content Include="assets\css\ionicons.min.css" />
+    <Content Include="assets\css\siteserver.min.css" />
     <Content Include="assets\css\style.css" />
     <Content Include="assets\datePicker\calendar.js" />
     <Content Include="assets\datePicker\lang\en.js" />
@@ -139,6 +152,7 @@
     <Content Include="assets\datePicker\skin\whyGreen\datepicker.css" />
     <Content Include="assets\datePicker\skin\whyGreen\img.gif" />
     <Content Include="assets\datePicker\WdatePicker.js" />
+    <Content Include="assets\fonts\ionicons.svg" />
     <Content Include="assets\images\channel_alipay.gif" />
     <Content Include="assets\images\channel_jdpay.gif" />
     <Content Include="assets\images\channel_weixin.gif" />
@@ -167,6 +181,7 @@
     <Content Include="assets\plugin-utils\css\plugin-utils.css" />
     <Content Include="assets\plugin-utils\fonts\fontawesome-webfont.svg" />
     <Content Include="assets\plugin-utils\fonts\ionicons.svg" />
+    <Content Include="assets\sweetalert\sweetalert.min.js" />
     <Content Include="logo.png" />
     <Content Include="modalCategoryAdd.aspx" />
     <Content Include="modalCategoryClassAdd.aspx" />
@@ -180,8 +195,11 @@
     <Content Include="pageContentAddAfter.aspx" />
     <Content Include="pageIdentifierCreate.aspx" />
     <Content Include="pageIdentifierRule.aspx" />
+    <Content Include="pageInit.aspx" />
+    <Content Include="pageMain.aspx" />
     <Content Include="pageRecords.aspx" />
     <Content Include="PageSettings.aspx" />
+    <Content Include="pageTree.aspx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

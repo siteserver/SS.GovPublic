@@ -12,6 +12,8 @@ namespace SS.GovPublic.Core
 {
     public class Utils
     {
+        public const string HidePopWin = "window.parent.layer.closeAll();";
+
         public static string GetMessageHtml(string message, bool isSuccess)
         {
             return isSuccess
@@ -800,6 +802,55 @@ namespace SS.GovPublic.Core
             //page.Response.End();
         }
 
-        public const string HidePopWin = "window.parent.layer.closeAll();";
+        public static int GetStartCount(char startChar, string content)
+        {
+            if (content == null)
+            {
+                return 0;
+            }
+            var count = 0;
+
+            foreach (var theChar in content)
+            {
+                if (theChar == startChar)
+                {
+                    count++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return count;
+        }
+
+        public static int GetStartCount(string startString, string content)
+        {
+            if (content == null)
+            {
+                return 0;
+            }
+            var count = 0;
+
+            while (true)
+            {
+                if (content.StartsWith(startString))
+                {
+                    count++;
+                    content = content.Remove(0, startString.Length);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return count;
+        }
+
+        public static bool Contains(string text, string inner)
+        {
+            return text?.IndexOf(inner, StringComparison.Ordinal) >= 0;
+        }
     }
 }

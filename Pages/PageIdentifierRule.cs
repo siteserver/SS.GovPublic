@@ -7,14 +7,13 @@ namespace SS.GovPublic.Pages
 {
     public class PageIdentifierRule : PageBase
     {
-        public Literal LtlMessage;
         public Literal LtlPreview;
         public DataGrid DgContents;
         public Button BtnAdd;
 
         public static string GetRedirectUrl(int siteId)
         {
-            return Main.Instance.PluginApi.GetPluginUrl($"{nameof(PageIdentifierRule)}.aspx?siteId={siteId}");
+            return $"{nameof(PageIdentifierRule)}.aspx?siteId={siteId}";
         }
 
         public void Page_Load(object sender, EventArgs e)
@@ -41,7 +40,7 @@ namespace SS.GovPublic.Pages
 
             if (IsPostBack) return;
 
-            LtlPreview.Text = GovPublicManager.GetPreviewIdentifier(SiteId);
+            LtlPreview.Text = PublicManager.GetPreviewIdentifier(SiteId);
 
             DgContents.DataSource = Main.IdentifierRuleDao.GetRuleInfoList(SiteId);
             DgContents.ItemDataBound += DgContents_ItemDataBound;

@@ -7,7 +7,6 @@ namespace SS.GovPublic.Pages
 {
     public class PageCategory : PageBase
     {
-        public Literal LtlMessage;
         public Repeater RptContents;
         public Button BtnAdd;
         public Button BtnDelete;
@@ -19,14 +18,13 @@ namespace SS.GovPublic.Pages
 
         public static string GetRedirectUrl(int siteId, string classCode)
         {
-            return Main.Instance.PluginApi.GetPluginUrl($"{nameof(PageCategory)}.aspx?siteId={siteId}&classCode={classCode}");
+            return $"{nameof(PageCategory)}.aspx?siteId={siteId}&classCode={classCode}";
         }
 
         public static string GetRedirectUrl(int siteId, string classCode, int currentCategoryId)
         {
             return currentCategoryId != 0
-                ? Main.Instance.PluginApi.GetPluginUrl(
-                    $"{nameof(PageCategory)}.aspx?siteId={siteId}&classCode={classCode}&currentCategoryId={currentCategoryId}")
+                ? $"{nameof(PageCategory)}.aspx?siteId={siteId}&classCode={classCode}&currentCategoryId={currentCategoryId}"
                 : GetRedirectUrl(siteId, classCode);
         }
 

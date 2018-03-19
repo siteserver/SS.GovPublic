@@ -7,7 +7,6 @@ namespace SS.GovPublic.Pages
 {
 	public class ModalCategoryAdd : PageBase
 	{
-	    public Literal LtlMessage;
         public TextBox TbCategoryName;
         public TextBox TbCategoryCode;
         public PlaceHolder PhParentId;
@@ -19,12 +18,12 @@ namespace SS.GovPublic.Pages
 
         public static string GetOpenWindowStringToAdd(int siteId, string classCode)
         {
-            return Utils.GetOpenLayerString("添加节点", Main.Instance.PluginApi.GetPluginUrl($"{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}"), 500, 460);
+            return Utils.GetOpenLayerString("添加节点", $"{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}", 500, 460);
         }
 
         public static string GetOpenWindowStringToEdit(int siteId, string classCode, int categoryId)
         {
-            return Utils.GetOpenLayerString("修改节点", Main.Instance.PluginApi.GetPluginUrl($"{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}&categoryId={categoryId}"), 520, 460);
+            return Utils.GetOpenLayerString("修改节点", $"{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}&categoryId={categoryId}", 520, 460);
         }
 
 		public void Page_Load(object sender, EventArgs e)

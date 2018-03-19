@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using SS.GovPublic.Model;
 using SiteServer.Plugin;
@@ -96,7 +95,7 @@ namespace SS.GovPublic.Provider
             return contentAttributeName;
         }
 
-        public void Insert(CategoryClassInfo categoryClassInfo)
+        public int Insert(CategoryClassInfo categoryClassInfo)
         {
             if (categoryClassInfo.IsSystem)
             {
@@ -149,7 +148,7 @@ namespace SS.GovPublic.Provider
                 _helper.GetParameter(nameof(CategoryClassInfo.Description), categoryClassInfo.Description)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters);
+            return _helper.ExecuteNonQueryAndReturnId(TableName, nameof(CategoryClassInfo.Id), _connectionString, sqlString, parameters);
         }
 
         public void Update(CategoryClassInfo categoryClassInfo)
@@ -306,37 +305,6 @@ namespace SS.GovPublic.Provider
             return exists;
         }
 
-        public IEnumerable GetDataSource(int siteId)
-        {
-            string sqlString = $@"SELECT
-    {nameof(CategoryClassInfo.Id)},
-    {nameof(CategoryClassInfo.SiteId)},
-    {nameof(CategoryClassInfo.ClassCode)}, 
-    {nameof(CategoryClassInfo.ClassName)}, 
-    {nameof(CategoryClassInfo.IsSystem)},
-    {nameof(CategoryClassInfo.IsEnabled)},
-    {nameof(CategoryClassInfo.ContentAttributeName)},
-    {nameof(CategoryClassInfo.Taxis)},
-    {nameof(CategoryClassInfo.Description)} FROM {TableName} 
-    WHERE {nameof(CategoryClassInfo.SiteId)} = @{nameof(CategoryClassInfo.SiteId)}
-    ORDER BY {nameof(CategoryClassInfo.Taxis)}";
-
-            var parameters = new[]
-            {
-                _helper.GetParameter(nameof(CategoryClassInfo.SiteId), siteId)
-            };
-            var enumerable = (IEnumerable) _helper.ExecuteReader(_connectionString, sqlString, parameters);
-            return enumerable;
-        }
-
-        public int GetCount(int siteId)
-        {
-            string sqlString =
-                $"SELECT COUNT(*) FROM {TableName} WHERE {nameof(CategoryClassInfo.SiteId)} = {siteId}";
-
-            return _helper.ExecuteInt(_connectionString, sqlString);
-        }
-
         public List<CategoryClassInfo> GetCategoryClassInfoList(int siteId)
         {
             var list = new List<CategoryClassInfo>();
@@ -369,7 +337,30 @@ namespace SS.GovPublic.Provider
                 rdr.Close();
             }
 
+            if (list.Count == 0)
+            {
+                list = new List<CategoryClassInfo>
+                {
+                    GetCategoryClassInfo(ECategoryClassType.Channel, siteId),
+                    GetCategoryClassInfo(ECategoryClassType.Department, siteId),
+                    GetCategoryClassInfo(ECategoryClassType.Form, siteId),
+                    GetCategoryClassInfo(ECategoryClassType.Service, siteId)
+                };
+
+                foreach (var categoryClassInfo in list)
+                {
+                    categoryClassInfo.Id = Insert(categoryClassInfo);
+                }
+            }
+
             return list;
+        }
+
+        private static CategoryClassInfo GetCategoryClassInfo(ECategoryClassType categoryType, int siteId)
+        {
+            var isSystem = categoryType == ECategoryClassType.Channel || categoryType == ECategoryClassType.Department;
+            return new CategoryClassInfo(0, siteId, ECategoryClassTypeUtils.GetValue(categoryType),
+                ECategoryClassTypeUtils.GetText(categoryType), isSystem, true, string.Empty, 0, string.Empty);
         }
 
         public List<string> GetClassCodeList(int siteId)

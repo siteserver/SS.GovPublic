@@ -22,7 +22,7 @@
                     <b>重新生成索引号</b>
                   </h4>
                   <p class="text-muted font-13 m-b-30">
-                    系统将重新生成所选栏目下的指定类型信息的索引号。
+                    系统将重新生成指定类型信息的索引号。
                   </p>
                 </div>
               </div>
@@ -30,16 +30,6 @@
               <asp:Literal id="LtlMessage" runat="server" />
 
               <div class="form-horizontal">
-
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">生成索引号栏目</label>
-                  <div class="col-sm-3">
-                    <asp:DropDownList ID="DdlChannelId" class="form-control" runat="server"></asp:DropDownList>
-                  </div>
-                  <div class="col-sm-6">
-                    <span class="help-block">选择需要重新生成索引号的栏目</span>
-                  </div>
-                </div>
 
                 <div class="form-group">
                   <label class="col-sm-3 control-label">生成索引号信息类型</label>

@@ -254,7 +254,7 @@ namespace SS.GovPublic.Provider
             {
                 if (classInfo.IsSystem || !classInfo.IsEnabled) continue;
 
-                var attributeName = GovPublicManager.GetCategoryContentAttributeName(classInfo.ClassCode);
+                var attributeName = PublicManager.GetCategoryContentAttributeName(classInfo.ClassCode);
                 var attributeValue = attributes.GetString(attributeName);
 
                 var ddlCategoryId = new DropDownList
@@ -279,6 +279,8 @@ namespace SS.GovPublic.Provider
             var count = 0;
             foreach (var keyValuePair in pairList)
             {
+                if (keyValuePair.Value.Items.Count == 0) continue;
+
                 if (count > 1)
                 {
                     builder.Append(@"</div><div class=""row m-t-10"">");
@@ -332,7 +334,7 @@ $(document).ready(function () {
             {
                 if (classInfo.IsSystem || !classInfo.IsEnabled) continue;
 
-                var attributeName = GovPublicManager.GetCategoryContentAttributeName(classInfo.ClassCode);
+                var attributeName = PublicManager.GetCategoryContentAttributeName(classInfo.ClassCode);
                 var attributeValue = form.GetInt(attributeName);
 
                 contentInfo.Set(attributeName, attributeValue.ToString());
@@ -345,29 +347,20 @@ $(document).ready(function () {
 
             if (contentInfo.Id == 0)
             {
-                var identifier = GovPublicManager.GetIdentifier(siteId, categoryChannelId,
+                var identifier = PublicManager.GetIdentifier(siteId, categoryChannelId,
                     categoryDepartmentId, contentInfo);
                 contentInfo.Set(nameof(ContentAttribute.Identifier), identifier);
             }
             else
             {
                 var effectDate = contentInfo.GetDateTime(nameof(ContentAttribute.EffectDate), DateTime.Now);
-                if (string.IsNullOrEmpty(contentInfo.GetString(ContentAttribute.Identifier)) || GovPublicManager.IsIdentifierChanged(siteId, categoryChannelId, categoryDepartmentId, effectDate, contentInfo))
+                if (string.IsNullOrEmpty(contentInfo.GetString(ContentAttribute.Identifier)) || PublicManager.IsIdentifierChanged(siteId, categoryChannelId, categoryDepartmentId, effectDate, contentInfo))
                 {
-                    var identifier = GovPublicManager.GetIdentifier(siteId, categoryChannelId,
+                    var identifier = PublicManager.GetIdentifier(siteId, categoryChannelId,
                     categoryDepartmentId, contentInfo);
                     contentInfo.Set(nameof(ContentAttribute.Identifier), identifier);
                 }
             }
-        }
-
-        private readonly string _connectionString;
-        private readonly IDataApi _helper;
-
-        public ContentDao()
-        {
-            _connectionString = Main.Instance.ConnectionString;
-            _helper = Main.Instance.DataApi;
         }
 
         public void CreateIdentifier(int siteId, int parentChannelId, bool isAll)
@@ -382,7 +375,7 @@ $(document).ready(function () {
                     var contentInfo = Main.Instance.ContentApi.GetContentInfo(siteId, channelId, contentId);
                     if (isAll || string.IsNullOrEmpty(contentInfo.GetString(ContentAttribute.Identifier)))
                     {
-                        var identifier = GovPublicManager.GetIdentifier(siteId, contentInfo.ChannelId, contentInfo.GetInt(ContentAttribute.DepartmentId), contentInfo);
+                        var identifier = PublicManager.GetIdentifier(siteId, contentInfo.ChannelId, contentInfo.GetInt(ContentAttribute.DepartmentId), contentInfo);
                         contentInfo.Set(ContentAttribute.Identifier, identifier);
                         Main.Instance.ContentApi.Update(siteId, channelId, contentInfo);
                     }

@@ -3,12 +3,12 @@ using System.Web.UI.WebControls;
 using SiteServer.Plugin;
 using SS.GovPublic.Core;
 using SS.GovPublic.Model;
+using SS.GovPublic.Provider;
 
 namespace SS.GovPublic.Pages
 {
 	public class ModalIdentifierRuleAdd : PageBase
 	{
-	    public Literal LtlMessage;
         public TextBox TbRuleName;
         public DropDownList DdlIdentifierType;
         public PlaceHolder PhAttributeName;
@@ -28,25 +28,23 @@ namespace SS.GovPublic.Pages
 
         public static string GetOpenWindowStringToAdd(int siteId)
         {
-            return Utils.GetOpenLayerString("添加规则", Main.Instance.PluginApi.GetPluginUrl($"{nameof(ModalIdentifierRuleAdd)}.aspx?siteId={siteId}"), 520, 640);
+            return Utils.GetOpenLayerString("添加规则", $"{nameof(ModalIdentifierRuleAdd)}.aspx?siteId={siteId}", 520, 640);
         }
 
         public static string GetOpenWindowStringToEdit(int siteId, int ruleId)
         {
-            return Utils.GetOpenLayerString("修改规则", Main.Instance.PluginApi.GetPluginUrl($"{nameof(ModalIdentifierRuleAdd)}.aspx?siteId={siteId}&ruleId={ruleId}"), 520, 640);
+            return Utils.GetOpenLayerString("修改规则", $"{nameof(ModalIdentifierRuleAdd)}.aspx?siteId={siteId}&ruleId={ruleId}", 520, 640);
         }
 
         public void Page_Load(object sender, EventArgs e)
         {
-            _ruleId = Utils.ToInt(Request.QueryString["RuleID"]);
+            _ruleId = Utils.ToInt(Request.QueryString["ruleId"]);
 
             if (IsPostBack) return;
 
-            var configInfo = Main.Instance.GetConfigInfo(SiteId);
-
             EIdentifierTypeUtils.AddListItems(DdlIdentifierType);
 
-            var tableColumns = Main.Instance.ContentApi.GetTableColumns(SiteId, configInfo.GovPublicChannelId);
+            var tableColumns = ContentDao.Columns;
 
             foreach (var tableColumn in tableColumns)
             {

@@ -6,100 +6,29 @@ using SS.GovPublic.Model;
 
 namespace SS.GovPublic.Core
 {
-	public class GovPublicManager
+	public class PublicManager
 	{
-        private static CategoryClassInfo GetCategoryClassInfo(ECategoryClassType categoryType, int siteId)
+        public static List<IChannelInfo> GetPublicChannelInfoList(int siteId)
         {
-            var isSystem = categoryType == ECategoryClassType.Channel || categoryType == ECategoryClassType.Department;
-            return new CategoryClassInfo(0, siteId, ECategoryClassTypeUtils.GetValue(categoryType),
-                ECategoryClassTypeUtils.GetText(categoryType), isSystem, true, string.Empty, 0, string.Empty);
+            var channelInfoList = new List<IChannelInfo>();
+
+            var channelIdList = Main.Instance.ChannelApi.GetChannelIdList(siteId);
+            foreach (var channelId in channelIdList)
+            {
+                var channelInfo = Main.Instance.ChannelApi.GetChannelInfo(siteId, channelId);
+                if (channelInfo.ContentModelPluginId == Main.Instance.Id)
+                {
+                    channelInfoList.Add(channelInfo);
+                }
+            }
+
+            return channelInfoList;
         }
 
 	    public static string GetCategoryContentAttributeName(string classCode)
 	    {
 	        return $"category{classCode}Id";
 	    }
-
-        public static void Initialize(int siteId)
-        {
-            var configInfo = Main.Instance.GetConfigInfo(siteId);
-            if (configInfo.GovPublicChannelId > 0)
-            {
-                var nodeInfo = Main.Instance.ChannelApi.GetChannelInfo(siteId, configInfo.GovPublicChannelId);
-                if (nodeInfo == null || nodeInfo.ContentModelPluginId != Main.Instance.Id)
-                {
-                    configInfo.GovPublicChannelId = 0;
-                }
-            }
-            if (configInfo.GovPublicChannelId == 0)
-            {
-                var nodeInfo = Main.Instance.ChannelApi.NewInstance(siteId);
-                nodeInfo.ContentModelPluginId = Main.Instance.Id;
-                nodeInfo.ChannelName = "信息公开";
-                configInfo.GovPublicChannelId = Main.Instance.ChannelApi.Insert(siteId, nodeInfo);
-                Main.Instance.ConfigApi.SetConfig(siteId, configInfo);
-            }
-
-            if (Main.CategoryClassDao.GetCount(siteId) == 0)
-            {
-                var categoryClassInfoList = new List<CategoryClassInfo>
-                {
-                    GetCategoryClassInfo(ECategoryClassType.Channel, siteId),
-                    GetCategoryClassInfo(ECategoryClassType.Department, siteId),
-                    GetCategoryClassInfo(ECategoryClassType.Form, siteId),
-                    GetCategoryClassInfo(ECategoryClassType.Service, siteId)
-                };
-
-                foreach (var categoryClassInfo in categoryClassInfoList)
-                {
-                    Main.CategoryClassDao.Insert(categoryClassInfo);
-                }
-            }
-
-            if (Main.IdentifierRuleDao.GetCount(siteId) == 0)
-            {
-                var ruleInfoList = new List<IdentifierRuleInfo>
-                {
-                    new IdentifierRuleInfo
-                    {
-                        SiteId = siteId,
-                        RuleName = "机构分类代码",
-                        IdentifierType = EIdentifierTypeUtils.GetValue(EIdentifierType.Department),
-                        MinLength = 5,
-                        Suffix = "-"
-                    },
-                    new IdentifierRuleInfo
-                    {
-                        SiteId = siteId,
-                        RuleName = "主题分类代码",
-                        IdentifierType = EIdentifierTypeUtils.GetValue(EIdentifierType.Channel),
-                        MinLength = 5,
-                        Suffix = "-"
-                    },
-                    new IdentifierRuleInfo
-                    {
-                        SiteId = siteId,
-                        RuleName = "生效日期",
-                        IdentifierType = EIdentifierTypeUtils.GetValue(EIdentifierType.Attribute),
-                        Suffix = "-",
-                        AttributeName = ContentAttribute.EffectDate,
-                        FormatString = "yyyy"
-                    },
-                    new IdentifierRuleInfo
-                    {
-                        SiteId = siteId,
-                        RuleName = "顺序号",
-                        IdentifierType = EIdentifierTypeUtils.GetValue(EIdentifierType.Sequence),
-                        MinLength = 5
-                    }
-                };
-
-                foreach (var ruleInfo in ruleInfoList)
-                {
-                    Main.IdentifierRuleDao.Insert(ruleInfo);
-                }
-            }
-        }
 
         public static string GetPreviewIdentifier(int siteId)
         {

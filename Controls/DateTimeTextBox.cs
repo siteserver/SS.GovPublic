@@ -89,7 +89,7 @@ namespace SS.GovPublic.Controls
                 if (!Page.ClientScript.IsStartupScriptRegistered("DateTimeTextBox_Calendar"))
                 {
                     Page.ClientScript.RegisterStartupScript(GetType(), "DateTimeTextBox_Calendar",
-                        $@"<script language=""javascript"" src=""{Main.Instance.PluginApi.GetPluginUrl(Js)}""></script>");
+                        $@"<script language=""javascript"" src=""{Js}""></script>");
                 }
             }
             base.OnLoad(e);

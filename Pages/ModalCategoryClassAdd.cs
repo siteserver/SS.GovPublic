@@ -7,7 +7,6 @@ namespace SS.GovPublic.Pages
 {
     public class ModalCategoryClassAdd : PageBase
     {
-        public Literal LtlMessage;
         protected TextBox TbClassName;
         protected TextBox TbClassCode;
         protected DropDownList DdlIsEnabled;
@@ -17,12 +16,12 @@ namespace SS.GovPublic.Pages
 
         public static string GetOpenWindowStringToAdd(int siteId)
         {
-            return Utils.GetOpenLayerString("添加分类法", Main.Instance.PluginApi.GetPluginUrl($"{nameof(ModalCategoryClassAdd)}.aspx?siteId={siteId}"), 300, 460);
+            return Utils.GetOpenLayerString("添加分类法", $"{nameof(ModalCategoryClassAdd)}.aspx?siteId={siteId}", 300, 460);
         }
 
         public static string GetOpenWindowStringToEdit(int siteId, int classId)
         {
-            return Utils.GetOpenLayerString("编辑分类法", Main.Instance.PluginApi.GetPluginUrl($"{nameof(ModalCategoryClassAdd)}.aspx?siteId={siteId}&classId={classId}"), 300, 460);
+            return Utils.GetOpenLayerString("编辑分类法", $"{nameof(ModalCategoryClassAdd)}.aspx?siteId={siteId}&classId={classId}", 300, 460);
         }
 
         public void Page_Load(object sender, EventArgs e)

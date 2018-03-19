@@ -92,7 +92,7 @@ namespace SS.GovPublic.Provider
             _helper = Main.Instance.DataApi;
         }
 
-        public void Insert(IdentifierRuleInfo ruleInfo)
+        public int Insert(IdentifierRuleInfo ruleInfo)
         {
             ruleInfo.Taxis = GetMaxTaxis(ruleInfo.SiteId) + 1;
 
@@ -141,7 +141,7 @@ namespace SS.GovPublic.Provider
                 _helper.GetParameter(nameof(IdentifierRuleInfo.IsSequenceYearZero), ruleInfo.IsSequenceYearZero)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters);
+            return _helper.ExecuteNonQueryAndReturnId(TableName, nameof(IdentifierRuleInfo.Id), _connectionString, sqlString, parameters);
         }
 
         public void Update(IdentifierRuleInfo ruleInfo) 
@@ -191,14 +191,6 @@ namespace SS.GovPublic.Provider
             };
 
             _helper.ExecuteNonQuery(_connectionString, sqlString, parameters);
-        }
-
-        public int GetCount(int siteId)
-        {
-            string sqlString =
-                $"SELECT COUNT(*) FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = {siteId}";
-
-            return _helper.ExecuteInt(_connectionString, sqlString);
         }
 
         public IdentifierRuleInfo GetIdentifierRuleInfo(int ruleId)
@@ -271,6 +263,50 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
                     list.Add(ruleInfo);
                 }
                 rdr.Close();
+            }
+
+            if (list.Count == 0)
+            {
+                list = new List<IdentifierRuleInfo>
+                {
+                    new IdentifierRuleInfo
+                    {
+                        SiteId = siteId,
+                        RuleName = "机构分类代码",
+                        IdentifierType = EIdentifierTypeUtils.GetValue(EIdentifierType.Department),
+                        MinLength = 5,
+                        Suffix = "-"
+                    },
+                    new IdentifierRuleInfo
+                    {
+                        SiteId = siteId,
+                        RuleName = "主题分类代码",
+                        IdentifierType = EIdentifierTypeUtils.GetValue(EIdentifierType.Channel),
+                        MinLength = 5,
+                        Suffix = "-"
+                    },
+                    new IdentifierRuleInfo
+                    {
+                        SiteId = siteId,
+                        RuleName = "生效日期",
+                        IdentifierType = EIdentifierTypeUtils.GetValue(EIdentifierType.Attribute),
+                        Suffix = "-",
+                        AttributeName = ContentAttribute.EffectDate,
+                        FormatString = "yyyy"
+                    },
+                    new IdentifierRuleInfo
+                    {
+                        SiteId = siteId,
+                        RuleName = "顺序号",
+                        IdentifierType = EIdentifierTypeUtils.GetValue(EIdentifierType.Sequence),
+                        MinLength = 5
+                    }
+                };
+
+                foreach (var ruleInfo in list)
+                {
+                    ruleInfo.Id = Insert(ruleInfo);
+                }
             }
 
             return list;

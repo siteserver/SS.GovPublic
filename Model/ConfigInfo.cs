@@ -2,10 +2,8 @@
 {
     public class ConfigInfo
     {
-        public int GovPublicChannelId { get; set; }
+        public bool IsPublisherRelatedDepartmentId { get; set; }
 
-        public bool GovPublicIsPublisherRelatedDepartmentId { get; set; }
-
-        public string GovPublicDepartmentIdCollection { get; set; }
+        public string DepartmentIdCollection { get; set; }
     }
 }

@@ -22,7 +22,6 @@
                     <b>信息公开设置</b>
                   </h4>
                   <p class="text-muted font-13 m-b-30">
-                    如果未设置主题分类根栏目，系统将默认生成，主题分类根栏目只能选择首页或者一级栏目。
                   </p>
                 </div>
               </div>
@@ -30,15 +29,6 @@
               <asp:Literal id="LtlMessage" runat="server" />
 
               <div class="form-horizontal">
-
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">主题分类根栏目</label>
-                  <div class="col-sm-3">
-                    <asp:DropDownList ID="DdlGovPublicChannelId" class="form-control" runat="server"></asp:DropDownList>
-                  </div>
-                  <div class="col-sm-6">
-                  </div>
-                </div>
 
                 <div class="form-group">
                   <label class="col-sm-3 control-label">选择机构分类后自动更改发布机构</label>

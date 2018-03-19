@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using SiteServer.Plugin;
-using SS.GovPublic.Core;
 using SS.GovPublic.Model;
 using SS.GovPublic.Pages;
 using SS.GovPublic.Provider;
@@ -8,19 +7,13 @@ using SS.GovPublic.Provider;
 namespace SS.GovPublic
 {
     public class Main : PluginBase
-    { 
-
+    {
         public static Dao Dao { get; private set; }
         public static CategoryClassDao CategoryClassDao { get; private set; }
         public static CategoryDao CategoryDao { get; private set; }
         public static ContentDao ContentDao { get; private set; }
         public static IdentifierRuleDao IdentifierRuleDao { get; private set; }
         public static IdentifierSeqDao IdentifierSeqDao { get; private set; }
-
-        public ConfigInfo GetConfigInfo(int siteId)
-        {
-            return ConfigApi.GetConfig<ConfigInfo>(siteId) ?? new ConfigInfo();
-        }
 
         public static Main Instance { get; private set; }
 
@@ -41,8 +34,50 @@ namespace SS.GovPublic
                 .AddDatabaseTable(CategoryDao.TableName, CategoryDao.Columns)
                 .AddDatabaseTable(IdentifierRuleDao.TableName, IdentifierRuleDao.Columns)
                 .AddDatabaseTable(IdentifierSeqDao.TableName, IdentifierSeqDao.Columns)
-                .AddSiteMenu(Service_AddSiteMenu);
-             
+                .AddSiteMenu(siteId => new Menu
+                {
+                    Text = "主动信息公开",
+                    IconClass = "ion-ios-book",
+                    Menus = new List<Menu>
+                    {
+                        new Menu
+                        {
+                            Text = "信息采集",
+                            Href = PageMain.GetRedirectUrl(siteId, FilesApi.GetAdminDirectoryUrl($"cms/pageContentAdd.aspx?siteId={siteId}"))
+                        },
+                        new Menu
+                        {
+                            Text = "信息管理",
+                            Href = PageMain.GetRedirectUrl(siteId, FilesApi.GetAdminDirectoryUrl($"cms/pageContentSearch.aspx?siteId={siteId}"))
+                        },
+                        new Menu
+                        {
+                            Text = "信息审核",
+                            Href = PageMain.GetRedirectUrl(siteId, FilesApi.GetAdminDirectoryUrl($"cms/pageContentCheck.aspx?siteId={siteId}"))
+                        },
+                        new Menu
+                        {
+                            Text = "分类法管理",
+                            Href = PageInit.GetRedirectUrl(siteId, PageCategoryMain.GetRedirectUrl(siteId))
+                        },
+                        new Menu
+                        {
+                            Text = "索引号生成规则",
+                            Href = PageInit.GetRedirectUrl(siteId, PageIdentifierRule.GetRedirectUrl(siteId))
+                        },
+                        new Menu
+                        {
+                            Text = "重新生成索引号",
+                            Href = PageInit.GetRedirectUrl(siteId, PageIdentifierCreate.GetRedirectUrl(siteId))
+                        },
+                        new Menu
+                        {
+                            Text = "信息公开设置",
+                            Href = PageInit.GetRedirectUrl(siteId, PageSettings.GetRedirectUrl(siteId))
+                        }
+                    }
+                });
+
             service.ContentFormSubmit += Service_ContentFormSubmited; // 页面提交处理函数
             service.ContentFormLoad += Service_ContentFormLoad; // // 页面加载处理函数
 
@@ -83,60 +118,5 @@ namespace SS.GovPublic
         {
             ContentDao.ContentFormSubmited(e.SiteId, e.ChannelId, e.ContentInfo, e.Form);
         }
-
-        private Menu Service_AddSiteMenu(int siteId)
-        {
-            GovPublicManager.Initialize(siteId);
-            return new Menu
-            {
-                Text = "主动信息公开",
-                IconClass = "ion-ios-book",
-                Menus = new List<Menu>
-                {
-                    new Menu
-                    {
-                        Text = "信息采集",
-                        Href =
-                            FilesApi.GetAdminDirectoryUrl(
-                                $"cms/pageContentAdd.aspx?siteId={siteId}&channelId={GetConfigInfo(siteId).GovPublicChannelId}")
-                    },
-                    new Menu
-                    {
-                        Text = "信息管理",
-                        Href =
-                            FilesApi.GetAdminDirectoryUrl(
-                                $"cms/pageContentSearch.aspx?siteId={siteId}&channelId={GetConfigInfo(siteId).GovPublicChannelId}")
-                    },
-                    new Menu
-                    {
-                        Text = "信息审核",
-                        Href =
-                            FilesApi.GetAdminDirectoryUrl(
-                                $"cms/pageContentCheck.aspx?siteId={siteId}&channelId={GetConfigInfo(siteId).GovPublicChannelId}")
-                    },
-                    new Menu
-                    {
-                        Text = "分类法管理",
-                        Href = $"{nameof(PageCategoryMain)}.aspx"
-                    },
-                    new Menu
-                    {
-                        Text = "索引号生成规则",
-                        Href = $"{nameof(PageIdentifierRule)}.aspx"
-                    },
-                    new Menu
-                    {
-                        Text = "重新生成索引号",
-                        Href = $"{nameof(PageIdentifierCreate)}.aspx"
-                    },
-                    new Menu
-                    {
-                        Text = "信息公开设置",
-                        Href = $"{nameof(PageSettings)}.aspx"
-                    }
-                }
-            };
-        }
-
     }
 }

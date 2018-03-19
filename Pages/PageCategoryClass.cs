@@ -7,13 +7,12 @@ namespace SS.GovPublic.Pages
 {
     public class PageCategoryClass : PageBase
     {
-        public Literal LtlMessage;
         public DataGrid DgContents;
         public Button BtnAdd;
 
         public static string GetRedirectUrl(int siteId)
         {
-            return Main.Instance.PluginApi.GetPluginUrl($"{nameof(PageCategoryClass)}.aspx?siteId={siteId}");
+            return $"{nameof(PageCategoryClass)}.aspx?siteId={siteId}";
         }
 
         public void Page_Load(object sender, EventArgs e)
