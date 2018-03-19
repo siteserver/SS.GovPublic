@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
@@ -120,6 +121,25 @@ namespace SS.GovPublic.Core
                     builder.Append("'").Append(obj).Append("'").Append(",");
                 }
                 if (builder.Length != 0) builder.Remove(builder.Length - 1, 1);
+            }
+            return builder.ToString();
+        }
+
+        public static string ObjectCollectionToString(ICollection collection)
+        {
+            return ObjectCollectionToString(collection, ",");
+        }
+
+        public static string ObjectCollectionToString(ICollection collection, string separatorStr)
+        {
+            var builder = new StringBuilder();
+            if (collection != null)
+            {
+                foreach (var obj in collection)
+                {
+                    builder.Append(obj.ToString().Trim()).Append(separatorStr);
+                }
+                if (builder.Length != 0) builder.Remove(builder.Length - separatorStr.Length, separatorStr.Length);
             }
             return builder.ToString();
         }

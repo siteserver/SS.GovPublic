@@ -93,7 +93,7 @@ namespace SS.GovPublic.Core
             Cache.Remove(key);
         }
 
-        public static void Insert(string key, object obj)
+        public static void Max(string key, object obj)
         {
             InnerInsert(key, obj, null, Cache.NoSlidingExpiration);
         }

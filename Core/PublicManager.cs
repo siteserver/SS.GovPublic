@@ -144,7 +144,7 @@ namespace SS.GovPublic.Core
                 var identifierType = EIdentifierTypeUtils.GetEnumType(ruleInfo.IdentifierType);
                 if (identifierType == EIdentifierType.Department)
                 {
-                    var departmentCode = Main.Dao.GetDepartmentCode(departmentId);
+                    var departmentCode = DepartmentManager.GetDepartmentCode(departmentId);
                     if (ruleInfo.MinLength > 0)
                     {
                         builder.Append(departmentCode.PadLeft(ruleInfo.MinLength, '0')).Append(ruleInfo.Suffix);

@@ -8,10 +8,10 @@ namespace SS.GovPublic
 {
     public class Main : PluginBase
     {
-        public static Dao Dao { get; private set; }
         public static CategoryClassDao CategoryClassDao { get; private set; }
         public static CategoryDao CategoryDao { get; private set; }
         public static ContentDao ContentDao { get; private set; }
+        public static DepartmentDao DepartmentDao { get; private set; }
         public static IdentifierRuleDao IdentifierRuleDao { get; private set; }
         public static IdentifierSeqDao IdentifierSeqDao { get; private set; }
 
@@ -21,10 +21,10 @@ namespace SS.GovPublic
         {
             Instance = this;
 
-            Dao = new Dao();
             CategoryClassDao = new CategoryClassDao();
             CategoryDao = new CategoryDao();
             ContentDao = new ContentDao();
+            DepartmentDao = new DepartmentDao();
             IdentifierRuleDao = new IdentifierRuleDao();
             IdentifierSeqDao = new IdentifierSeqDao();
 
@@ -74,6 +74,11 @@ namespace SS.GovPublic
                         {
                             Text = "信息公开设置",
                             Href = PageInit.GetRedirectUrl(siteId, PageSettings.GetRedirectUrl(siteId))
+                        },
+                        new Menu
+                        {
+                            Text = "数据统计分析",
+                            Href = PageInit.GetRedirectUrl(siteId, PageAnalysis.GetRedirectUrl(siteId))
                         }
                     }
                 });

@@ -60,6 +60,7 @@
     <Compile Include="Core\AlertUtils.cs" />
     <Compile Include="Core\CacheUtils.cs" />
     <Compile Include="Core\CategoryItem.cs" />
+    <Compile Include="Core\DepartmentManager.cs" />
     <Compile Include="Core\PublicManager.cs" />
     <Compile Include="Model\CategoryClassInfo.cs" />
     <Compile Include="Model\CategoryInfo.cs" />
@@ -76,6 +77,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\ModalIdentifierRuleAdd.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\PageAnalysis.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\PageBase.cs">
@@ -116,6 +120,7 @@
     <Compile Include="Provider\CategoryClassDao.cs" />
     <Compile Include="Provider\Dao.cs" />
     <Compile Include="Provider\ContentDao.cs" />
+    <Compile Include="Provider\DepartmentDao.cs" />
     <Compile Include="Provider\IdentifierRuleDao.cs" />
     <Compile Include="Provider\IdentifierSeqDao.cs" />
   </ItemGroup>
@@ -186,6 +191,7 @@
     <Content Include="modalCategoryAdd.aspx" />
     <Content Include="modalCategoryClassAdd.aspx" />
     <Content Include="modalIdentifierRuleAdd.aspx" />
+    <Content Include="pageAnalysis.aspx" />
     <Content Include="pageBlank.html" />
     <Content Include="pageCategory.aspx" />
     <Content Include="pageCategoryClass.aspx" />

@@ -1,106 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
-using SS.GovPublic.Core;
-using SS.GovPublic.Model;
-using SiteServer.Plugin;
-
 namespace SS.GovPublic.Provider
 {
-    public class Dao
+    public static class Dao
     {
-        private readonly string _connectionString;
-        private readonly IDataApi _helper;
-
-        public Dao()
+        public static int GetIntResult(string sqlString)
         {
-            _connectionString = Main.Instance.ConnectionString;
-            _helper = Main.Instance.DataApi;
-        }
+            var count = 0;
 
-        private DepartmentInfo GetDepartmentInfo(int departmentId)
-        {
-            DepartmentInfo departmentInfo = null;
-
-            var sqlString = "SELECT Id, DepartmentName, Code, ParentId, ParentsPath, ParentsCount, ChildrenCount, IsLastNode, Taxis, AddDate, Summary, CountOfAdmin FROM siteserver_Department WHERE Id = @Id";
-
-            var parameters = new[]
+            using (var conn = Main.Instance.DataApi.GetConnection(Main.Instance.ConnectionString))
             {
-                _helper.GetParameter(nameof(DepartmentInfo.Id), departmentId)
-            };
-
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters))
-            {
-                if (rdr.Read())
+                conn.Open();
+                using (var rdr = Main.Instance.DataApi.ExecuteReader(conn, sqlString))
                 {
-                    departmentInfo = GetDepartmentInfo(rdr);
-                }
-                rdr.Close();
-            }
-            return departmentInfo;
-        }
-
-        public string GetDepartmentCode(int departmentId)
-        {
-            if (departmentId > 0)
-            {
-                var departmentInfo = GetDepartmentInfo(departmentId);
-                if (departmentInfo != null)
-                {
-                    return departmentInfo.Code;
+                    if (rdr.Read() && !rdr.IsDBNull(0))
+                    {
+                        count = rdr.GetInt32(0);
+                    }
+                    rdr.Close();
                 }
             }
-            return string.Empty;
-        }
 
-        private static DepartmentInfo GetDepartmentInfo(IDataRecord rdr)
-        {
-            if (rdr == null) return null;
-
-            var departmentInfo = new DepartmentInfo();
-
-            var i = 0;
-            departmentInfo.Id = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
-            i++;
-            departmentInfo.DepartmentName = rdr.IsDBNull(i) ? string.Empty : rdr.GetString(i);
-            i++;
-            departmentInfo.Code = rdr.IsDBNull(i) ? string.Empty : rdr.GetString(i);
-            i++;
-            departmentInfo.ParentId = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
-            i++;
-            departmentInfo.ParentsPath = rdr.IsDBNull(i) ? string.Empty : rdr.GetString(i);
-            i++;
-            departmentInfo.ParentsCount = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
-            i++;
-            departmentInfo.ChildrenCount = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
-            i++;
-            departmentInfo.IsLastNode = Utils.ToBool(rdr.IsDBNull(i) ? string.Empty : rdr.GetString(i));
-            i++;
-            departmentInfo.Taxis = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
-            i++;
-            departmentInfo.AddDate = rdr.IsDBNull(i) ? DateTime.Now : rdr.GetDateTime(i);
-            i++;
-            departmentInfo.Summary = rdr.IsDBNull(i) ? string.Empty : rdr.GetString(i);
-            i++;
-            departmentInfo.CountOfAdmin = rdr.IsDBNull(i) ? 0 : rdr.GetInt32(i);
-
-            return departmentInfo;
-        }
-
-        public List<DepartmentInfo> GetDepartmentInfoList()
-        {
-            var list = new List<DepartmentInfo>();
-
-            var sqlString = "SELECT Id, DepartmentName, Code, ParentId, ParentsPath, ParentsCount, ChildrenCount, IsLastNode, Taxis, AddDate, Summary, CountOfAdmin FROM siteserver_Department ORDER BY Taxis";
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
-            {
-                while (rdr.Read())
-                {
-                    list.Add(GetDepartmentInfo(rdr));
-                }
-                rdr.Close();
-            }
-            return list;
+            return count;
         }
     }
 }
