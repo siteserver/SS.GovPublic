@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
@@ -22,7 +22,7 @@ namespace SS.GovPublic.Provider
                 InputStyle = new InputStyle
                 {
                     InputType = InputType.Customize,
-                    DisplayName = "Ë÷ÒıºÅ"
+                    DisplayName = "ç´¢å¼•å·"
                 }
             },
             new TableColumn
@@ -33,7 +33,7 @@ namespace SS.GovPublic.Provider
                 InputStyle = new InputStyle
                 {
                     InputType = InputType.Text,
-                    DisplayName = "ÎÄºÅ",
+                    DisplayName = "æ–‡å·",
                     IsRequired = true
                 }
             },
@@ -44,7 +44,7 @@ namespace SS.GovPublic.Provider
                 InputStyle = new InputStyle
                 {
                     InputType = InputType.Hidden,
-                    DisplayName = "²¿ÃÅ",
+                    DisplayName = "éƒ¨é—¨",
                 }
             },
             new TableColumn
@@ -55,7 +55,7 @@ namespace SS.GovPublic.Provider
                 InputStyle = new InputStyle
                 {
                     InputType = InputType.Text,
-                    DisplayName = "·¢²¼»ú¹¹"
+                    DisplayName = "å‘å¸ƒæœºæ„"
                 }
             },
             new TableColumn
@@ -66,7 +66,7 @@ namespace SS.GovPublic.Provider
                 InputStyle = new InputStyle
                 {
                     InputType = InputType.Text,
-                    DisplayName = "¹Ø¼ü´Ê"
+                    DisplayName = "å…³é”®è¯"
                 }
             },
             new TableColumn
@@ -76,7 +76,7 @@ namespace SS.GovPublic.Provider
                 InputStyle = new InputStyle
                 {
                     InputType = InputType.DateTime,
-                    DisplayName = "·¢ÎÄÈÕÆÚ",
+                    DisplayName = "å‘æ–‡æ—¥æœŸ",
                     IsRequired = true,
                     DefaultValue = "{Current}"
                 }
@@ -88,7 +88,7 @@ namespace SS.GovPublic.Provider
                 InputStyle = new InputStyle
                 {
                     InputType = InputType.DateTime,
-                    DisplayName = "ÉúĞ§ÈÕÆÚ",
+                    DisplayName = "ç”Ÿæ•ˆæ—¥æœŸ",
                     IsRequired = true,
                     DefaultValue = "{Current}"
                 }
@@ -101,19 +101,19 @@ namespace SS.GovPublic.Provider
                 InputStyle = new InputStyle
                 {
                     InputType = InputType.Radio,
-                    DisplayName = "ÊÇ·ñ·ÏÖ¹",
+                    DisplayName = "æ˜¯å¦åºŸæ­¢",
                     IsRequired = true,
                     ListItems = new List<ListItem>
                     {
                         new ListItem
                         {
-                            Text= "ÊÇ",
+                            Text= "æ˜¯",
                             Value = true.ToString(),
                             Selected = false
                         },
                         new ListItem
                         {
-                            Text= "·ñ",
+                            Text= "å¦",
                             Value = false.ToString(),
                             Selected = true
                         },
@@ -127,7 +127,7 @@ namespace SS.GovPublic.Provider
                 InputStyle = new InputStyle
                 {
                     InputType = InputType.DateTime,
-                    DisplayName = "·ÏÖ¹ÈÕÆÚ",
+                    DisplayName = "åºŸæ­¢æ—¥æœŸ",
                     IsRequired = true,
                     DefaultValue = "{Current}"
                 }
@@ -140,7 +140,7 @@ namespace SS.GovPublic.Provider
                 InputStyle = new InputStyle
                 {
                     InputType = InputType.TextArea,
-                    DisplayName = "ÄÚÈİ¸ÅÊö"
+                    DisplayName = "å†…å®¹æ¦‚è¿°"
                 }
             },
             new TableColumn
@@ -151,7 +151,7 @@ namespace SS.GovPublic.Provider
                 InputStyle = new InputStyle
                 {
                     InputType = InputType.Image,
-                    DisplayName = "Í¼Æ¬"
+                    DisplayName = "å›¾ç‰‡"
                 }
             },
             new TableColumn
@@ -162,7 +162,7 @@ namespace SS.GovPublic.Provider
                 InputStyle = new InputStyle
                 {
                     InputType = InputType.File,
-                    DisplayName = "¸½¼ş",
+                    DisplayName = "é™„ä»¶",
                 }
             },
             new TableColumn
@@ -172,7 +172,7 @@ namespace SS.GovPublic.Provider
                 InputStyle = new InputStyle
                 {
                     InputType = InputType.TextEditor,
-                    DisplayName = "ÄÚÈİ"
+                    DisplayName = "å†…å®¹"
                 }
             }
         };
@@ -222,7 +222,7 @@ namespace SS.GovPublic.Provider
 
             return $@"
 <div class=""form-group"">
-    <label class=""col-sm-1 control-label"">ĞÅÏ¢·ÖÀà</label>
+    <label class=""col-sm-1 control-label"">ä¿¡æ¯åˆ†ç±»</label>
     <div class=""col-sm-6"">
         {GetCategoriesHtml(siteId, channelId, attributes)}
     </div>
@@ -230,13 +230,13 @@ namespace SS.GovPublic.Provider
     </div>
 </div>
 <div class=""form-group"">
-    <label class=""col-sm-1 control-label"">Ë÷ÒıºÅ</label>
+    <label class=""col-sm-1 control-label"">ç´¢å¼•å·</label>
     <div class=""col-sm-6"">
         <input id=""displayOnly{ContentAttribute.Identifier}"" name=""displayOnly{ContentAttribute.Identifier}"" type=""text"" class=""form-control"" disabled=""disabled"" value=""{identifier}"">
         <input id=""{ContentAttribute.Identifier}"" name=""{ContentAttribute.Identifier}"" type=""hidden"" value=""{identifier}"">
     </div>
     <div class=""col-sm-5"">
-        <span class=""help-block"">Ë÷ÒıºÅÓÉÏµÍ³×Ô¶¯Éú³É</span>
+        <span class=""help-block"">ç´¢å¼•å·ç”±ç³»ç»Ÿè‡ªåŠ¨ç”Ÿæˆ</span>
     </div>
 </div>
 ";
@@ -268,7 +268,7 @@ namespace SS.GovPublic.Provider
                 ddlChannelId.Items.Add(listItem);
             }
             Utils.SelectSingleItem(ddlChannelId, channelId.ToString());
-            pairList.Add(new KeyValuePair<string, DropDownList>("Ö÷Ìâ", ddlChannelId));
+            pairList.Add(new KeyValuePair<string, DropDownList>("ä¸»é¢˜", ddlChannelId));
 
             var ddlDepartmentId = new DropDownList
             {
@@ -285,7 +285,7 @@ namespace SS.GovPublic.Provider
                 ddlDepartmentId.Items.Add(listItem);
             }
             Utils.SelectSingleItem(ddlDepartmentId, attributes.GetString(nameof(ContentAttribute.DepartmentId)));
-            pairList.Add(new KeyValuePair<string, DropDownList>("»ú¹¹", ddlDepartmentId));
+            pairList.Add(new KeyValuePair<string, DropDownList>("æœºæ„", ddlDepartmentId));
 
             var classInfoList = Main.CategoryClassDao.GetCategoryClassInfoList(siteId);
             foreach (var classInfo in classInfoList)
@@ -325,7 +325,7 @@ namespace SS.GovPublic.Provider
                     count = 0;
                 }
                 builder.Append($@"
-<div class=""col-xs-2 control-label"">{keyValuePair.Key}·ÖÀà</div>
+<div class=""col-xs-2 control-label"">{keyValuePair.Key}åˆ†ç±»</div>
 <div class=""col-xs-4"">
     {Utils.GetControlRenderHtml(keyValuePair.Value)}
 </div>
@@ -336,9 +336,9 @@ namespace SS.GovPublic.Provider
 
             builder.Append(@"<script>
 $(document).ready(function () {
-    if ($('#Publisher').val().length == 0) $('#Publisher').val($('#categoryDepartmentId').find('option:selected').text().replace(/[¡¡©¦©¸©À]/g,''));
+    if ($('#Publisher').val().length == 0) $('#Publisher').val($('#categoryDepartmentId').find('option:selected').text().replace(/[ã€€â”‚â””â”œ]/g,''));
     $('#categoryDepartmentId').change(function(){
-        $('#Publisher').val($(this).children('option:selected').text().replace(/[¡¡©¦©¸©À]/g,''));
+        $('#Publisher').val($(this).children('option:selected').text().replace(/[ã€€â”‚â””â”œ]/g,''));
     });
     $('input[type=""radio""][name=""IsAbolition""]').change(function(){
         var isAbolition = $('input[type=""radio""][name=""IsAbolition""]:checked').val();
@@ -358,12 +358,12 @@ $(document).ready(function () {
             var categoryDepartmentId = form.GetInt("categoryDepartmentId");
             if (categoryChannelId == 0)
             {
-                throw new Exception("ÇëÑ¡ÔñÕıÈ·µÄÖ÷Ìâ·ÖÀà");
+                throw new Exception("è¯·é€‰æ‹©æ­£ç¡®çš„ä¸»é¢˜åˆ†ç±»");
             }
             contentInfo.ChannelId = categoryChannelId;
             if (categoryDepartmentId == 0)
             {
-                throw new Exception("ÇëÑ¡ÔñÕıÈ·µÄ»ú¹¹·ÖÀà");
+                throw new Exception("è¯·é€‰æ‹©æ­£ç¡®çš„æœºæ„åˆ†ç±»");
             }
             contentInfo.Set(nameof(ContentAttribute.DepartmentId), categoryDepartmentId.ToString());
 

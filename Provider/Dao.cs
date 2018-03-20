@@ -1,4 +1,4 @@
-namespace SS.GovPublic.Provider
+﻿namespace SS.GovPublic.Provider
 {
     public static class Dao
     {

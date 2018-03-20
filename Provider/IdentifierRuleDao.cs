@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+Ôªøusing System.Collections.Generic;
 using System.Data;
 using SiteServer.Plugin;
 using SS.GovPublic.Model;
@@ -272,7 +272,7 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
                     new IdentifierRuleInfo
                     {
                         SiteId = siteId,
-                        RuleName = "ª˙ππ∑÷¿‡¥˙¬Î",
+                        RuleName = "Êú∫ÊûÑÂàÜÁ±ª‰ª£Á†Å",
                         IdentifierType = EIdentifierTypeUtils.GetValue(EIdentifierType.Department),
                         MinLength = 5,
                         Suffix = "-"
@@ -280,7 +280,7 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
                     new IdentifierRuleInfo
                     {
                         SiteId = siteId,
-                        RuleName = "÷˜Ã‚∑÷¿‡¥˙¬Î",
+                        RuleName = "‰∏ªÈ¢òÂàÜÁ±ª‰ª£Á†Å",
                         IdentifierType = EIdentifierTypeUtils.GetValue(EIdentifierType.Channel),
                         MinLength = 5,
                         Suffix = "-"
@@ -288,7 +288,7 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
                     new IdentifierRuleInfo
                     {
                         SiteId = siteId,
-                        RuleName = "…˙–ß»’∆⁄",
+                        RuleName = "ÁîüÊïàÊó•Êúü",
                         IdentifierType = EIdentifierTypeUtils.GetValue(EIdentifierType.Attribute),
                         Suffix = "-",
                         AttributeName = ContentAttribute.EffectDate,
@@ -297,7 +297,7 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
                     new IdentifierRuleInfo
                     {
                         SiteId = siteId,
-                        RuleName = "À≥–Ú∫≈",
+                        RuleName = "È°∫Â∫èÂè∑",
                         IdentifierType = EIdentifierTypeUtils.GetValue(EIdentifierType.Sequence),
                         MinLength = 5
                     }

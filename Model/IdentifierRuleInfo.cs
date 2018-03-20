@@ -1,4 +1,4 @@
-namespace SS.GovPublic.Model
+﻿namespace SS.GovPublic.Model
 {
 	public class IdentifierRuleInfo
 	{
