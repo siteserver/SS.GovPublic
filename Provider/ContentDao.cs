@@ -189,7 +189,7 @@ namespace SS.GovPublic.Provider
         public int GetCountByDepartmentId(int siteId, int departmentId, DateTime begin, DateTime end)
         {
             string sqlString =
-                $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND DepartmentId = {departmentId} AND (AddDate BETWEEN '{begin.ToShortDateString()}' AND '{end.AddDays(1).ToShortDateString()}')";
+                $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND DepartmentId = {departmentId} AND (AddDate BETWEEN {Helper.ToDateSqlString(begin)} AND {Helper.ToDateSqlString(end.AddDays(1))})";
             return Dao.GetIntResult(sqlString);
         }
 
@@ -203,16 +203,16 @@ namespace SS.GovPublic.Provider
         public int GetCountByDepartmentId(int siteId, int departmentId, int channelId, DateTime begin, DateTime end)
         {
             var sqlString = channelId == 0
-                ? $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND DepartmentId = {departmentId} AND (AddDate BETWEEN '{begin.ToShortDateString()}' AND '{end.AddDays(1).ToShortDateString()}')"
-                : $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND ChannelId = {channelId} AND DepartmentId = {departmentId} AND (AddDate BETWEEN '{begin.ToShortDateString()}' AND '{end.AddDays(1).ToShortDateString()}')";
+                ? $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND DepartmentId = {departmentId} AND (AddDate BETWEEN {Helper.ToDateSqlString(begin)} AND {Helper.ToDateSqlString(end.AddDays(1))})"
+                : $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND ChannelId = {channelId} AND DepartmentId = {departmentId} AND (AddDate BETWEEN {Helper.ToDateSqlString(begin)} AND {Helper.ToDateSqlString(end.AddDays(1))})";
             return Dao.GetIntResult(sqlString);
         }
 
         public int GetCount(int siteId, int channelId, DateTime begin, DateTime end)
         {
             var sqlString = channelId == 0
-                ? $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND (AddDate BETWEEN '{begin.ToShortDateString()}' AND '{end.AddDays(1).ToShortDateString()}')"
-                : $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND ChannelId = {channelId} AND (AddDate BETWEEN '{begin.ToShortDateString()}' AND '{end.AddDays(1).ToShortDateString()}')";
+                ? $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND (AddDate BETWEEN {Helper.ToDateSqlString(begin)} AND {Helper.ToDateSqlString(end.AddDays(1))})"
+                : $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND ChannelId = {channelId} AND (AddDate BETWEEN {Helper.ToDateSqlString(begin)} AND {Helper.ToDateSqlString(end.AddDays(1))})";
             return Dao.GetIntResult(sqlString);
         }
 
