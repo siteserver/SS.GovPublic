@@ -6,6 +6,7 @@ using System.Data;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using SiteServer.Plugin;
 using SS.GovPublic.Core;
 
 namespace SS.GovPublic.Controls
@@ -25,60 +26,60 @@ namespace SS.GovPublic.Controls
         private PagedDataSource _dataSource;
         public const string ParmPage = "page";
 
-        private string GetQueryCountCommandText()
-        {
-            return $"SELECT COUNT(*) FROM ({SelectCommand}) AS t0";
-        }
+        //private string GetQueryCountCommandText()
+        //{
+        //    return $"SELECT COUNT(*) FROM ({SelectCommand}) AS t0";
+        //}
 
-        private string GetQueryPageCommandText(int recsToRetrieve)
-        {
-            if (!string.IsNullOrEmpty(OrderByString))
-            {
-                var orderByString2 = OrderByString.Replace(" DESC", " DESC2");
-                orderByString2 = orderByString2.Replace(" ASC", " DESC");
-                orderByString2 = orderByString2.Replace(" DESC2", " ASC");
+        //        private string GetQueryPageCommandText(int recsToRetrieve)
+        //        {
+        //            if (!string.IsNullOrEmpty(OrderByString))
+        //            {
+        //                var orderByString2 = OrderByString.Replace(" DESC", " DESC2");
+        //                orderByString2 = orderByString2.Replace(" ASC", " DESC");
+        //                orderByString2 = orderByString2.Replace(" DESC2", " ASC");
 
-                if (Utils.EqualsIgnoreCase(Main.Instance.DatabaseType.Value, "MySql"))
-                {
-                    return $@"
-SELECT * FROM (
-    SELECT * FROM (
-        SELECT * FROM ({SelectCommand}) AS t0 {OrderByString} LIMIT {ItemsPerPage * (CurrentPageIndex + 1)}
-    ) AS t1 {orderByString2} LIMIT {recsToRetrieve}
-) AS t2 {OrderByString}";
-                }
-                else
-                {
-                    return $@"
-SELECT * FROM 
-(SELECT TOP {recsToRetrieve} * FROM 
-(SELECT TOP {ItemsPerPage * (CurrentPageIndex + 1)} * FROM ({SelectCommand}) AS t0 {OrderByString}) AS t1 
-{orderByString2}) AS t2 
-{OrderByString}";
-                }
-            }
-            else
-            {
-                if (Utils.EqualsIgnoreCase(Main.Instance.DatabaseType.Value, "MySql"))
-                {
-                    return $@"
-SELECT * FROM (
-    SELECT * FROM (
-        SELECT * FROM ({SelectCommand}) AS t0 ORDER BY {SortField} {SortMode} LIMIT {ItemsPerPage * (CurrentPageIndex + 1)}
-    ) AS t1 ORDER BY {SortField} {AlterSortMode(SortMode)} LIMIT {recsToRetrieve}
-) AS t2 ORDER BY {SortField} {SortMode}";
-                }
-                else
-                {
-                    return $@"
-SELECT * FROM 
-(SELECT TOP {recsToRetrieve} * FROM 
-(SELECT TOP {ItemsPerPage * (CurrentPageIndex + 1)} * FROM ({SelectCommand}) AS t0 ORDER BY {SortField} {SortMode}) AS t1 
-ORDER BY {SortField} {AlterSortMode(SortMode)}) AS t2 
-ORDER BY {SortField} {SortMode}";
-                }
-            }
-        }
+        //                if (Main.Instance.DatabaseType == DatabaseType.MySql)
+        //                {
+        //                    return $@"
+        //SELECT * FROM (
+        //    SELECT * FROM (
+        //        SELECT * FROM ({SelectCommand}) AS t0 {OrderByString} LIMIT {ItemsPerPage * (CurrentPageIndex + 1)}
+        //    ) AS t1 {orderByString2} LIMIT {recsToRetrieve}
+        //) AS t2 {OrderByString}";
+        //                }
+        //                else
+        //                {
+        //                    return $@"
+        //SELECT * FROM 
+        //(SELECT TOP {recsToRetrieve} * FROM 
+        //(SELECT TOP {ItemsPerPage * (CurrentPageIndex + 1)} * FROM ({SelectCommand}) AS t0 {OrderByString}) AS t1 
+        //{orderByString2}) AS t2 
+        //{OrderByString}";
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (Main.Instance.DatabaseType == DatabaseType.MySql)
+        //                {
+        //                    return $@"
+        //SELECT * FROM (
+        //    SELECT * FROM (
+        //        SELECT * FROM ({SelectCommand}) AS t0 ORDER BY {SortField} {SortMode} LIMIT {ItemsPerPage * (CurrentPageIndex + 1)}
+        //    ) AS t1 ORDER BY {SortField} {AlterSortMode(SortMode)} LIMIT {recsToRetrieve}
+        //) AS t2 ORDER BY {SortField} {SortMode}";
+        //                }
+        //                else
+        //                {
+        //                    return $@"
+        //SELECT * FROM 
+        //(SELECT TOP {recsToRetrieve} * FROM 
+        //(SELECT TOP {ItemsPerPage * (CurrentPageIndex + 1)} * FROM ({SelectCommand}) AS t0 ORDER BY {SortField} {SortMode}) AS t1 
+        //ORDER BY {SortField} {AlterSortMode(SortMode)}) AS t2 
+        //ORDER BY {SortField} {SortMode}";
+        //                }
+        //            }
+        //        }
 
         public SqlPager()
         {
@@ -452,7 +453,7 @@ ORDER BY {SortField} {SortMode}";
             cell.Controls.Add(new LiteralControl("&nbsp;&nbsp;"));
 
             // 上一页
-            var prevText = new Label {Text = PrevText};
+            var prevText = new Label { Text = PrevText };
 
             if (enabled)
             {
@@ -485,7 +486,7 @@ ORDER BY {SortField} {SortMode}";
 
             // 下一页
             enabled = isValidPage && canMoveForward;
-            var nextText = new Label {Text = NextText};
+            var nextText = new Label { Text = NextText };
 
             if (enabled)
             {
@@ -517,7 +518,7 @@ ORDER BY {SortField} {SortMode}";
             cell.Controls.Add(new LiteralControl("&nbsp;&nbsp;"));
 
             // 末页
-            var lastText = new Label {Text = LastText};
+            var lastText = new Label { Text = LastText };
 
             if (enabled)
             {
@@ -694,11 +695,17 @@ ORDER BY {SortField} {SortMode}";
         {
             // Determines how many records are to be retrieved.
             // The last page could require less than other pages
-            var recsToRetrieve = ItemsPerPage;
-            if (CurrentPageIndex == countInfo.PageCount - 1)
-                recsToRetrieve = countInfo.RecordsInLastPage;
+            //var recsToRetrieve = ItemsPerPage;
+            //if (CurrentPageIndex == countInfo.PageCount - 1)
+            //    recsToRetrieve = countInfo.RecordsInLastPage;
 
-            var cmdText = GetQueryPageCommandText(recsToRetrieve);
+            //var cmdText = GetQueryPageCommandText(recsToRetrieve);
+            var orderString = OrderByString;
+            if (string.IsNullOrEmpty(orderString))
+            {
+                orderString = $"ORDER BY {SortField} {SortMode}";
+            }
+            var cmdText = Utils.GetPageSqlString(SelectCommand, orderString, ItemsPerPage, CurrentPageIndex, countInfo.PageCount, countInfo.RecordsInLastPage);
 
             var conn = Main.Instance.DataApi.GetConnection(Main.Instance.ConnectionString);
             var cmd = Main.Instance.DataApi.GetCommand();
@@ -707,23 +714,29 @@ ORDER BY {SortField} {SortMode}";
             return cmd;
         }
 
-        /// <summary>
-        /// 方法 反转排序模式
-        /// </summary>
-        /// <param name="mode">排序模式</param>
-        /// <returns>相反的排序模式</returns>
-        private static string AlterSortMode(string mode)
-        {
-            return mode == "DESC" ? "ASC" : "DESC";
-        }
+        //private static string AlterSortMode(string mode)
+        //{
+        //    return mode == "DESC" ? "ASC" : "DESC";
+        //}
 
         /// <summary>
         /// Run a query to get the record count
         /// </summary>
         private int GetQueryVirtualCount()
         {
-            var cmdText = GetQueryCountCommandText();
+            var cmdText = SelectCommand;
+            var temp = cmdText.ToLower();
+            var pos = temp.LastIndexOf("order by", StringComparison.Ordinal);
+            if (pos > -1)
+                cmdText = cmdText.Substring(0, pos);
 
+            // Add new ORDER BY info if SortKeyField is specified
+            //if (!string.IsNullOrEmpty(sortField) && addCustomSortInfo)
+            //    SelectCommand += " ORDER BY " + SortField;
+
+            cmdText = Main.Instance.DatabaseType == DatabaseType.Oracle
+                ? $"SELECT COUNT(*) FROM ({cmdText})"
+                : $"SELECT COUNT(*) FROM ({cmdText}) AS T0";
             return Main.Instance.DataApi.ExecuteInt(Main.Instance.ConnectionString, cmdText);
         }
 
