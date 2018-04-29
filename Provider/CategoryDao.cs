@@ -195,8 +195,8 @@ namespace SS.GovPublic.Provider
             };
             _helper.ExecuteNonQuery(_connectionString, sqlString, parameters);
 
-            sqlString = _helper.ToTopSqlString(TableName, nameof(CategoryInfo.Id),
-                $"WHERE {nameof(CategoryInfo.ParentId)} = {parentId}", "ORDER BY Taxis DESC", 1);
+            sqlString = _helper.GetPageSqlString(TableName, nameof(CategoryInfo.Id),
+                $"WHERE {nameof(CategoryInfo.ParentId)} = {parentId}", "ORDER BY Taxis DESC", 0, 1);
             var categoryId = _helper.ExecuteInt(_connectionString, sqlString);
 
             if (categoryId > 0)
@@ -230,7 +230,7 @@ namespace SS.GovPublic.Provider
             int lowerChildrenCount;
             string lowerParentsPath;
 
-            var sqlString = _helper.ToTopSqlString(TableName, $"{nameof(CategoryInfo.Id)}, {nameof(CategoryInfo.ChildrenCount)}, {nameof(CategoryInfo.ParentsPath)}", $"WHERE ({nameof(CategoryInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryInfo.SiteId)} = {siteId}) AND ({nameof(CategoryInfo.ParentId)} = {categoryInfo.ParentId}) AND ({nameof(CategoryInfo.Id)} <> {categoryInfo.Id}) AND ({nameof(CategoryInfo.Taxis)} < {categoryInfo.Taxis})", $"ORDER BY {nameof(CategoryInfo.Taxis)} DESC", 1);
+            var sqlString = _helper.GetPageSqlString(TableName, $"{nameof(CategoryInfo.Id)}, {nameof(CategoryInfo.ChildrenCount)}, {nameof(CategoryInfo.ParentsPath)}", $"WHERE ({nameof(CategoryInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryInfo.SiteId)} = {siteId}) AND ({nameof(CategoryInfo.ParentId)} = {categoryInfo.ParentId}) AND ({nameof(CategoryInfo.Id)} <> {categoryInfo.Id}) AND ({nameof(CategoryInfo.Taxis)} < {categoryInfo.Taxis})", $"ORDER BY {nameof(CategoryInfo.Taxis)} DESC", 0, 1);
 
             using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
             {
@@ -266,7 +266,7 @@ namespace SS.GovPublic.Provider
             int higherChildrenCount;
             string higherParentsPath;
 
-            var sqlString = _helper.ToTopSqlString(TableName, $"{nameof(CategoryInfo.Id)}, {nameof(CategoryInfo.ChildrenCount)}, {nameof(CategoryInfo.ParentsPath)}", $"WHERE ({nameof(CategoryInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryInfo.SiteId)} = {siteId}) AND ({nameof(CategoryInfo.ParentId)} = {categoryInfo.ParentId}) AND ({nameof(CategoryInfo.Id)} <> {categoryInfo.Id}) AND ({nameof(CategoryInfo.Taxis)} > {categoryInfo.Taxis})", $"ORDER BY {nameof(CategoryInfo.Taxis)}", 1);
+            var sqlString = _helper.GetPageSqlString(TableName, $"{nameof(CategoryInfo.Id)}, {nameof(CategoryInfo.ChildrenCount)}, {nameof(CategoryInfo.ParentsPath)}", $"WHERE ({nameof(CategoryInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryInfo.SiteId)} = {siteId}) AND ({nameof(CategoryInfo.ParentId)} = {categoryInfo.ParentId}) AND ({nameof(CategoryInfo.Id)} <> {categoryInfo.Id}) AND ({nameof(CategoryInfo.Taxis)} > {categoryInfo.Taxis})", $"ORDER BY {nameof(CategoryInfo.Taxis)}", 0, 1);
 
             using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
             {

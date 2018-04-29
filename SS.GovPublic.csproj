@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SS.GovPublic</RootNamespace>
     <AssemblyName>SS.GovPublic</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -40,8 +40,8 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SiteServer.Plugin, Version=1.4.45.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\SiteServer.Plugin.1.4.45-beta\lib\net45\SiteServer.Plugin.dll</HintPath>
+    <Reference Include="SiteServer.Plugin, Version=1.6.55.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\SiteServer.Plugin.1.6.55\lib\net45\SiteServer.Plugin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -187,7 +187,7 @@
     <Content Include="assets\plugin-utils\fonts\fontawesome-webfont.svg" />
     <Content Include="assets\plugin-utils\fonts\ionicons.svg" />
     <Content Include="assets\sweetalert\sweetalert.min.js" />
-    <Content Include="logo.png" />
+    <Content Include="logo.svg" />
     <Content Include="modalCategoryAdd.aspx" />
     <Content Include="modalCategoryClassAdd.aspx" />
     <Content Include="modalIdentifierRuleAdd.aspx" />

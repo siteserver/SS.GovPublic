@@ -316,10 +316,10 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
         {
             //string sqlString =
             //    $"SELECT TOP 1 RuleID, Taxis FROM wcm_GovPublicIdentifierRule WHERE ((Taxis > (SELECT Taxis FROM wcm_GovPublicIdentifierRule WHERE RuleID = {ruleId})) AND SiteId ={siteId}) ORDER BY Taxis";
-            var sqlString = _helper.ToTopSqlString(TableName,
+            var sqlString = _helper.GetPageSqlString(TableName,
                 $"{nameof(IdentifierRuleInfo.Id)}, {nameof(IdentifierRuleInfo.Taxis)}",
                 $"WHERE (({nameof(IdentifierRuleInfo.Taxis)} > (SELECT {nameof(IdentifierRuleInfo.Taxis)} FROM {TableName} WHERE {nameof(IdentifierRuleInfo.Id)} = {ruleId})) AND {nameof(IdentifierRuleInfo.SiteId)} ={siteId})",
-                $"ORDER BY {nameof(IdentifierRuleInfo.Taxis)}", 1);
+                $"ORDER BY {nameof(IdentifierRuleInfo.Taxis)}", 0, 1);
 
             var higherRuleId = 0;
             var higherTaxis = 0;
@@ -349,10 +349,10 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
         {
             //string sqlString =
             //    $"SELECT TOP 1 RuleID, Taxis FROM wcm_GovPublicIdentifierRule WHERE ((Taxis < (SELECT Taxis FROM wcm_GovPublicIdentifierRule WHERE RuleID = {ruleId})) AND SiteId = {siteId}) ORDER BY Taxis DESC";
-            var sqlString = _helper.ToTopSqlString(TableName,
+            var sqlString = _helper.GetPageSqlString(TableName,
                 $"{nameof(IdentifierRuleInfo.Id)}, {nameof(IdentifierRuleInfo.Taxis)}",
                 $"WHERE (({nameof(IdentifierRuleInfo.Taxis)} < (SELECT {nameof(IdentifierRuleInfo.Taxis)} FROM {TableName} WHERE {nameof(IdentifierRuleInfo.Id)} = {ruleId})) AND {nameof(IdentifierRuleInfo.SiteId)} = {siteId})",
-                $"ORDER BY {nameof(IdentifierRuleInfo.Taxis)} DESC", 1);
+                $"ORDER BY {nameof(IdentifierRuleInfo.Taxis)} DESC", 0, 1);
 
             var lowerRuleId = 0;
             var lowerTaxis = 0;

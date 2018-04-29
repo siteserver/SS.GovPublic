@@ -413,7 +413,7 @@ namespace SS.GovPublic.Provider
 
         public bool UpdateTaxisToUp(int siteId, string classCode)
         {
-            var sqlString = _helper.ToTopSqlString(TableName, $"{nameof(CategoryClassInfo.ClassCode)}, {nameof(CategoryClassInfo.Taxis)}", $"WHERE (({nameof(CategoryClassInfo.Taxis)} > (SELECT {nameof(CategoryClassInfo.Taxis)} FROM {TableName} WHERE {nameof(CategoryClassInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryClassInfo.SiteId)} = {siteId})) AND {nameof(CategoryClassInfo.SiteId)} = {siteId})", $"ORDER BY {nameof(CategoryClassInfo.Taxis)}", 1);
+            var sqlString = _helper.GetPageSqlString(TableName, $"{nameof(CategoryClassInfo.ClassCode)}, {nameof(CategoryClassInfo.Taxis)}", $"WHERE (({nameof(CategoryClassInfo.Taxis)} > (SELECT {nameof(CategoryClassInfo.Taxis)} FROM {TableName} WHERE {nameof(CategoryClassInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryClassInfo.SiteId)} = {siteId})) AND {nameof(CategoryClassInfo.SiteId)} = {siteId})", $"ORDER BY {nameof(CategoryClassInfo.Taxis)}", 0, 1);
 
             var higherClassCode = string.Empty;
             var higherTaxis = 0;
@@ -439,7 +439,7 @@ namespace SS.GovPublic.Provider
 
         public bool UpdateTaxisToDown(int siteId, string classCode)
         {
-            var sqlString = _helper.ToTopSqlString(TableName, $"{nameof(CategoryClassInfo.ClassCode)}, {nameof(CategoryClassInfo.Taxis)}", $"WHERE (({nameof(CategoryClassInfo.Taxis)} < (SELECT {nameof(CategoryClassInfo.Taxis)} FROM {TableName} WHERE {nameof(CategoryClassInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryClassInfo.SiteId)} = {siteId})) AND {nameof(CategoryClassInfo.SiteId)} = {siteId})", $"ORDER BY {nameof(CategoryClassInfo.Taxis)} DESC", 1);
+            var sqlString = _helper.GetPageSqlString(TableName, $"{nameof(CategoryClassInfo.ClassCode)}, {nameof(CategoryClassInfo.Taxis)}", $"WHERE (({nameof(CategoryClassInfo.Taxis)} < (SELECT {nameof(CategoryClassInfo.Taxis)} FROM {TableName} WHERE {nameof(CategoryClassInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryClassInfo.SiteId)} = {siteId})) AND {nameof(CategoryClassInfo.SiteId)} = {siteId})", $"ORDER BY {nameof(CategoryClassInfo.Taxis)} DESC", 0, 1);
 
             var lowerClassCode = string.Empty;
             var lowerTaxis = 0;
