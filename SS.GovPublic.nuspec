@@ -8,7 +8,7 @@
     <owners>siteserver</owners>
     <licenseUrl>https://github.com/siteserver/SS.GovPublic/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/siteserver/SS.GovPublic</projectUrl>
-    <iconUrl>http://plugins.siteserver.cn/ss.govpublic/logo.svg</iconUrl>
+    <iconUrl>https://plugins.siteserver.cn/ss.govpublic/logo.svg</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <releaseNotes>Bug fixes and performance improvements</releaseNotes>
     <description>SiteServer CMS 电子政务信息公开插件</description>
