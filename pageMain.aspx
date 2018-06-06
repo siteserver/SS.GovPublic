@@ -6,8 +6,8 @@
     <meta charset="utf-8">
   </head>
   <frameset id="frame" framespacing="0" border="false" cols="180,*" frameborder="0" scrolling="yes">
-    <frame name="tree" scrolling="auto" marginwidth="0" marginheight="0" src="pageTree.aspx?siteId=<%=SiteId%>&contentModelPluginId=<%=ContentModelPluginId%>&linkUrl=<%=LinkUrl%>">
-      <frame name="content" scrolling="auto" marginwidth="0" marginheight="0" src="pageBlank.html">
+    <frame name="tree" scrolling="auto" marginwidth="0" marginheight="0" src="<%=AdminUrl%>/cms/pageContentTree.aspx?siteId=<%=SiteId%>&contentModelPluginId=<%=ContentModelPluginId%>&linkUrl=<%=LinkUrl%>">
+    <frame name="content" scrolling="auto" marginwidth="0" marginheight="0" src="pageBlank.html">
   </frameset>
   <noframes>
 

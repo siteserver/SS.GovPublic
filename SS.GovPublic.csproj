@@ -205,7 +205,6 @@
     <Content Include="pageMain.aspx" />
     <Content Include="pageRecords.aspx" />
     <Content Include="PageSettings.aspx" />
-    <Content Include="pageTree.aspx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

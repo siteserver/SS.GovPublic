@@ -43,17 +43,17 @@ namespace SS.GovPublic
                         new Menu
                         {
                             Text = "信息采集",
-                            Href = PageMain.GetRedirectUrl(siteId, FilesApi.GetAdminDirectoryUrl($"cms/pageContentAdd.aspx?siteId={siteId}"))
+                            Href = PageMain.GetRedirectUrl(siteId, $"@/cms/pageContentAdd.aspx?siteId={siteId}")
                         },
                         new Menu
                         {
                             Text = "信息管理",
-                            Href = PageMain.GetRedirectUrl(siteId, FilesApi.GetAdminDirectoryUrl($"cms/pageContentSearch.aspx?siteId={siteId}"))
+                            Href = PageMain.GetRedirectUrl(siteId, $"@/cms/pageContentSearch.aspx?siteId={siteId}")
                         },
                         new Menu
                         {
                             Text = "信息审核",
-                            Href = PageMain.GetRedirectUrl(siteId, FilesApi.GetAdminDirectoryUrl($"cms/pageContentCheck.aspx?siteId={siteId}"))
+                            Href = PageMain.GetRedirectUrl(siteId, $"@/cms/pageContentCheck.aspx?siteId={siteId}")
                         },
                         new Menu
                         {
