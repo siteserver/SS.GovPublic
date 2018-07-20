@@ -103,15 +103,15 @@ namespace SS.GovPublic.Provider
                     InputType = InputType.Radio,
                     DisplayName = "是否废止",
                     IsRequired = true,
-                    ListItems = new List<ListItem>
+                    ListItems = new List<InputListItem>
                     {
-                        new ListItem
+                        new InputListItem
                         {
                             Text= "是",
                             Value = true.ToString(),
                             Selected = false
                         },
-                        new ListItem
+                        new InputListItem
                         {
                             Text= "否",
                             Value = false.ToString(),
