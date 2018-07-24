@@ -18,7 +18,7 @@ namespace SS.GovPublic.Pages
         private string _redirectUrl;
 
         public string UrlModalChannelSelect
-            => Main.Instance.FilesApi.GetAdminDirectoryUrl($"cms/modalchannelselect.aspx?siteId={SiteId}");
+            => Main.Instance.UtilsApi.GetAdminDirectoryUrl($"cms/modalchannelselect.aspx?siteId={SiteId}");
 
         public static string GetRedirectUrl(int siteId, string redirectUrl)
         {

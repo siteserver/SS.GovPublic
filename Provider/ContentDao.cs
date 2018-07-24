@@ -178,12 +178,12 @@ namespace SS.GovPublic.Provider
         };
 
         public string ConnectionString { get; }
-        public IDataApi Helper { get; }
+        public IDatabaseApi Helper { get; }
 
         public ContentDao()
         {
             ConnectionString = Main.Instance.ConnectionString;
-            Helper = Main.Instance.DataApi;
+            Helper = Main.Instance.DatabaseApi;
         }
 
         public int GetCountByDepartmentId(int siteId, int departmentId, DateTime begin, DateTime end)

@@ -63,12 +63,12 @@ namespace SS.GovPublic.Provider
         };
 
         private readonly string _connectionString;
-        private readonly IDataApi _helper;
+        private readonly IDatabaseApi _helper;
 
         public CategoryClassDao()
         {
             _connectionString = Main.Instance.ConnectionString;
-            _helper = Main.Instance.DataApi;
+            _helper = Main.Instance.DatabaseApi;
         }
 
         private string GetContentAttributeNameNotUsed(int siteId)
@@ -468,7 +468,7 @@ namespace SS.GovPublic.Provider
             string sqlString =
                 $"SELECT MAX({nameof(CategoryClassInfo.Taxis)}) FROM {TableName} WHERE {nameof(CategoryClassInfo.SiteId)} = {siteId}";
 
-            return _helper.ExecuteInt(_connectionString, sqlString);
+            return (int)_helper.ExecuteScalar(_connectionString, sqlString);
         }
 
         private int GetTaxis(string classCode, int siteId)
@@ -476,7 +476,7 @@ namespace SS.GovPublic.Provider
             string sqlString =
                 $"SELECT {nameof(CategoryClassInfo.Taxis)} FROM {TableName} WHERE {nameof(CategoryClassInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryClassInfo.SiteId)} = {siteId}";
 
-            return _helper.ExecuteInt(_connectionString, sqlString);
+            return (int)_helper.ExecuteScalar(_connectionString, sqlString);
         }
 
         private void SetTaxis(string classCode, int siteId, int taxis)

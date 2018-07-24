@@ -84,12 +84,12 @@ namespace SS.GovPublic.Provider
         };
 
         private readonly string _connectionString;
-        private readonly IDataApi _helper;
+        private readonly IDatabaseApi _helper;
 
         public IdentifierRuleDao()
         {
             _connectionString = Main.Instance.ConnectionString;
-            _helper = Main.Instance.DataApi;
+            _helper = Main.Instance.DatabaseApi;
         }
 
         public int Insert(IdentifierRuleInfo ruleInfo)
@@ -382,7 +382,7 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
         {
             string sqlString =
                 $"SELECT MAX({nameof(IdentifierRuleInfo.Taxis)}) FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = {siteId}";
-            return _helper.ExecuteInt(_connectionString, sqlString);
+            return (int)_helper.ExecuteScalar(_connectionString, sqlString);
         }
 
         private int GetTaxis(int ruleId)

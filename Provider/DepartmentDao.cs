@@ -11,12 +11,12 @@ namespace SS.GovPublic.Provider
     public class DepartmentDao
     {
         private readonly string _connectionString;
-        private readonly IDataApi _helper;
+        private readonly IDatabaseApi _helper;
 
         public DepartmentDao()
         {
             _connectionString = Main.Instance.ConnectionString;
-            _helper = Main.Instance.DataApi;
+            _helper = Main.Instance.DatabaseApi;
         }
 
         private DepartmentInfo GetDepartmentInfo(int departmentId)

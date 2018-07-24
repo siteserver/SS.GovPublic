@@ -90,13 +90,13 @@ namespace SS.GovPublic.Provider
 
         private readonly DatabaseType _databaseType;
         private readonly string _connectionString;
-        private readonly IDataApi _helper;
+        private readonly IDatabaseApi _helper;
 
         public CategoryDao()
         {
             _databaseType = Main.Instance.DatabaseType;
             _connectionString = Main.Instance.ConnectionString;
-            _helper = Main.Instance.DataApi;
+            _helper = Main.Instance.DatabaseApi;
         }
 
         private void InsertWithTrans(CategoryInfo parentInfo, CategoryInfo categoryInfo, IDbTransaction trans)
@@ -197,7 +197,7 @@ namespace SS.GovPublic.Provider
 
             sqlString = _helper.GetPageSqlString(TableName, nameof(CategoryInfo.Id),
                 $"WHERE {nameof(CategoryInfo.ParentId)} = {parentId}", "ORDER BY Taxis DESC", 0, 1);
-            var categoryId = _helper.ExecuteInt(_connectionString, sqlString);
+            var categoryId = (int)_helper.ExecuteScalar(_connectionString, sqlString);
 
             if (categoryId > 0)
             {

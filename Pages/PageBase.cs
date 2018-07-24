@@ -27,7 +27,7 @@ namespace SS.GovPublic.Pages
         {
             base.OnInit(e);
 
-            AuthRequest = Main.Instance.PluginApi.AuthRequest(Request);
+            AuthRequest = Main.Instance.Request;
 
             SiteId = Convert.ToInt32(Request.QueryString["siteId"]);
 

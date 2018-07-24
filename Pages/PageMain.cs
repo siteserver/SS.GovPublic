@@ -14,7 +14,7 @@ namespace SS.GovPublic.Pages
 
         public string LinkUrl => Main.Instance.PluginApi.GetPluginUrl(Request.QueryString["linkUrl"]);
 
-        public string AdminUrl => Main.Instance.FilesApi.GetAdminDirectoryUrl(string.Empty);
+        public string AdminUrl => Main.Instance.UtilsApi.GetAdminDirectoryUrl(string.Empty);
 
         public void Page_Load(object sender, EventArgs e)
         {
