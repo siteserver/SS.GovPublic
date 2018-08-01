@@ -190,14 +190,14 @@ namespace SS.GovPublic.Provider
         {
             string sqlString =
                 $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND DepartmentId = {departmentId} AND (AddDate BETWEEN {Helper.ToDateSqlString(begin)} AND {Helper.ToDateSqlString(end.AddDays(1))})";
-            return Dao.GetIntResult(sqlString);
+            return Main.Dao.GetIntResult(sqlString);
         }
 
         public int GetCountByDepartmentId(int siteId, int departmentId)
         {
             string sqlString =
                 $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND DepartmentId = {departmentId}";
-            return Dao.GetIntResult(sqlString);
+            return Main.Dao.GetIntResult(sqlString);
         }
 
         public int GetCountByDepartmentId(int siteId, int departmentId, int channelId, DateTime begin, DateTime end)
@@ -205,7 +205,7 @@ namespace SS.GovPublic.Provider
             var sqlString = channelId == 0
                 ? $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND DepartmentId = {departmentId} AND (AddDate BETWEEN {Helper.ToDateSqlString(begin)} AND {Helper.ToDateSqlString(end.AddDays(1))})"
                 : $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND ChannelId = {channelId} AND DepartmentId = {departmentId} AND (AddDate BETWEEN {Helper.ToDateSqlString(begin)} AND {Helper.ToDateSqlString(end.AddDays(1))})";
-            return Dao.GetIntResult(sqlString);
+            return Main.Dao.GetIntResult(sqlString);
         }
 
         public int GetCount(int siteId, int channelId, DateTime begin, DateTime end)
@@ -213,7 +213,7 @@ namespace SS.GovPublic.Provider
             var sqlString = channelId == 0
                 ? $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND (AddDate BETWEEN {Helper.ToDateSqlString(begin)} AND {Helper.ToDateSqlString(end.AddDays(1))})"
                 : $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND ChannelId = {channelId} AND (AddDate BETWEEN {Helper.ToDateSqlString(begin)} AND {Helper.ToDateSqlString(end.AddDays(1))})";
-            return Dao.GetIntResult(sqlString);
+            return Main.Dao.GetIntResult(sqlString);
         }
 
         public static string GetIdentifierHtml(int siteId, int channelId, IAttributes attributes)

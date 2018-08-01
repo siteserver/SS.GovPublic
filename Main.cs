@@ -8,6 +8,7 @@ namespace SS.GovPublic
 {
     public class Main : PluginBase
     {
+        public static Dao Dao { get; private set; }
         public static CategoryClassDao CategoryClassDao { get; private set; }
         public static CategoryDao CategoryDao { get; private set; }
         public static ContentDao ContentDao { get; private set; }
@@ -21,6 +22,7 @@ namespace SS.GovPublic
         {
             Instance = this;
 
+            Dao = new Dao();
             CategoryClassDao = new CategoryClassDao();
             CategoryDao = new CategoryDao();
             ContentDao = new ContentDao();
@@ -53,7 +55,7 @@ namespace SS.GovPublic
                         new Menu
                         {
                             Text = "信息审核",
-                            Href = PageMain.GetRedirectUrl(siteId, $"@/cms/pageContentCheck.aspx?siteId={siteId}")
+                            Href = PageMain.GetRedirectUrl(siteId, $"@/cms/pageContentSearch.aspx?isCheckOnly=true&siteId={siteId}")
                         },
                         new Menu
                         {

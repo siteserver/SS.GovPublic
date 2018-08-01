@@ -197,7 +197,7 @@ namespace SS.GovPublic.Provider
 
             sqlString = _helper.GetPageSqlString(TableName, nameof(CategoryInfo.Id),
                 $"WHERE {nameof(CategoryInfo.ParentId)} = {parentId}", "ORDER BY Taxis DESC", 0, 1);
-            var categoryId = (int)_helper.ExecuteScalar(_connectionString, sqlString);
+            var categoryId = Main.Dao.GetIntResult(sqlString);
 
             if (categoryId > 0)
             {

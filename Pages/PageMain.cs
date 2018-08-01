@@ -12,7 +12,7 @@ namespace SS.GovPublic.Pages
 
         public string ContentModelPluginId => Main.Instance.Id;
 
-        public string LinkUrl => Main.Instance.PluginApi.GetPluginUrl(Request.QueryString["linkUrl"]);
+        public string LinkUrl => HttpUtility.UrlEncode(Main.Instance.PluginApi.GetPluginUrl(Request.QueryString["linkUrl"]));
 
         public string AdminUrl => Main.Instance.UtilsApi.GetAdminDirectoryUrl(string.Empty);
 

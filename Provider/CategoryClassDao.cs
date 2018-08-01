@@ -465,18 +465,18 @@ namespace SS.GovPublic.Provider
 
         private int GetMaxTaxis(int siteId)
         {
-            string sqlString =
+            var sqlString =
                 $"SELECT MAX({nameof(CategoryClassInfo.Taxis)}) FROM {TableName} WHERE {nameof(CategoryClassInfo.SiteId)} = {siteId}";
 
-            return (int)_helper.ExecuteScalar(_connectionString, sqlString);
+            return Main.Dao.GetIntResult(sqlString);
         }
 
         private int GetTaxis(string classCode, int siteId)
         {
-            string sqlString =
+            var sqlString =
                 $"SELECT {nameof(CategoryClassInfo.Taxis)} FROM {TableName} WHERE {nameof(CategoryClassInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryClassInfo.SiteId)} = {siteId}";
 
-            return (int)_helper.ExecuteScalar(_connectionString, sqlString);
+            return Main.Dao.GetIntResult(sqlString);
         }
 
         private void SetTaxis(string classCode, int siteId, int taxis)

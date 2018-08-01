@@ -1,15 +1,26 @@
-﻿namespace SS.GovPublic.Provider
+﻿using SiteServer.Plugin;
+
+namespace SS.GovPublic.Provider
 {
-    public static class Dao
+    public class Dao
     {
-        public static int GetIntResult(string sqlString)
+        private readonly string _connectionString;
+        private readonly IDatabaseApi _helper;
+
+        public Dao()
+        {
+            _connectionString = Main.Instance.ConnectionString;
+            _helper = Main.Instance.DatabaseApi;
+        }
+
+        public int GetIntResult(string sqlString)
         {
             var count = 0;
 
-            using (var conn = Main.Instance.DatabaseApi.GetConnection(Main.Instance.ConnectionString))
+            using (var conn = _helper.GetConnection(_connectionString))
             {
                 conn.Open();
-                using (var rdr = Main.Instance.DatabaseApi.ExecuteReader(conn, sqlString))
+                using (var rdr = _helper.ExecuteReader(conn, sqlString))
                 {
                     if (rdr.Read() && !rdr.IsDBNull(0))
                     {

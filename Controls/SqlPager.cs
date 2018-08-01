@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Data;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -731,7 +730,7 @@ namespace SS.GovPublic.Controls
             cmdText = Main.Instance.DatabaseType == DatabaseType.Oracle
                 ? $"SELECT COUNT(*) FROM ({cmdText})"
                 : $"SELECT COUNT(*) FROM ({cmdText}) AS T0";
-            return (int)Main.Instance.DatabaseApi.ExecuteScalar(Main.Instance.ConnectionString, cmdText);
+            return Main.Dao.GetIntResult(cmdText);
         }
 
         /// <summary>

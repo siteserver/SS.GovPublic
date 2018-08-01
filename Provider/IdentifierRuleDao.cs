@@ -380,9 +380,9 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
 
         private int GetMaxTaxis(int siteId)
         {
-            string sqlString =
+            var sqlString =
                 $"SELECT MAX({nameof(IdentifierRuleInfo.Taxis)}) FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = {siteId}";
-            return (int)_helper.ExecuteScalar(_connectionString, sqlString);
+            return Main.Dao.GetIntResult(sqlString);
         }
 
         private int GetTaxis(int ruleId)
