@@ -12,11 +12,11 @@ namespace SS.GovPublic.Core
         {
             var channelInfoList = new List<IChannelInfo>();
 
-            var channelIdList = Main.Instance.ChannelApi.GetChannelIdList(siteId);
+            var channelIdList = Main.ChannelApi.GetChannelIdList(siteId);
             foreach (var channelId in channelIdList)
             {
-                var channelInfo = Main.Instance.ChannelApi.GetChannelInfo(siteId, channelId);
-                if (channelInfo.ContentModelPluginId == Main.Instance.Id)
+                var channelInfo = Main.ChannelApi.GetChannelInfo(siteId, channelId);
+                if (channelInfo.ContentModelPluginId == Main.PluginId)
                 {
                     channelInfoList.Add(channelInfo);
                 }
@@ -136,7 +136,7 @@ namespace SS.GovPublic.Core
         public static string GetIdentifier(int siteId, int channelId, int departmentId, IContentInfo contentInfo)
         {
             var builder = new StringBuilder();
-            var nodeInfo = Main.Instance.ChannelApi.GetChannelInfo(siteId, channelId);
+            var nodeInfo = Main.ChannelApi.GetChannelInfo(siteId, channelId);
 
             var ruleInfoList = Main.IdentifierRuleDao.GetRuleInfoList(siteId);
             foreach (var ruleInfo in ruleInfoList)

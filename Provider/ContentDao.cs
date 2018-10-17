@@ -182,8 +182,8 @@ namespace SS.GovPublic.Provider
 
         public ContentDao()
         {
-            ConnectionString = Main.Instance.ConnectionString;
-            Helper = Main.Instance.DatabaseApi;
+            ConnectionString = Context.ConnectionString;
+            Helper = Context.DatabaseApi;
         }
 
         public int GetCountByDepartmentId(int siteId, int departmentId, DateTime begin, DateTime end)
@@ -251,15 +251,15 @@ namespace SS.GovPublic.Provider
                 ID = "categoryChannelId",
                 CssClass = "form-control"
             };
-            var channelIdList = Main.Instance.ChannelApi.GetChannelIdList(siteId);
+            var channelIdList = Main.ChannelApi.GetChannelIdList(siteId);
             var nodeCount = channelIdList.Count;
             var isLastNodeArray = new bool[nodeCount];
             foreach (var theChannelId in channelIdList)
             {
-                var nodeInfo = Main.Instance.ChannelApi.GetChannelInfo(siteId, theChannelId);
+                var nodeInfo = Main.ChannelApi.GetChannelInfo(siteId, theChannelId);
                 var listItem = new ListItem(Utils.GetSelectOptionText(nodeInfo.ChannelName, nodeInfo.ParentsCount, nodeInfo.IsLastNode, isLastNodeArray),
                     nodeInfo.Id.ToString());
-                if (nodeInfo.ContentModelPluginId != Main.Instance.Id)
+                if (nodeInfo.ContentModelPluginId != Main.PluginId)
                 {
                     listItem.Value = "0";
                     listItem.Attributes.Add("disabled", "disabled");
@@ -403,19 +403,19 @@ $(document).ready(function () {
 
         public void CreateIdentifier(int siteId, int parentChannelId, bool isAll)
         {
-            var channelIdList = Main.Instance.ChannelApi.GetChannelIdList(siteId, parentChannelId);
+            var channelIdList = Main.ChannelApi.GetChannelIdList(siteId, parentChannelId);
             channelIdList.Add(parentChannelId);
             foreach (var channelId in channelIdList)
             {
-                var contentIdList = Main.Instance.ContentApi.GetContentIdList(siteId, channelId);
+                var contentIdList = Context.ContentApi.GetContentIdList(siteId, channelId);
                 foreach (var contentId in contentIdList)
                 {
-                    var contentInfo = Main.Instance.ContentApi.GetContentInfo(siteId, channelId, contentId);
+                    var contentInfo = Context.ContentApi.GetContentInfo(siteId, channelId, contentId);
                     if (isAll || string.IsNullOrEmpty(contentInfo.GetString(ContentAttribute.Identifier)))
                     {
                         var identifier = PublicManager.GetIdentifier(siteId, contentInfo.ChannelId, contentInfo.GetInt(ContentAttribute.DepartmentId), contentInfo);
                         contentInfo.Set(ContentAttribute.Identifier, identifier);
-                        Main.Instance.ContentApi.Update(siteId, channelId, contentInfo);
+                        Context.ContentApi.Update(siteId, channelId, contentInfo);
                     }
                 }
             }

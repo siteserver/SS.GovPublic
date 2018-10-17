@@ -47,8 +47,8 @@ namespace SS.GovPublic.Provider
 
         public IdentifierSeqDao()
         {
-            _connectionString = Main.Instance.ConnectionString;
-            _helper = Main.Instance.DatabaseApi;
+            _connectionString = Context.ConnectionString;
+            _helper = Context.DatabaseApi;
         }
 
         public int GetSequence(int siteId, int channelId, int departmentId, int addYear, int ruleSequence)

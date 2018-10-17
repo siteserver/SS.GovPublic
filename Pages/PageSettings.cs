@@ -26,7 +26,7 @@ namespace SS.GovPublic.Pages
 
             ConfigInfo.IsPublisherRelatedDepartmentId = Utils.ToBool(DdlIsPublisherRelatedDepartmentId.SelectedValue);
 
-            Main.Instance.ConfigApi.SetConfig(SiteId, ConfigInfo);
+            Main.ConfigApi.SetConfig(Main.PluginId, SiteId, ConfigInfo);
             LtlMessage.Text = Utils.GetMessageHtml("信息公开设置修改成功！", true);
         }
     }

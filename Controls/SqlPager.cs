@@ -38,7 +38,7 @@ namespace SS.GovPublic.Controls
         //                orderByString2 = orderByString2.Replace(" ASC", " DESC");
         //                orderByString2 = orderByString2.Replace(" DESC2", " ASC");
 
-        //                if (Main.Instance.DatabaseType == DatabaseType.MySql)
+        //                if (Context.DatabaseType == DatabaseType.MySql)
         //                {
         //                    return $@"
         //SELECT * FROM (
@@ -59,7 +59,7 @@ namespace SS.GovPublic.Controls
         //            }
         //            else
         //            {
-        //                if (Main.Instance.DatabaseType == DatabaseType.MySql)
+        //                if (Context.DatabaseType == DatabaseType.MySql)
         //                {
         //                    return $@"
         //SELECT * FROM (
@@ -630,7 +630,7 @@ namespace SS.GovPublic.Controls
                 return;
             }
 
-            var dataset = Main.Instance.DatabaseApi.ExecuteDataset(Main.Instance.ConnectionString, cmd);
+            var dataset = SiteServer.Plugin.Context.DatabaseApi.ExecuteDataset(SiteServer.Plugin.Context.ConnectionString, cmd);
             var data = dataset.Tables[0];
 
             // Configures the paged data source component
@@ -727,7 +727,7 @@ namespace SS.GovPublic.Controls
             //if (!string.IsNullOrEmpty(sortField) && addCustomSortInfo)
             //    SelectCommand += " ORDER BY " + SortField;
 
-            cmdText = Main.Instance.DatabaseType == DatabaseType.Oracle
+            cmdText = SiteServer.Plugin.Context.DatabaseType == DatabaseType.Oracle
                 ? $"SELECT COUNT(*) FROM ({cmdText})"
                 : $"SELECT COUNT(*) FROM ({cmdText}) AS T0";
             return Main.Dao.GetIntResult(cmdText);

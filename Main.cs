@@ -8,6 +8,16 @@ namespace SS.GovPublic
 {
     public class Main : PluginBase
     {
+        public static string PluginId { get; private set; }
+
+        public static IAdminApi AdminApi => Context.AdminApi;
+        public static IContentApi ContentApi => Context.ContentApi;
+        public static IChannelApi ChannelApi => Context.ChannelApi;
+        public static IPluginApi PluginApi => Context.PluginApi;
+        public static IUtilsApi UtilsApi => Context.UtilsApi;
+        public static IConfigApi ConfigApi => Context.ConfigApi;
+        public static IRequest Request => Context.Request;
+
         public static Dao Dao { get; private set; }
         public static CategoryClassDao CategoryClassDao { get; private set; }
         public static CategoryDao CategoryDao { get; private set; }
@@ -16,11 +26,9 @@ namespace SS.GovPublic
         public static IdentifierRuleDao IdentifierRuleDao { get; private set; }
         public static IdentifierSeqDao IdentifierSeqDao { get; private set; }
 
-        public static Main Instance { get; private set; }
-
         public override void Startup(IService service)
         {
-            Instance = this;
+            PluginId = Id;
 
             Dao = new Dao();
             CategoryClassDao = new CategoryClassDao();

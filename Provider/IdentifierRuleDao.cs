@@ -88,8 +88,8 @@ namespace SS.GovPublic.Provider
 
         public IdentifierRuleDao()
         {
-            _connectionString = Main.Instance.ConnectionString;
-            _helper = Main.Instance.DatabaseApi;
+            _connectionString = Context.ConnectionString;
+            _helper = Context.DatabaseApi;
         }
 
         public int Insert(IdentifierRuleInfo ruleInfo)

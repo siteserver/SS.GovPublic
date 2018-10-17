@@ -100,7 +100,7 @@ namespace SS.GovPublic.Pages
         //                continue;
         //            }
         //        }
-        //        var nodeInfo = Main.Instance.ChannelApi.GetChannelInfo(siteId, channelId);
+        //        var nodeInfo = Main.ChannelApi.GetChannelInfo(siteId, channelId);
 
         //        arraylist.Add(ChannelLoading.GetChannelRowHtml(publishmentSystemInfo, nodeInfo, enabled, eLoadingType, nameValueCollection, Main.Context.ConfigApi.PhysicalApplicationPath.AdministratorName));
         //    }

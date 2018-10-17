@@ -67,8 +67,8 @@ namespace SS.GovPublic.Provider
 
         public CategoryClassDao()
         {
-            _connectionString = Main.Instance.ConnectionString;
-            _helper = Main.Instance.DatabaseApi;
+            _connectionString = Context.ConnectionString;
+            _helper = Context.DatabaseApi;
         }
 
         private string GetContentAttributeNameNotUsed(int siteId)

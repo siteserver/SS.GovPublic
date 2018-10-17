@@ -21,17 +21,17 @@ namespace SS.GovPublic.Pages
 
         private ConfigInfo _configInfo;
 
-        public ConfigInfo ConfigInfo => _configInfo ?? (_configInfo = Main.Instance.ConfigApi.GetConfig<ConfigInfo>(SiteId) ?? new ConfigInfo());
+        public ConfigInfo ConfigInfo => _configInfo ?? (_configInfo = Main.ConfigApi.GetConfig<ConfigInfo>(Main.PluginId, SiteId) ?? new ConfigInfo());
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            AuthRequest = Main.Instance.Request;
+            AuthRequest = Main.Request;
 
             SiteId = Convert.ToInt32(Request.QueryString["siteId"]);
 
-            if (!Main.Instance.Request.AdminPermissions.HasSitePermissions(SiteId, Main.Instance.Id))
+            if (!Main.Request.AdminPermissions.HasSitePermissions(SiteId, Main.PluginId))
             {
                 HttpContext.Current.Response.Write("<h1>未授权访问</h1>");
                 HttpContext.Current.Response.End();

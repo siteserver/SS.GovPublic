@@ -10,11 +10,11 @@ namespace SS.GovPublic.Pages
             return $"{nameof(PageMain)}.aspx?siteId={siteId}&linkUrl={HttpUtility.UrlEncode(linkUrl)}";
         }
 
-        public string ContentModelPluginId => Main.Instance.Id;
+        public string ContentModelPluginId => Main.PluginId;
 
-        public string LinkUrl => HttpUtility.UrlEncode(Main.Instance.PluginApi.GetPluginUrl(Request.QueryString["linkUrl"]));
+        public string LinkUrl => HttpUtility.UrlEncode(Main.PluginApi.GetPluginUrl(Request.QueryString["linkUrl"]));
 
-        public string AdminUrl => Main.Instance.UtilsApi.GetAdminDirectoryUrl(string.Empty);
+        public string AdminUrl => Main.UtilsApi.GetAdminDirectoryUrl(string.Empty);
 
         public void Page_Load(object sender, EventArgs e)
         {

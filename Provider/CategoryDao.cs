@@ -94,9 +94,9 @@ namespace SS.GovPublic.Provider
 
         public CategoryDao()
         {
-            _databaseType = Main.Instance.DatabaseType;
-            _connectionString = Main.Instance.ConnectionString;
-            _helper = Main.Instance.DatabaseApi;
+            _databaseType = Context.DatabaseType;
+            _connectionString = Context.ConnectionString;
+            _helper = Context.DatabaseApi;
         }
 
         private void InsertWithTrans(CategoryInfo parentInfo, CategoryInfo categoryInfo, IDbTransaction trans)

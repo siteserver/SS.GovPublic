@@ -18,7 +18,7 @@ namespace SS.GovPublic.Pages
         private string _redirectUrl;
 
         public string UrlModalChannelSelect
-            => Main.Instance.UtilsApi.GetAdminDirectoryUrl($"cms/modalchannelselect.aspx?siteId={SiteId}");
+            => Main.UtilsApi.GetAdminDirectoryUrl($"cms/modalchannelselect.aspx?siteId={SiteId}");
 
         public static string GetRedirectUrl(int siteId, string redirectUrl)
         {
@@ -30,7 +30,7 @@ namespace SS.GovPublic.Pages
             SiteId = Convert.ToInt32(Request.QueryString["siteId"]);
             _redirectUrl = Request.QueryString["redirectUrl"];
 
-            if (!Main.Instance.Request.AdminPermissions.HasSitePermissions(SiteId, Main.Instance.Id))
+            if (!Main.Request.AdminPermissions.HasSitePermissions(SiteId, Main.PluginId))
             {
                 HttpContext.Current.Response.Write("<h1>未授权访问</h1>");
                 HttpContext.Current.Response.End();
@@ -50,10 +50,10 @@ namespace SS.GovPublic.Pages
         private List<string> GetChannelIndexList()
         {
             var indexList = new List<string>();
-            var channelIdList = Main.Instance.ChannelApi.GetChannelIdList(SiteId);
+            var channelIdList = Main.ChannelApi.GetChannelIdList(SiteId);
             foreach (var channelId in channelIdList)
             {
-                var channelInfo = Main.Instance.ChannelApi.GetChannelInfo(SiteId, channelId);
+                var channelInfo = Main.ChannelApi.GetChannelInfo(SiteId, channelId);
                 if (!string.IsNullOrEmpty(channelInfo?.IndexName))
                 {
                     if (!indexList.Contains(channelInfo.IndexName))
@@ -131,18 +131,18 @@ namespace SS.GovPublic.Pages
                         }
 
                         var parentId = (int)insertedChannelIdHashtable[count];
-                        var parentNodeInfo = Main.Instance.ChannelApi.GetChannelInfo(SiteId, parentId);
+                        var parentNodeInfo = Main.ChannelApi.GetChannelInfo(SiteId, parentId);
 
-                        var channelInfo = Main.Instance.ChannelApi.NewInstance(SiteId);
+                        var channelInfo = Main.ChannelApi.NewInstance(SiteId);
 
                         channelInfo.ParentId = parentId;
                         channelInfo.ChannelName = channelName;
                         channelInfo.IndexName = channelIndex;
-                        channelInfo.ContentModelPluginId = Main.Instance.Id;
+                        channelInfo.ContentModelPluginId = Main.PluginId;
                         channelInfo.ChannelTemplateId = parentNodeInfo.ChannelTemplateId;
                         channelInfo.ContentTemplateId = parentNodeInfo.ContentTemplateId;
 
-                        var insertedChannelId = Main.Instance.ChannelApi.Insert(SiteId, channelInfo);
+                        var insertedChannelId = Main.ChannelApi.Insert(SiteId, channelInfo);
                         insertedChannelIdHashtable[count + 1] = insertedChannelId;
                     }
                 }
