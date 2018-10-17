@@ -2,6 +2,7 @@
 using System.Web.UI.WebControls;
 using SS.GovPublic.Core;
 using SS.GovPublic.Model;
+using SS.GovPublic.Provider;
 
 namespace SS.GovPublic.Pages
 {
@@ -24,7 +25,7 @@ namespace SS.GovPublic.Pages
                 var id = Convert.ToInt32(Request.QueryString["Id"]);
                 try
                 {
-                    Main.CategoryClassDao.Delete(id);
+                    CategoryClassDao.Delete(id);
                     LtlMessage.Text = Utils.GetMessageHtml("成功删除分类法", true);
                 }
                 catch (Exception ex)
@@ -38,15 +39,15 @@ namespace SS.GovPublic.Pages
                 var isDown = Request.QueryString["Down"] != null;
                 if (isDown)
                 {
-                    Main.CategoryClassDao.UpdateTaxisToUp(SiteId, classCode);
+                    CategoryClassDao.UpdateTaxisToUp(SiteId, classCode);
                 }
                 else
                 {
-                    Main.CategoryClassDao.UpdateTaxisToDown(SiteId, classCode);
+                    CategoryClassDao.UpdateTaxisToDown(SiteId, classCode);
                 }
             }
 
-            DgContents.DataSource = Main.CategoryClassDao.GetCategoryClassInfoList(SiteId);
+            DgContents.DataSource = CategoryClassDao.GetCategoryClassInfoList(SiteId);
             DgContents.ItemDataBound += DgContents_ItemDataBound;
             DgContents.DataBind();
 

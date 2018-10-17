@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Web.UI;
 using SS.GovPublic.Core;
+using SS.GovPublic.Provider;
 
 namespace SS.GovPublic.Pages
 {
@@ -60,11 +61,11 @@ namespace SS.GovPublic.Pages
 
             var eLoadingType = ECategoryLoadingTypeUtils.GetEnumType(loadingType);
 
-            var categoryIdList = Main.CategoryDao.GetCategoryIdListByParentId(siteId, classCode, parentId);
+            var categoryIdList = CategoryDao.GetCategoryIdListByParentId(siteId, classCode, parentId);
 
             foreach (var categoryId in categoryIdList)
             {
-                var categoryInfo = Main.CategoryDao.GetCategoryInfo(categoryId);
+                var categoryInfo = CategoryDao.GetCategoryInfo(categoryId);
                 list.Add(PageCategory.GetCategoryRowHtml(siteId, categoryInfo, true, eLoadingType));
             }
 

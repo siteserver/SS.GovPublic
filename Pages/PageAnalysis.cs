@@ -2,6 +2,7 @@
 using System.Web.UI.WebControls;
 using SS.GovPublic.Controls;
 using SS.GovPublic.Core;
+using SS.GovPublic.Provider;
 
 namespace SS.GovPublic.Pages
 {
@@ -34,7 +35,7 @@ namespace SS.GovPublic.Pages
                 DdlChannelId.Items.Add(listItem);
             }
 
-            _totalCount = Main.ContentDao.GetCount(SiteId, _nodeId, TbStartDate.DateTime, TbEndDate.DateTime);
+            _totalCount = ContentDao.GetCount(SiteId, _nodeId, TbStartDate.DateTime, TbEndDate.DateTime);
 
             BindGrid();
         }
@@ -55,8 +56,8 @@ namespace SS.GovPublic.Pages
             ltlTarget.Text = departmentInfo.DepartmentName;
 
             var count = _nodeId == 0
-                ? Main.ContentDao.GetCountByDepartmentId(SiteId, departmentId, TbStartDate.DateTime, TbEndDate.DateTime)
-                : Main.ContentDao.GetCountByDepartmentId(SiteId, departmentId, _nodeId, TbStartDate.DateTime,
+                ? ContentDao.GetCountByDepartmentId(SiteId, departmentId, TbStartDate.DateTime, TbEndDate.DateTime)
+                : ContentDao.GetCountByDepartmentId(SiteId, departmentId, _nodeId, TbStartDate.DateTime,
                     TbEndDate.DateTime);
 
             ltlTotalCount.Text = count.ToString();

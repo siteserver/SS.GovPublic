@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using SiteServer.Plugin;
 using SS.GovPublic.Model;
+using SS.GovPublic.Provider;
 
 namespace SS.GovPublic.Core
 {
@@ -34,7 +35,7 @@ namespace SS.GovPublic.Core
         {
             var builder = new StringBuilder();
 
-            var ruleInfoList = Main.IdentifierRuleDao.GetRuleInfoList(siteId);
+            var ruleInfoList = IdentifierRuleDao.GetRuleInfoList(siteId);
             foreach (var ruleInfo in ruleInfoList)
             {
                 var identifierType = EIdentifierTypeUtils.GetEnumType(ruleInfo.IdentifierType);
@@ -104,7 +105,7 @@ namespace SS.GovPublic.Core
         public static bool IsIdentifierChanged(int siteId, int channelId, int departmentId, DateTime effectDate, IContentInfo contentInfo)
         {
             var isIdentifierChanged = false;
-            var ruleInfoList = Main.IdentifierRuleDao.GetRuleInfoList(siteId);
+            var ruleInfoList = IdentifierRuleDao.GetRuleInfoList(siteId);
             foreach (var ruleInfo in ruleInfoList)
             {
                 var identifierType = EIdentifierTypeUtils.GetEnumType(ruleInfo.IdentifierType);
@@ -138,7 +139,7 @@ namespace SS.GovPublic.Core
             var builder = new StringBuilder();
             var nodeInfo = Main.ChannelApi.GetChannelInfo(siteId, channelId);
 
-            var ruleInfoList = Main.IdentifierRuleDao.GetRuleInfoList(siteId);
+            var ruleInfoList = IdentifierRuleDao.GetRuleInfoList(siteId);
             foreach (var ruleInfo in ruleInfoList)
             {
                 var identifierType = EIdentifierTypeUtils.GetEnumType(ruleInfo.IdentifierType);
@@ -212,7 +213,7 @@ namespace SS.GovPublic.Core
                         targetAddYear = contentInfo.AddDate.Year;
                     }
 
-                    var sequence = Main.IdentifierSeqDao.GetSequence(targetSiteId, targetChannelId, targetDepartmentId, targetAddYear, ruleInfo.Sequence);
+                    var sequence = IdentifierSeqDao.GetSequence(targetSiteId, targetChannelId, targetDepartmentId, targetAddYear, ruleInfo.Sequence);
 
                     if (ruleInfo.MinLength > 0)
                     {

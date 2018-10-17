@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.UI.WebControls;
 using SS.GovPublic.Core;
+using SS.GovPublic.Provider;
 
 namespace SS.GovPublic.Pages
 {
@@ -28,7 +29,7 @@ namespace SS.GovPublic.Pages
 		    var isAll = Utils.EqualsIgnoreCase(DdlCreateType.SelectedValue, "All");
 		    foreach (var channelInfo in ChannelInfoList)
 		    {
-                Main.ContentDao.CreateIdentifier(SiteId, channelInfo.Id, isAll);
+                ContentDao.CreateIdentifier(SiteId, channelInfo.Id, isAll);
             }
 
 		    LtlMessage.Text = Utils.GetMessageHtml("索引号重新生成成功！", true);

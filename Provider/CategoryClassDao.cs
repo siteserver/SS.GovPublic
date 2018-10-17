@@ -5,7 +5,7 @@ using SiteServer.Plugin;
 
 namespace SS.GovPublic.Provider
 {
-    public class CategoryClassDao
+    public static class CategoryClassDao
     {
         public const string TableName = "ss_govpublic_category_class";
 
@@ -62,16 +62,7 @@ namespace SS.GovPublic.Provider
             }
         };
 
-        private readonly string _connectionString;
-        private readonly IDatabaseApi _helper;
-
-        public CategoryClassDao()
-        {
-            _connectionString = Context.ConnectionString;
-            _helper = Context.DatabaseApi;
-        }
-
-        private string GetContentAttributeNameNotUsed(int siteId)
+        private static string GetContentAttributeNameNotUsed(int siteId)
         {
             var contentAttributeName = string.Empty;
 
@@ -80,7 +71,7 @@ namespace SS.GovPublic.Provider
                 string sqlString =
                     $"SELECT {nameof(CategoryClassInfo.ContentAttributeName)} FROM {TableName} WHERE {nameof(CategoryClassInfo.SiteId)} = {siteId} AND {nameof(CategoryClassInfo.ContentAttributeName)} = 'Category{i}Id'";
 
-                using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+                using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
                 {
                     if (!rdr.Read())
                     {
@@ -95,7 +86,7 @@ namespace SS.GovPublic.Provider
             return contentAttributeName;
         }
 
-        public int Insert(CategoryClassInfo categoryClassInfo)
+        public static int Insert(CategoryClassInfo categoryClassInfo)
         {
             if (categoryClassInfo.IsSystem)
             {
@@ -138,20 +129,20 @@ namespace SS.GovPublic.Provider
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(CategoryClassInfo.SiteId), categoryClassInfo.SiteId),
-                _helper.GetParameter(nameof(CategoryClassInfo.ClassCode), categoryClassInfo.ClassCode),
-                _helper.GetParameter(nameof(CategoryClassInfo.ClassName), categoryClassInfo.ClassName),
-                _helper.GetParameter(nameof(CategoryClassInfo.IsSystem), categoryClassInfo.IsSystem),
-                _helper.GetParameter(nameof(CategoryClassInfo.IsEnabled), categoryClassInfo.IsEnabled),
-                _helper.GetParameter(nameof(CategoryClassInfo.ContentAttributeName), categoryClassInfo.ContentAttributeName),
-                _helper.GetParameter(nameof(CategoryClassInfo.Taxis), taxis),
-                _helper.GetParameter(nameof(CategoryClassInfo.Description), categoryClassInfo.Description)
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.SiteId), categoryClassInfo.SiteId),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.ClassCode), categoryClassInfo.ClassCode),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.ClassName), categoryClassInfo.ClassName),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.IsSystem), categoryClassInfo.IsSystem),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.IsEnabled), categoryClassInfo.IsEnabled),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.ContentAttributeName), categoryClassInfo.ContentAttributeName),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.Taxis), taxis),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.Description), categoryClassInfo.Description)
             };
 
-            return _helper.ExecuteNonQueryAndReturnId(TableName, nameof(CategoryClassInfo.Id), _connectionString, sqlString, parameters);
+            return Context.DatabaseApi.ExecuteNonQueryAndReturnId(TableName, nameof(CategoryClassInfo.Id), Context.ConnectionString, sqlString, parameters);
         }
 
-        public void Update(CategoryClassInfo categoryClassInfo)
+        public static void Update(CategoryClassInfo categoryClassInfo)
         {
             string sqlString = $@"UPDATE {TableName} SET
                 {nameof(CategoryClassInfo.SiteId)} = @{nameof(CategoryClassInfo.SiteId)},
@@ -166,34 +157,34 @@ namespace SS.GovPublic.Provider
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(CategoryClassInfo.SiteId), categoryClassInfo.SiteId),
-                _helper.GetParameter(nameof(CategoryClassInfo.ClassCode), categoryClassInfo.ClassCode),
-                _helper.GetParameter(nameof(CategoryClassInfo.ClassName), categoryClassInfo.ClassName),
-                _helper.GetParameter(nameof(CategoryClassInfo.IsSystem), categoryClassInfo.IsSystem),
-                _helper.GetParameter(nameof(CategoryClassInfo.IsEnabled), categoryClassInfo.IsEnabled),
-                _helper.GetParameter(nameof(CategoryClassInfo.ContentAttributeName), categoryClassInfo.ContentAttributeName),
-                _helper.GetParameter(nameof(CategoryClassInfo.Taxis), categoryClassInfo.Taxis),
-                _helper.GetParameter(nameof(CategoryClassInfo.Description), categoryClassInfo.Description),
-                _helper.GetParameter(nameof(CategoryClassInfo.Id), categoryClassInfo.Id)
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.SiteId), categoryClassInfo.SiteId),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.ClassCode), categoryClassInfo.ClassCode),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.ClassName), categoryClassInfo.ClassName),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.IsSystem), categoryClassInfo.IsSystem),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.IsEnabled), categoryClassInfo.IsEnabled),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.ContentAttributeName), categoryClassInfo.ContentAttributeName),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.Taxis), categoryClassInfo.Taxis),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.Description), categoryClassInfo.Description),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.Id), categoryClassInfo.Id)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters);
         }
 
-        public void Delete(int id)
+        public static void Delete(int id)
         {
             var sqlString =
                 $"DELETE FROM {TableName} WHERE {nameof(CategoryClassInfo.Id)} = @{nameof(CategoryClassInfo.Id)}";
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(CategoryClassInfo.Id), id)
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.Id), id)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters);
         }
 
-        public CategoryClassInfo GetCategoryClassInfo(int id)
+        public static CategoryClassInfo GetCategoryClassInfo(int id)
         {
             CategoryClassInfo categoryClassInfo = null;
 
@@ -211,10 +202,10 @@ namespace SS.GovPublic.Provider
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(CategoryClassInfo.Id), id)
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.Id), id)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters))
             {
                 if (rdr.Read())
                 {
@@ -226,7 +217,7 @@ namespace SS.GovPublic.Provider
             return categoryClassInfo;
         }
 
-        public CategoryClassInfo GetCategoryClassInfo(int siteId, string classCode)
+        public static CategoryClassInfo GetCategoryClassInfo(int siteId, string classCode)
         {
             CategoryClassInfo categoryClassInfo = null;
 
@@ -244,11 +235,11 @@ namespace SS.GovPublic.Provider
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(CategoryClassInfo.SiteId), siteId),
-                _helper.GetParameter(nameof(CategoryClassInfo.ClassCode), classCode)
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.SiteId), siteId),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.ClassCode), classCode)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters))
             {
                 if (rdr.Read())
                 {
@@ -260,18 +251,18 @@ namespace SS.GovPublic.Provider
             return categoryClassInfo;
         }
 
-        public string GetContentAttributeName(int id)
+        public static string GetContentAttributeName(int id)
         {
             var contentAttributeName = string.Empty;
 
             string sqlString =
                 $"SELECT {nameof(CategoryClassInfo.ContentAttributeName)} FROM {TableName} WHERE {nameof(CategoryClassInfo.Id)} = {id}";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read() && !rdr.IsDBNull(0))
                 {
-                    contentAttributeName = _helper.GetString(rdr, 0);
+                    contentAttributeName = Context.DatabaseApi.GetString(rdr, 0);
                 }
                 rdr.Close();
             }
@@ -279,7 +270,7 @@ namespace SS.GovPublic.Provider
             return contentAttributeName;
         }
 
-        public bool IsExists(int siteId, string classCode)
+        public static bool IsExists(int siteId, string classCode)
         {
             var exists = false;
 
@@ -289,11 +280,11 @@ namespace SS.GovPublic.Provider
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(CategoryClassInfo.SiteId), siteId),
-                _helper.GetParameter(nameof(CategoryClassInfo.ClassCode), classCode)
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.SiteId), siteId),
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.ClassCode), classCode)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters))
             {
                 if (rdr.Read())
                 {
@@ -305,7 +296,7 @@ namespace SS.GovPublic.Provider
             return exists;
         }
 
-        public List<CategoryClassInfo> GetCategoryClassInfoList(int siteId)
+        public static List<CategoryClassInfo> GetCategoryClassInfoList(int siteId)
         {
             var list = new List<CategoryClassInfo>();
 
@@ -324,10 +315,10 @@ namespace SS.GovPublic.Provider
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(CategoryClassInfo.SiteId), siteId)
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.SiteId), siteId)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters))
             {
                 while (rdr.Read())
                 {
@@ -363,7 +354,7 @@ namespace SS.GovPublic.Provider
                 ECategoryClassTypeUtils.GetText(categoryType), isSystem, true, string.Empty, 0, string.Empty);
         }
 
-        public List<string> GetClassCodeList(int siteId)
+        public static List<string> GetClassCodeList(int siteId)
         {
             var list = new List<string>();
 
@@ -372,14 +363,14 @@ namespace SS.GovPublic.Provider
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(CategoryClassInfo.SiteId), siteId)
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.SiteId), siteId)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters))
             {
                 while (rdr.Read() && !rdr.IsDBNull(0))
                 {
-                    list.Add(_helper.GetString(rdr, 0));
+                    list.Add(Context.DatabaseApi.GetString(rdr, 0));
                 }
                 rdr.Close();
             }
@@ -387,7 +378,7 @@ namespace SS.GovPublic.Provider
             return list;
         }
 
-        public List<string> GetClassNameList(int siteId)
+        public static List<string> GetClassNameList(int siteId)
         {
             var list = new List<string>();
 
@@ -396,14 +387,14 @@ namespace SS.GovPublic.Provider
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(CategoryClassInfo.SiteId), siteId)
+                Context.DatabaseApi.GetParameter(nameof(CategoryClassInfo.SiteId), siteId)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters))
             {
                 while (rdr.Read() && !rdr.IsDBNull(0))
                 {
-                    list.Add(_helper.GetString(rdr, 0));
+                    list.Add(Context.DatabaseApi.GetString(rdr, 0));
                 }
                 rdr.Close();
             }
@@ -411,19 +402,19 @@ namespace SS.GovPublic.Provider
             return list;
         }
 
-        public bool UpdateTaxisToUp(int siteId, string classCode)
+        public static bool UpdateTaxisToUp(int siteId, string classCode)
         {
-            var sqlString = _helper.GetPageSqlString(TableName, $"{nameof(CategoryClassInfo.ClassCode)}, {nameof(CategoryClassInfo.Taxis)}", $"WHERE (({nameof(CategoryClassInfo.Taxis)} > (SELECT {nameof(CategoryClassInfo.Taxis)} FROM {TableName} WHERE {nameof(CategoryClassInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryClassInfo.SiteId)} = {siteId})) AND {nameof(CategoryClassInfo.SiteId)} = {siteId})", $"ORDER BY {nameof(CategoryClassInfo.Taxis)}", 0, 1);
+            var sqlString = Context.DatabaseApi.GetPageSqlString(TableName, $"{nameof(CategoryClassInfo.ClassCode)}, {nameof(CategoryClassInfo.Taxis)}", $"WHERE (({nameof(CategoryClassInfo.Taxis)} > (SELECT {nameof(CategoryClassInfo.Taxis)} FROM {TableName} WHERE {nameof(CategoryClassInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryClassInfo.SiteId)} = {siteId})) AND {nameof(CategoryClassInfo.SiteId)} = {siteId})", $"ORDER BY {nameof(CategoryClassInfo.Taxis)}", 0, 1);
 
             var higherClassCode = string.Empty;
             var higherTaxis = 0;
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read())
                 {
-                    higherClassCode = _helper.GetString(rdr, 0);
-                    higherTaxis = _helper.GetInt(rdr, 1);
+                    higherClassCode = Context.DatabaseApi.GetString(rdr, 0);
+                    higherTaxis = Context.DatabaseApi.GetInt(rdr, 1);
                 }
                 rdr.Close();
             }
@@ -437,19 +428,19 @@ namespace SS.GovPublic.Provider
             return true;
         }
 
-        public bool UpdateTaxisToDown(int siteId, string classCode)
+        public static bool UpdateTaxisToDown(int siteId, string classCode)
         {
-            var sqlString = _helper.GetPageSqlString(TableName, $"{nameof(CategoryClassInfo.ClassCode)}, {nameof(CategoryClassInfo.Taxis)}", $"WHERE (({nameof(CategoryClassInfo.Taxis)} < (SELECT {nameof(CategoryClassInfo.Taxis)} FROM {TableName} WHERE {nameof(CategoryClassInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryClassInfo.SiteId)} = {siteId})) AND {nameof(CategoryClassInfo.SiteId)} = {siteId})", $"ORDER BY {nameof(CategoryClassInfo.Taxis)} DESC", 0, 1);
+            var sqlString = Context.DatabaseApi.GetPageSqlString(TableName, $"{nameof(CategoryClassInfo.ClassCode)}, {nameof(CategoryClassInfo.Taxis)}", $"WHERE (({nameof(CategoryClassInfo.Taxis)} < (SELECT {nameof(CategoryClassInfo.Taxis)} FROM {TableName} WHERE {nameof(CategoryClassInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryClassInfo.SiteId)} = {siteId})) AND {nameof(CategoryClassInfo.SiteId)} = {siteId})", $"ORDER BY {nameof(CategoryClassInfo.Taxis)} DESC", 0, 1);
 
             var lowerClassCode = string.Empty;
             var lowerTaxis = 0;
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read())
                 {
-                    lowerClassCode = _helper.GetString(rdr, 0);
-                    lowerTaxis = _helper.GetInt(rdr, 1);
+                    lowerClassCode = Context.DatabaseApi.GetString(rdr, 0);
+                    lowerTaxis = Context.DatabaseApi.GetInt(rdr, 1);
                 }
                 rdr.Close();
             }
@@ -463,45 +454,45 @@ namespace SS.GovPublic.Provider
             return true;
         }
 
-        private int GetMaxTaxis(int siteId)
+        private static int GetMaxTaxis(int siteId)
         {
             var sqlString =
                 $"SELECT MAX({nameof(CategoryClassInfo.Taxis)}) FROM {TableName} WHERE {nameof(CategoryClassInfo.SiteId)} = {siteId}";
 
-            return Main.Dao.GetIntResult(sqlString);
+            return Dao.GetIntResult(sqlString);
         }
 
-        private int GetTaxis(string classCode, int siteId)
+        private static int GetTaxis(string classCode, int siteId)
         {
             var sqlString =
                 $"SELECT {nameof(CategoryClassInfo.Taxis)} FROM {TableName} WHERE {nameof(CategoryClassInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryClassInfo.SiteId)} = {siteId}";
 
-            return Main.Dao.GetIntResult(sqlString);
+            return Dao.GetIntResult(sqlString);
         }
 
-        private void SetTaxis(string classCode, int siteId, int taxis)
+        private static void SetTaxis(string classCode, int siteId, int taxis)
         {
             string sqlString =
                 $"UPDATE {TableName} SET {nameof(CategoryClassInfo.Taxis)} = {taxis} WHERE {nameof(CategoryClassInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryClassInfo.SiteId)} = {siteId}";
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString);
         }
 
-        private CategoryClassInfo GetCategoryClassInfo(IDataReader rdr)
+        private static CategoryClassInfo GetCategoryClassInfo(IDataReader rdr)
         {
             if (rdr == null) return null;
             var i = 0;
             return new CategoryClassInfo
             {
-                Id = _helper.GetInt(rdr, i++),
-                SiteId = _helper.GetInt(rdr, i++),
-                ClassCode = _helper.GetString(rdr, i++),
-                ClassName = _helper.GetString(rdr, i++),
-                IsSystem = _helper.GetBoolean(rdr, i++),
-                IsEnabled = _helper.GetBoolean(rdr, i++),
-                ContentAttributeName = _helper.GetString(rdr, i++),
-                Taxis = _helper.GetInt(rdr, i++),
-                Description = _helper.GetString(rdr, i)
+                Id = Context.DatabaseApi.GetInt(rdr, i++),
+                SiteId = Context.DatabaseApi.GetInt(rdr, i++),
+                ClassCode = Context.DatabaseApi.GetString(rdr, i++),
+                ClassName = Context.DatabaseApi.GetString(rdr, i++),
+                IsSystem = Context.DatabaseApi.GetBoolean(rdr, i++),
+                IsEnabled = Context.DatabaseApi.GetBoolean(rdr, i++),
+                ContentAttributeName = Context.DatabaseApi.GetString(rdr, i++),
+                Taxis = Context.DatabaseApi.GetInt(rdr, i++),
+                Description = Context.DatabaseApi.GetString(rdr, i)
             };
         }
     }

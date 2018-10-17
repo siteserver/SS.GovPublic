@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SS.GovPublic.Model;
+using SS.GovPublic.Provider;
 
 namespace SS.GovPublic.Core
 {
@@ -105,7 +106,7 @@ namespace SS.GovPublic.Core
             {
                 if (CacheUtils.Get(CacheKey) == null)
                 {
-                    var list = Main.DepartmentDao.GetDepartmentInfoKeyValuePair();
+                    var list = DepartmentDao.GetDepartmentInfoKeyValuePair();
                     CacheUtils.Max(CacheKey, list);
                     return list;
                 }

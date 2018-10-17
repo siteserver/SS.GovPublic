@@ -2,6 +2,7 @@
 using System.Web.UI.WebControls;
 using SS.GovPublic.Core;
 using SS.GovPublic.Model;
+using SS.GovPublic.Provider;
 
 namespace SS.GovPublic.Pages
 {
@@ -32,7 +33,7 @@ namespace SS.GovPublic.Pages
 
             if (_classId <= 0) return;
 
-            var classInfo = Main.CategoryClassDao.GetCategoryClassInfo(_classId);
+            var classInfo = CategoryClassDao.GetCategoryClassInfo(_classId);
 
             TbClassName.Text = classInfo.ClassName;
             TbClassCode.Text = classInfo.ClassCode;
@@ -54,7 +55,7 @@ namespace SS.GovPublic.Pages
             {
                 try
                 {
-                    categoryClassInfo = Main.CategoryClassDao.GetCategoryClassInfo(_classId);
+                    categoryClassInfo = CategoryClassDao.GetCategoryClassInfo(_classId);
                     if (categoryClassInfo != null)
                     {
                         categoryClassInfo.ClassName = TbClassName.Text;
@@ -62,7 +63,7 @@ namespace SS.GovPublic.Pages
                         categoryClassInfo.IsEnabled = Convert.ToBoolean(DdlIsEnabled.SelectedValue);
                         categoryClassInfo.Description = TbDescription.Text;
                     }
-                    Main.CategoryClassDao.Update(categoryClassInfo);
+                    CategoryClassDao.Update(categoryClassInfo);
 
                     isChanged = true;
                 }
@@ -73,8 +74,8 @@ namespace SS.GovPublic.Pages
             }
             else
             {
-                var classNameList = Main.CategoryClassDao.GetClassNameList(SiteId);
-                var classCodeList = Main.CategoryClassDao.GetClassCodeList(SiteId);
+                var classNameList = CategoryClassDao.GetClassNameList(SiteId);
+                var classCodeList = CategoryClassDao.GetClassCodeList(SiteId);
                 if (classNameList.IndexOf(TbClassName.Text) != -1)
                 {
                     LtlMessage.Text = Utils.GetMessageHtml("分类法添加失败，分类法名称已存在！", false);
@@ -89,7 +90,7 @@ namespace SS.GovPublic.Pages
                     {
                         categoryClassInfo = new CategoryClassInfo(0, SiteId, TbClassCode.Text, TbClassName.Text, false, Convert.ToBoolean(DdlIsEnabled.SelectedValue), string.Empty, 0, TbDescription.Text);
 
-                        Main.CategoryClassDao.Insert(categoryClassInfo);
+                        CategoryClassDao.Insert(categoryClassInfo);
 
                         isChanged = true;
                     }

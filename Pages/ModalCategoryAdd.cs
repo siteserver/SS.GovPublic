@@ -2,6 +2,7 @@
 using System.Web.UI.WebControls;
 using SS.GovPublic.Core;
 using SS.GovPublic.Model;
+using SS.GovPublic.Provider;
 
 namespace SS.GovPublic.Pages
 {
@@ -37,11 +38,11 @@ namespace SS.GovPublic.Pages
             {
                 DdlParentId.Items.Add(new ListItem("<无上级节点>", "0"));
 
-                var categoryIdList = Main.CategoryDao.GetCategoryIdList(SiteId, _classCode);
+                var categoryIdList = CategoryDao.GetCategoryIdList(SiteId, _classCode);
                 var isLastNodeArray = new bool[categoryIdList.Count];
                 foreach (var theCategoryId in categoryIdList)
                 {
-                    var categoryInfo = Main.CategoryDao.GetCategoryInfo(theCategoryId);
+                    var categoryInfo = CategoryDao.GetCategoryInfo(theCategoryId);
                     var listitem = new ListItem(Utils.GetSelectOptionText(categoryInfo.CategoryName, categoryInfo.ParentsCount, categoryInfo.IsLastNode, isLastNodeArray), theCategoryId.ToString());
                     DdlParentId.Items.Add(listitem);
                 }
@@ -53,7 +54,7 @@ namespace SS.GovPublic.Pages
 
             if (_categoryId != 0)
             {
-                var categoryInfo = Main.CategoryDao.GetCategoryInfo(_categoryId);
+                var categoryInfo = CategoryDao.GetCategoryInfo(_categoryId);
 
                 TbCategoryName.Text = categoryInfo.CategoryName;
                 TbCategoryCode.Text = categoryInfo.CategoryCode;
@@ -76,17 +77,17 @@ namespace SS.GovPublic.Pages
                     Summary = TbSummary.Text
                 };
 
-                Main.CategoryDao.Insert(categoryInfo);
+                CategoryDao.Insert(categoryInfo);
             }
             else
             {
-                var categoryInfo = Main.CategoryDao.GetCategoryInfo(_categoryId);
+                var categoryInfo = CategoryDao.GetCategoryInfo(_categoryId);
 
                 categoryInfo.CategoryName = TbCategoryName.Text;
                 categoryInfo.CategoryCode = TbCategoryCode.Text;
                 categoryInfo.Summary = TbSummary.Text;
 
-                Main.CategoryDao.Update(categoryInfo);
+                CategoryDao.Update(categoryInfo);
             }
 
             LtlMessage.Text = Utils.GetMessageHtml("分类设置成功！", true);

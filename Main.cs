@@ -18,25 +18,9 @@ namespace SS.GovPublic
         public static IConfigApi ConfigApi => Context.ConfigApi;
         public static IRequest Request => Context.Request;
 
-        public static Dao Dao { get; private set; }
-        public static CategoryClassDao CategoryClassDao { get; private set; }
-        public static CategoryDao CategoryDao { get; private set; }
-        public static ContentDao ContentDao { get; private set; }
-        public static DepartmentDao DepartmentDao { get; private set; }
-        public static IdentifierRuleDao IdentifierRuleDao { get; private set; }
-        public static IdentifierSeqDao IdentifierSeqDao { get; private set; }
-
         public override void Startup(IService service)
         {
             PluginId = Id;
-
-            Dao = new Dao();
-            CategoryClassDao = new CategoryClassDao();
-            CategoryDao = new CategoryDao();
-            ContentDao = new ContentDao();
-            DepartmentDao = new DepartmentDao();
-            IdentifierRuleDao = new IdentifierRuleDao();
-            IdentifierSeqDao = new IdentifierSeqDao();
 
             service
                 .AddContentModel(ContentDao.TableName, ContentDao.Columns)

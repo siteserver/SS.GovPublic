@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using SiteServer.Plugin;
 using SS.GovPublic.Core;
+using SS.GovPublic.Provider;
 
 namespace SS.GovPublic.Controls
 {
@@ -730,7 +731,7 @@ namespace SS.GovPublic.Controls
             cmdText = SiteServer.Plugin.Context.DatabaseType == DatabaseType.Oracle
                 ? $"SELECT COUNT(*) FROM ({cmdText})"
                 : $"SELECT COUNT(*) FROM ({cmdText}) AS T0";
-            return Main.Dao.GetIntResult(cmdText);
+            return Dao.GetIntResult(cmdText);
         }
 
         /// <summary>

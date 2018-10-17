@@ -5,7 +5,7 @@ using SS.GovPublic.Model;
 
 namespace SS.GovPublic.Provider
 {
-    public class CategoryDao
+    public static class CategoryDao
     { 
         public const string TableName = "ss_govpublic_category";
 
@@ -88,18 +88,7 @@ namespace SS.GovPublic.Provider
             }
         };
 
-        private readonly DatabaseType _databaseType;
-        private readonly string _connectionString;
-        private readonly IDatabaseApi _helper;
-
-        public CategoryDao()
-        {
-            _databaseType = Context.DatabaseType;
-            _connectionString = Context.ConnectionString;
-            _helper = Context.DatabaseApi;
-        }
-
-        private void InsertWithTrans(CategoryInfo parentInfo, CategoryInfo categoryInfo, IDbTransaction trans)
+        private static void InsertWithTrans(CategoryInfo parentInfo, CategoryInfo categoryInfo, IDbTransaction trans)
         {
             if (parentInfo != null)
             {
@@ -123,7 +112,7 @@ namespace SS.GovPublic.Provider
 
             var sqlString =
                 $"UPDATE {TableName} SET Taxis = Taxis + 1 WHERE (ClassCode = '{categoryInfo.ClassCode}' AND SiteId = {categoryInfo.SiteId} AND Taxis >= {categoryInfo.Taxis})";
-            _helper.ExecuteNonQuery(trans, sqlString);
+            Context.DatabaseApi.ExecuteNonQuery(trans, sqlString);
 
             sqlString = $@"INSERT INTO {TableName}
 (
@@ -158,46 +147,46 @@ namespace SS.GovPublic.Provider
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(CategoryInfo.SiteId), categoryInfo.SiteId),
-                _helper.GetParameter(nameof(CategoryInfo.ClassCode), categoryInfo.ClassCode),
-                _helper.GetParameter(nameof(CategoryInfo.CategoryName), categoryInfo.CategoryName),
-                _helper.GetParameter(nameof(CategoryInfo.CategoryCode), categoryInfo.CategoryCode),
-                _helper.GetParameter(nameof(CategoryInfo.ParentId), categoryInfo.ParentId),
-                _helper.GetParameter(nameof(CategoryInfo.ParentsPath), categoryInfo.ParentsPath),
-                _helper.GetParameter(nameof(CategoryInfo.ParentsCount), categoryInfo.ParentsCount),
-                _helper.GetParameter(nameof(CategoryInfo.ChildrenCount), categoryInfo.ChildrenCount),
-                _helper.GetParameter(nameof(CategoryInfo.IsLastNode), categoryInfo.IsLastNode),
-                _helper.GetParameter(nameof(CategoryInfo.Taxis), categoryInfo.Taxis),
-                _helper.GetParameter(nameof(CategoryInfo.AddDate), categoryInfo.AddDate),
-                _helper.GetParameter(nameof(CategoryInfo.Summary), categoryInfo.Summary),
-                _helper.GetParameter(nameof(CategoryInfo.ContentNum), categoryInfo.ContentNum)
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.SiteId), categoryInfo.SiteId),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.ClassCode), categoryInfo.ClassCode),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.CategoryName), categoryInfo.CategoryName),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.CategoryCode), categoryInfo.CategoryCode),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.ParentId), categoryInfo.ParentId),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.ParentsPath), categoryInfo.ParentsPath),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.ParentsCount), categoryInfo.ParentsCount),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.ChildrenCount), categoryInfo.ChildrenCount),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.IsLastNode), categoryInfo.IsLastNode),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.Taxis), categoryInfo.Taxis),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.AddDate), categoryInfo.AddDate),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.Summary), categoryInfo.Summary),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.ContentNum), categoryInfo.ContentNum)
             };
 
-            categoryInfo.Id = _helper.ExecuteNonQueryAndReturnId(TableName, nameof(CategoryInfo.Id), trans, sqlString, parameters);
+            categoryInfo.Id = Context.DatabaseApi.ExecuteNonQueryAndReturnId(TableName, nameof(CategoryInfo.Id), trans, sqlString, parameters);
 
             if (!string.IsNullOrEmpty(categoryInfo.ParentsPath) || categoryInfo.ParentsPath != "0")
             {
                 sqlString =
                     $"UPDATE {TableName} SET {nameof(CategoryInfo.ChildrenCount)} = {nameof(CategoryInfo.ChildrenCount)} + 1 WHERE {nameof(CategoryInfo.Id)} IN ({categoryInfo.ParentsPath})";
 
-                _helper.ExecuteNonQuery(trans, sqlString);
+                Context.DatabaseApi.ExecuteNonQuery(trans, sqlString);
             }
         }
 
-        private void UpdateIsLastNode(int parentId)
+        private static void UpdateIsLastNode(int parentId)
         {
             var sqlString =
                 $"UPDATE {TableName} SET {nameof(CategoryInfo.IsLastNode)} = @{nameof(CategoryInfo.IsLastNode)} WHERE {nameof(CategoryInfo.ParentId)} = @{nameof(CategoryInfo.ParentId)}";
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(CategoryInfo.IsLastNode), false),
-                _helper.GetParameter(nameof(CategoryInfo.ParentId), parentId)
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.IsLastNode), false),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.ParentId), parentId)
             };
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters);
 
-            sqlString = _helper.GetPageSqlString(TableName, nameof(CategoryInfo.Id),
+            sqlString = Context.DatabaseApi.GetPageSqlString(TableName, nameof(CategoryInfo.Id),
                 $"WHERE {nameof(CategoryInfo.ParentId)} = {parentId}", "ORDER BY Taxis DESC", 0, 1);
-            var categoryId = Main.Dao.GetIntResult(sqlString);
+            var categoryId = Dao.GetIntResult(sqlString);
 
             if (categoryId > 0)
             {
@@ -205,23 +194,23 @@ namespace SS.GovPublic.Provider
                     $"UPDATE {TableName} SET {nameof(CategoryInfo.IsLastNode)} = @{nameof(CategoryInfo.IsLastNode)} WHERE {nameof(CategoryInfo.Id)} = @{nameof(CategoryInfo.Id)}";
                 parameters = new[]
                 {
-                    _helper.GetParameter(nameof(CategoryInfo.IsLastNode), true),
-                    _helper.GetParameter(nameof(CategoryInfo.Id), categoryId)
+                    Context.DatabaseApi.GetParameter(nameof(CategoryInfo.IsLastNode), true),
+                    Context.DatabaseApi.GetParameter(nameof(CategoryInfo.Id), categoryId)
                 };
-                _helper.ExecuteNonQuery(_connectionString, sqlString, parameters);
+                Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters);
             }
         }
 
-        private void UpdateSubtractChildrenCount(string parentsPath, int subtractNum)
+        private static void UpdateSubtractChildrenCount(string parentsPath, int subtractNum)
         {
             if (string.IsNullOrEmpty(parentsPath)) return;
 
             string sqlString =
                 $"UPDATE {TableName} SET {nameof(CategoryInfo.ChildrenCount)} = {nameof(CategoryInfo.ChildrenCount)} - {subtractNum} WHERE {nameof(CategoryInfo.Id)} IN ({parentsPath})";
-            _helper.ExecuteNonQuery(_connectionString, sqlString);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString);
         }
 
-        private void TaxisSubtract(string classCode, int siteId, int selectedCategoryId)
+        private static void TaxisSubtract(string classCode, int siteId, int selectedCategoryId)
         {
             var categoryInfo = GetCategoryInfo(selectedCategoryId);
             if (categoryInfo == null) return;
@@ -230,9 +219,9 @@ namespace SS.GovPublic.Provider
             int lowerChildrenCount;
             string lowerParentsPath;
 
-            var sqlString = _helper.GetPageSqlString(TableName, $"{nameof(CategoryInfo.Id)}, {nameof(CategoryInfo.ChildrenCount)}, {nameof(CategoryInfo.ParentsPath)}", $"WHERE ({nameof(CategoryInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryInfo.SiteId)} = {siteId}) AND ({nameof(CategoryInfo.ParentId)} = {categoryInfo.ParentId}) AND ({nameof(CategoryInfo.Id)} <> {categoryInfo.Id}) AND ({nameof(CategoryInfo.Taxis)} < {categoryInfo.Taxis})", $"ORDER BY {nameof(CategoryInfo.Taxis)} DESC", 0, 1);
+            var sqlString = Context.DatabaseApi.GetPageSqlString(TableName, $"{nameof(CategoryInfo.Id)}, {nameof(CategoryInfo.ChildrenCount)}, {nameof(CategoryInfo.ParentsPath)}", $"WHERE ({nameof(CategoryInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryInfo.SiteId)} = {siteId}) AND ({nameof(CategoryInfo.ParentId)} = {categoryInfo.ParentId}) AND ({nameof(CategoryInfo.Id)} <> {categoryInfo.Id}) AND ({nameof(CategoryInfo.Taxis)} < {categoryInfo.Taxis})", $"ORDER BY {nameof(CategoryInfo.Taxis)} DESC", 0, 1);
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read() && !rdr.IsDBNull(0))
                 {
@@ -257,7 +246,7 @@ namespace SS.GovPublic.Provider
             UpdateIsLastNode(categoryInfo.ParentId);
         }
 
-        private void TaxisAdd(string classCode, int siteId, int selectedCategoryId)
+        private static void TaxisAdd(string classCode, int siteId, int selectedCategoryId)
         {
             var categoryInfo = GetCategoryInfo(selectedCategoryId);
             if (categoryInfo == null) return;
@@ -266,9 +255,9 @@ namespace SS.GovPublic.Provider
             int higherChildrenCount;
             string higherParentsPath;
 
-            var sqlString = _helper.GetPageSqlString(TableName, $"{nameof(CategoryInfo.Id)}, {nameof(CategoryInfo.ChildrenCount)}, {nameof(CategoryInfo.ParentsPath)}", $"WHERE ({nameof(CategoryInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryInfo.SiteId)} = {siteId}) AND ({nameof(CategoryInfo.ParentId)} = {categoryInfo.ParentId}) AND ({nameof(CategoryInfo.Id)} <> {categoryInfo.Id}) AND ({nameof(CategoryInfo.Taxis)} > {categoryInfo.Taxis})", $"ORDER BY {nameof(CategoryInfo.Taxis)}", 0, 1);
+            var sqlString = Context.DatabaseApi.GetPageSqlString(TableName, $"{nameof(CategoryInfo.Id)}, {nameof(CategoryInfo.ChildrenCount)}, {nameof(CategoryInfo.ParentsPath)}", $"WHERE ({nameof(CategoryInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryInfo.SiteId)} = {siteId}) AND ({nameof(CategoryInfo.ParentId)} = {categoryInfo.ParentId}) AND ({nameof(CategoryInfo.Id)} <> {categoryInfo.Id}) AND ({nameof(CategoryInfo.Taxis)} > {categoryInfo.Taxis})", $"ORDER BY {nameof(CategoryInfo.Taxis)}", 0, 1);
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read() && !rdr.IsDBNull(0))
                 {
@@ -292,29 +281,29 @@ namespace SS.GovPublic.Provider
             UpdateIsLastNode(categoryInfo.ParentId);
         }
 
-        private void SetTaxisAdd(string classCode, int siteId, int categoryId, string parentsPath, int addNum)
+        private static void SetTaxisAdd(string classCode, int siteId, int categoryId, string parentsPath, int addNum)
         {
             string sqlString =
                 $"UPDATE {TableName} SET {nameof(CategoryInfo.Taxis)} = {nameof(CategoryInfo.Taxis)} + {addNum} WHERE ({nameof(CategoryInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryInfo.SiteId)} = {siteId}) AND ({nameof(CategoryInfo.Id)} = {categoryId} OR {nameof(CategoryInfo.ParentsPath)} = '{parentsPath}' OR {nameof(CategoryInfo.ParentsPath)} LIKE '{parentsPath},%')";
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString);
         }
 
-        private void SetTaxisSubtract(string classCode, int siteId, int categoryId, string parentsPath, int subtractNum)
+        private static void SetTaxisSubtract(string classCode, int siteId, int categoryId, string parentsPath, int subtractNum)
         {
             string sqlString =
                 $"UPDATE {TableName} SET {nameof(CategoryInfo.Taxis)} = {nameof(CategoryInfo.Taxis)} - {subtractNum} WHERE ({nameof(CategoryInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryInfo.SiteId)} = {siteId}) AND ({nameof(CategoryInfo.Id)} = {categoryId} OR {nameof(CategoryInfo.ParentsPath)} = '{parentsPath}' OR {nameof(CategoryInfo.ParentsPath)} LIKE '{parentsPath},%')";
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString);
         }
 
-        private int GetMaxTaxisByParentPath(string classCode, int siteId, string parentPath)
+        private static int GetMaxTaxisByParentPath(string classCode, int siteId, string parentPath)
         {
             string sqlString =
                 $"SELECT MAX({nameof(CategoryInfo.Taxis)}) FROM {TableName} WHERE ({nameof(CategoryInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryInfo.SiteId)} = {siteId}) AND ({nameof(CategoryInfo.ParentsPath)} = '{parentPath}' OR {nameof(CategoryInfo.ParentsPath)} LIKE '{parentPath},%')";
             var maxTaxis = 0;
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read() && !rdr.IsDBNull(0))
                 {
@@ -325,11 +314,11 @@ namespace SS.GovPublic.Provider
             return maxTaxis;
         }
 
-        public int Insert(CategoryInfo categoryInfo)
+        public static int Insert(CategoryInfo categoryInfo)
         {
             var parentDepartmentInfo = GetCategoryInfo(categoryInfo.ParentId);
 
-            using (var conn = _helper.GetConnection(_connectionString))
+            using (var conn = Context.DatabaseApi.GetConnection(Context.ConnectionString))
             {
                 conn.Open();
                 using (var trans = conn.BeginTransaction())
@@ -353,7 +342,7 @@ namespace SS.GovPublic.Provider
             return categoryInfo.Id;
         }
 
-        public void Update(CategoryInfo categoryInfo)
+        public static void Update(CategoryInfo categoryInfo)
         {
             string sqlString = $@"UPDATE {TableName} SET
                 {nameof(CategoryInfo.SiteId)} = @{nameof(CategoryInfo.SiteId)}, 
@@ -373,26 +362,26 @@ namespace SS.GovPublic.Provider
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(CategoryInfo.SiteId), categoryInfo.SiteId),
-                _helper.GetParameter(nameof(CategoryInfo.ClassCode), categoryInfo.ClassCode),
-                _helper.GetParameter(nameof(CategoryInfo.CategoryName), categoryInfo.CategoryName),
-                _helper.GetParameter(nameof(CategoryInfo.CategoryCode), categoryInfo.CategoryCode),
-                _helper.GetParameter(nameof(CategoryInfo.ParentId), categoryInfo.ParentId),
-                _helper.GetParameter(nameof(CategoryInfo.ParentsPath), categoryInfo.ParentsPath),
-                _helper.GetParameter(nameof(CategoryInfo.ParentsCount), categoryInfo.ParentsCount),
-                _helper.GetParameter(nameof(CategoryInfo.ChildrenCount), categoryInfo.ChildrenCount),
-                _helper.GetParameter(nameof(CategoryInfo.IsLastNode), categoryInfo.IsLastNode),
-                _helper.GetParameter(nameof(CategoryInfo.Taxis), categoryInfo.Taxis),
-                _helper.GetParameter(nameof(CategoryInfo.AddDate), categoryInfo.AddDate),
-                _helper.GetParameter(nameof(CategoryInfo.Summary), categoryInfo.Summary),
-                _helper.GetParameter(nameof(CategoryInfo.ContentNum), categoryInfo.ContentNum),
-                _helper.GetParameter(nameof(CategoryInfo.Id), categoryInfo.Id)
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.SiteId), categoryInfo.SiteId),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.ClassCode), categoryInfo.ClassCode),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.CategoryName), categoryInfo.CategoryName),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.CategoryCode), categoryInfo.CategoryCode),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.ParentId), categoryInfo.ParentId),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.ParentsPath), categoryInfo.ParentsPath),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.ParentsCount), categoryInfo.ParentsCount),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.ChildrenCount), categoryInfo.ChildrenCount),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.IsLastNode), categoryInfo.IsLastNode),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.Taxis), categoryInfo.Taxis),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.AddDate), categoryInfo.AddDate),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.Summary), categoryInfo.Summary),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.ContentNum), categoryInfo.ContentNum),
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.Id), categoryInfo.Id)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters);
         }
 
-        public void UpdateTaxis(int siteId, string classCode, int selectedCategoryId, bool isSubtract)
+        public static void UpdateTaxis(int siteId, string classCode, int selectedCategoryId, bool isSubtract)
         {
             if (isSubtract)
             {
@@ -404,15 +393,15 @@ namespace SS.GovPublic.Provider
             }
         }
 
-        public virtual void UpdateContentNum(string contentAttributeName, int categoryId)
+        public static void UpdateContentNum(string contentAttributeName, int categoryId)
         {
             string sqlString =
                 $"UPDATE {TableName} SET {nameof(CategoryInfo.ContentNum)} = (SELECT COUNT(*) FROM {ContentDao.TableName} WHERE ({contentAttributeName} = {categoryId})) WHERE ({nameof(CategoryInfo.Id)} = {categoryId})";
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString);
         }
 
-        public void Delete(int categoryId)
+        public static void Delete(int categoryId)
         {
             var categoryInfo = GetCategoryInfo(categoryId);
             if (categoryInfo == null) return;
@@ -429,20 +418,20 @@ namespace SS.GovPublic.Provider
 
             int deletedNum;
 
-            using (var conn = _helper.GetConnection(_connectionString))
+            using (var conn = Context.DatabaseApi.GetConnection(Context.ConnectionString))
             {
                 conn.Open();
                 using (var trans = conn.BeginTransaction())
                 {
                     try
                     {
-                        deletedNum = _helper.ExecuteNonQuery(trans, sqlString);
+                        deletedNum = Context.DatabaseApi.ExecuteNonQuery(trans, sqlString);
 
                         if (deletedNum > 0)
                         {
                             string sqlStringTaxis =
                                 $"UPDATE {TableName} SET {nameof(CategoryInfo.Taxis)} = {nameof(CategoryInfo.Taxis)} - {deletedNum} WHERE {nameof(CategoryInfo.ClassCode)} = '{categoryInfo.ClassCode}' AND {nameof(CategoryInfo.SiteId)} = {categoryInfo.SiteId} AND {nameof(CategoryInfo.Taxis)} > {categoryInfo.Taxis}";
-                            _helper.ExecuteNonQuery(trans, sqlStringTaxis);
+                            Context.DatabaseApi.ExecuteNonQuery(trans, sqlStringTaxis);
                         }
 
                         trans.Commit();
@@ -459,7 +448,7 @@ namespace SS.GovPublic.Provider
             UpdateSubtractChildrenCount(categoryInfo.ParentsPath, deletedNum);
         }
 
-        public CategoryInfo GetCategoryInfo(int categoryId)
+        public static CategoryInfo GetCategoryInfo(int categoryId)
         {
             CategoryInfo categoryInfo = null;
 
@@ -482,10 +471,10 @@ FROM {TableName} WHERE {nameof(CategoryInfo.Id)} = @{nameof(CategoryInfo.Id)}";
 
             var parameters = new []
             {
-                _helper.GetParameter(nameof(CategoryInfo.Id), categoryId)
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.Id), categoryId)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters))
             {
                 if (rdr.Read())
                 {
@@ -496,7 +485,7 @@ FROM {TableName} WHERE {nameof(CategoryInfo.Id)} = @{nameof(CategoryInfo.Id)}";
             return categoryInfo;
         }
 
-        public string GetCategoryName(int categoryId)
+        public static string GetCategoryName(int categoryId)
         {
             var departmentName = string.Empty;
 
@@ -504,10 +493,10 @@ FROM {TableName} WHERE {nameof(CategoryInfo.Id)} = @{nameof(CategoryInfo.Id)}";
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(CategoryInfo.Id), categoryId)
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.Id), categoryId)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters))
             {
                 if (rdr.Read() && !rdr.IsDBNull(0))
                 {
@@ -518,7 +507,7 @@ FROM {TableName} WHERE {nameof(CategoryInfo.Id)} = @{nameof(CategoryInfo.Id)}";
             return departmentName;
         }
 
-        public int GetNodeCount(int categoryId)
+        public static int GetNodeCount(int categoryId)
         {
             var nodeCount = 0;
 
@@ -526,10 +515,10 @@ FROM {TableName} WHERE {nameof(CategoryInfo.Id)} = @{nameof(CategoryInfo.Id)}";
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(CategoryInfo.ParentId), categoryId)
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.ParentId), categoryId)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters))
             {
                 if (rdr.Read() && !rdr.IsDBNull(0))
                 {
@@ -541,7 +530,7 @@ FROM {TableName} WHERE {nameof(CategoryInfo.Id)} = @{nameof(CategoryInfo.Id)}";
             return nodeCount;
         }
 
-        public bool IsExists(int categoryId)
+        public static bool IsExists(int categoryId)
         {
             var exists = false;
 
@@ -549,10 +538,10 @@ FROM {TableName} WHERE {nameof(CategoryInfo.Id)} = @{nameof(CategoryInfo.Id)}";
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(CategoryInfo.Id), categoryId)
+                Context.DatabaseApi.GetParameter(nameof(CategoryInfo.Id), categoryId)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters))
             {
                 if (rdr.Read() && !rdr.IsDBNull(0))
                 {
@@ -564,14 +553,14 @@ FROM {TableName} WHERE {nameof(CategoryInfo.Id)} = @{nameof(CategoryInfo.Id)}";
             return exists;
         }
 
-        public List<int> GetCategoryIdList(int siteId, string classCode)
+        public static List<int> GetCategoryIdList(int siteId, string classCode)
         {
             var list = new List<int>();
 
             string sqlString =
                 $"SELECT {nameof(CategoryInfo.Id)} FROM {TableName} WHERE {nameof(CategoryInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryInfo.SiteId)} = {siteId} ORDER BY {nameof(CategoryInfo.Taxis)}";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 while (rdr.Read())
                 {
@@ -583,13 +572,13 @@ FROM {TableName} WHERE {nameof(CategoryInfo.Id)} = @{nameof(CategoryInfo.Id)}";
             return list;
         }
 
-        public List<int> GetCategoryIdListByParentId(int siteId, string classCode, int parentId)
+        public static List<int> GetCategoryIdListByParentId(int siteId, string classCode, int parentId)
         {
             string sqlString =
                 $@"SELECT {nameof(CategoryInfo.Id)} FROM {TableName} WHERE {nameof(CategoryInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryInfo.SiteId)} = {siteId} AND {nameof(CategoryInfo.ParentId)} = {parentId} ORDER BY {nameof(CategoryInfo.Taxis)}";
             var list = new List<int>();
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 while (rdr.Read())
                 {
@@ -601,7 +590,7 @@ FROM {TableName} WHERE {nameof(CategoryInfo.Id)} = @{nameof(CategoryInfo.Id)}";
             return list;
         }
 
-        public List<int> GetCategoryIdListForDescendant(string classCode, int siteId, int categoryId)
+        public static List<int> GetCategoryIdListForDescendant(string classCode, int siteId, int categoryId)
         {
             string sqlString = $@"SELECT {nameof(CategoryInfo.Id)}
 FROM {TableName}
@@ -613,7 +602,7 @@ WHERE ({nameof(CategoryInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryInfo
 ";
             var list = new List<int>();
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 while (rdr.Read() && !rdr.IsDBNull(0))
                 {
@@ -626,26 +615,26 @@ WHERE ({nameof(CategoryInfo.ClassCode)} = '{classCode}' AND {nameof(CategoryInfo
             return list;
         }
 
-        private CategoryInfo GetCategoryInfo(IDataReader rdr)
+        private static CategoryInfo GetCategoryInfo(IDataReader rdr)
         {
             if (rdr == null) return null;
             var i = 0;
             return new CategoryInfo
             {
-                Id = _helper.GetInt(rdr, i++),
-                SiteId = _helper.GetInt(rdr, i++),
-                ClassCode = _helper.GetString(rdr, i++),
-                CategoryName = _helper.GetString(rdr, i++),
-                CategoryCode = _helper.GetString(rdr, i++),
-                ParentId = _helper.GetInt(rdr, i++),
-                ParentsPath = _helper.GetString(rdr, i++),
-                ParentsCount = _helper.GetInt(rdr, i++),
-                ChildrenCount = _helper.GetInt(rdr, i++),
-                IsLastNode = _helper.GetBoolean(rdr, i++),
-                Taxis = _helper.GetInt(rdr, i++),
-                AddDate = _helper.GetDateTime(rdr, i++),
-                Summary = _helper.GetString(rdr, i++),
-                ContentNum = _helper.GetInt(rdr, i)
+                Id = Context.DatabaseApi.GetInt(rdr, i++),
+                SiteId = Context.DatabaseApi.GetInt(rdr, i++),
+                ClassCode = Context.DatabaseApi.GetString(rdr, i++),
+                CategoryName = Context.DatabaseApi.GetString(rdr, i++),
+                CategoryCode = Context.DatabaseApi.GetString(rdr, i++),
+                ParentId = Context.DatabaseApi.GetInt(rdr, i++),
+                ParentsPath = Context.DatabaseApi.GetString(rdr, i++),
+                ParentsCount = Context.DatabaseApi.GetInt(rdr, i++),
+                ChildrenCount = Context.DatabaseApi.GetInt(rdr, i++),
+                IsLastNode = Context.DatabaseApi.GetBoolean(rdr, i++),
+                Taxis = Context.DatabaseApi.GetInt(rdr, i++),
+                AddDate = Context.DatabaseApi.GetDateTime(rdr, i++),
+                Summary = Context.DatabaseApi.GetString(rdr, i++),
+                ContentNum = Context.DatabaseApi.GetInt(rdr, i)
             };
         }
     }

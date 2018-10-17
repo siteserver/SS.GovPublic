@@ -4,7 +4,7 @@ using SS.GovPublic.Model;
 
 namespace SS.GovPublic.Provider
 {
-    public class IdentifierSeqDao
+    public static class IdentifierSeqDao
 	{
         public const string TableName = "ss_govpublic_identifier_seq";
 
@@ -42,23 +42,14 @@ namespace SS.GovPublic.Provider
             }
         };
 
-        private readonly string _connectionString;
-        private readonly IDatabaseApi _helper;
-
-        public IdentifierSeqDao()
-        {
-            _connectionString = Context.ConnectionString;
-            _helper = Context.DatabaseApi;
-        }
-
-        public int GetSequence(int siteId, int channelId, int departmentId, int addYear, int ruleSequence)
+        public static int GetSequence(int siteId, int channelId, int departmentId, int addYear, int ruleSequence)
         {
             var sequence = 0;
 
             string sqlString =
                 $"SELECT {nameof(IdentifierSeqInfo.Sequence)} FROM {TableName} WHERE {nameof(IdentifierSeqInfo.SiteId)} = {siteId} AND {nameof(IdentifierSeqInfo.ChannelId)} = {channelId} AND {nameof(IdentifierSeqInfo.DepartmentId)} = {departmentId} AND {nameof(IdentifierSeqInfo.AddYear)} = {addYear}";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read() && !rdr.IsDBNull(0))
                 {
@@ -71,7 +62,7 @@ namespace SS.GovPublic.Provider
             {
                 sqlString =
                     $"UPDATE {TableName} SET {nameof(IdentifierSeqInfo.Sequence)} = {sequence} WHERE {nameof(IdentifierSeqInfo.SiteId)} = {siteId} AND {nameof(IdentifierSeqInfo.ChannelId)} = {channelId} AND {nameof(IdentifierSeqInfo.DepartmentId)} = {departmentId} AND {nameof(IdentifierSeqInfo.AddYear)} = {addYear}";
-                _helper.ExecuteNonQuery(_connectionString, sqlString);
+                Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString);
             }
             else
             {
@@ -80,7 +71,7 @@ namespace SS.GovPublic.Provider
                 sqlString =
                     $"INSERT INTO {TableName} ({nameof(IdentifierSeqInfo.SiteId)}, {nameof(IdentifierSeqInfo.ChannelId)}, {nameof(IdentifierSeqInfo.DepartmentId)}, {nameof(IdentifierSeqInfo.AddYear)}, {nameof(IdentifierSeqInfo.Sequence)}) VALUES ({siteId}, {channelId}, {departmentId}, {addYear}, {sequence})";
 
-                _helper.ExecuteNonQuery(_connectionString, sqlString);
+                Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString);
 
                 sequence += 1;
             }

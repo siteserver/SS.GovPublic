@@ -80,7 +80,7 @@ namespace SS.GovPublic.Pages
 
             if (_ruleId > 0)
             {
-                var ruleInfo = Main.IdentifierRuleDao.GetIdentifierRuleInfo(_ruleId);
+                var ruleInfo = IdentifierRuleDao.GetIdentifierRuleInfo(_ruleId);
                 if (ruleInfo != null)
                 {
                     TbRuleName.Text = ruleInfo.RuleName;
@@ -128,11 +128,11 @@ namespace SS.GovPublic.Pages
 
         public void Submit_OnClick(object sender, EventArgs e)
         {
-            var ruleInfoList = Main.IdentifierRuleDao.GetRuleInfoList(SiteId);
+            var ruleInfoList = IdentifierRuleDao.GetRuleInfoList(SiteId);
 				
 			if (_ruleId > 0)
 			{
-                var ruleInfo = Main.IdentifierRuleDao.GetIdentifierRuleInfo(_ruleId);
+                var ruleInfo = IdentifierRuleDao.GetIdentifierRuleInfo(_ruleId);
                 var identifierType = EIdentifierTypeUtils.GetEnumType(ruleInfo.IdentifierType);
 
                 ruleInfo.RuleName = TbRuleName.Text;
@@ -165,7 +165,7 @@ namespace SS.GovPublic.Pages
                     }
                 }
 
-                Main.IdentifierRuleDao.Update(ruleInfo);
+                IdentifierRuleDao.Update(ruleInfo);
             }
 			else
 			{
@@ -205,7 +205,7 @@ namespace SS.GovPublic.Pages
                     ruleInfo.IsSequenceYearZero = Utils.ToBool(DdlIsSequenceYearZero.SelectedValue);
                 }
 
-                Main.IdentifierRuleDao.Insert(ruleInfo);
+                IdentifierRuleDao.Insert(ruleInfo);
             }
 
             Utils.CloseModalPage(Page);

@@ -2,6 +2,7 @@
 using System.Web.UI.WebControls;
 using SS.GovPublic.Core;
 using SS.GovPublic.Model;
+using SS.GovPublic.Provider;
 
 namespace SS.GovPublic.Pages
 {
@@ -31,14 +32,14 @@ namespace SS.GovPublic.Pages
         public void Page_Load(object sender, EventArgs e)
         {
             var classCode = Request.QueryString["classCode"];
-            _categoryClassInfo = Main.CategoryClassDao.GetCategoryClassInfo(SiteId, classCode);
+            _categoryClassInfo = CategoryClassDao.GetCategoryClassInfo(SiteId, classCode);
 
             if (Request.QueryString["Delete"] != null && Request.QueryString["CategoryIDCollection"] != null)
             {
                 var categoryIdList = Request.QueryString["CategoryIDCollection"].Split(',');
                 foreach (var categoryId in categoryIdList)
                 {
-                    Main.CategoryDao.Delete(Utils.ToInt(categoryId));
+                    CategoryDao.Delete(Utils.ToInt(categoryId));
                 }
                 LtlMessage.Text = Utils.GetMessageHtml("成功删除所选节点", true);
             }
@@ -46,7 +47,7 @@ namespace SS.GovPublic.Pages
             {
                 var categoryId = Utils.ToInt(Request.QueryString["categoryId"]);
                 var isSubtract = Request.QueryString["subtract"] != null;
-                Main.CategoryDao.UpdateTaxis(SiteId, _categoryClassInfo.ClassCode, categoryId, isSubtract);
+                CategoryDao.UpdateTaxis(SiteId, _categoryClassInfo.ClassCode, categoryId, isSubtract);
 
                 Response.Redirect(GetRedirectUrl(SiteId, _categoryClassInfo.ClassCode, categoryId));
                 return;
@@ -77,7 +78,7 @@ namespace SS.GovPublic.Pages
             //            {"Delete", true.ToString()},
             //        }), "CategoryIDCollection", "CategoryIDCollection", "请选择需要删除的节点！", "此操作将删除对应节点以及所有下级节点，确认删除吗？"));
 
-            RptContents.DataSource = Main.CategoryDao.GetCategoryIdListByParentId(SiteId, _categoryClassInfo.ClassCode, 0);
+            RptContents.DataSource = CategoryDao.GetCategoryIdListByParentId(SiteId, _categoryClassInfo.ClassCode, 0);
             RptContents.ItemDataBound += RptContents_ItemDataBound;
             RptContents.DataBind();
         }
@@ -87,7 +88,7 @@ namespace SS.GovPublic.Pages
         public string GetScriptOnLoad(int currentCategoryId)
         {
             if (currentCategoryId == 0) return string.Empty;
-            var categoryInfo = Main.CategoryDao.GetCategoryInfo(currentCategoryId);
+            var categoryInfo = CategoryDao.GetCategoryInfo(currentCategoryId);
             if (categoryInfo == null) return string.Empty;
             string path;
             if (categoryInfo.ParentsCount <= 1)
@@ -105,7 +106,7 @@ namespace SS.GovPublic.Pages
         {
             var categoryId = (int)e.Item.DataItem;
 
-            var categoryInfo = Main.CategoryDao.GetCategoryInfo(categoryId);
+            var categoryInfo = CategoryDao.GetCategoryInfo(categoryId);
 
             var ltlHtml = (Literal)e.Item.FindControl("ltlHtml");
 

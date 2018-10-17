@@ -8,7 +8,7 @@ using SS.GovPublic.Model;
 
 namespace SS.GovPublic.Provider
 {
-    public class ContentDao
+    public static class ContentDao
     {
         public const string TableName = "ss_govpublic_content";
 
@@ -177,43 +177,34 @@ namespace SS.GovPublic.Provider
             }
         };
 
-        public string ConnectionString { get; }
-        public IDatabaseApi Helper { get; }
-
-        public ContentDao()
-        {
-            ConnectionString = Context.ConnectionString;
-            Helper = Context.DatabaseApi;
-        }
-
-        public int GetCountByDepartmentId(int siteId, int departmentId, DateTime begin, DateTime end)
+        public static int GetCountByDepartmentId(int siteId, int departmentId, DateTime begin, DateTime end)
         {
             string sqlString =
-                $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND DepartmentId = {departmentId} AND (AddDate BETWEEN {Helper.ToDateSqlString(begin)} AND {Helper.ToDateSqlString(end.AddDays(1))})";
-            return Main.Dao.GetIntResult(sqlString);
+                $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND DepartmentId = {departmentId} AND (AddDate BETWEEN {Context.DatabaseApi.ToDateSqlString(begin)} AND {Context.DatabaseApi.ToDateSqlString(end.AddDays(1))})";
+            return Dao.GetIntResult(sqlString);
         }
 
-        public int GetCountByDepartmentId(int siteId, int departmentId)
+        public static int GetCountByDepartmentId(int siteId, int departmentId)
         {
             string sqlString =
                 $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND DepartmentId = {departmentId}";
-            return Main.Dao.GetIntResult(sqlString);
+            return Dao.GetIntResult(sqlString);
         }
 
-        public int GetCountByDepartmentId(int siteId, int departmentId, int channelId, DateTime begin, DateTime end)
+        public static int GetCountByDepartmentId(int siteId, int departmentId, int channelId, DateTime begin, DateTime end)
         {
             var sqlString = channelId == 0
-                ? $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND DepartmentId = {departmentId} AND (AddDate BETWEEN {Helper.ToDateSqlString(begin)} AND {Helper.ToDateSqlString(end.AddDays(1))})"
-                : $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND ChannelId = {channelId} AND DepartmentId = {departmentId} AND (AddDate BETWEEN {Helper.ToDateSqlString(begin)} AND {Helper.ToDateSqlString(end.AddDays(1))})";
-            return Main.Dao.GetIntResult(sqlString);
+                ? $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND DepartmentId = {departmentId} AND (AddDate BETWEEN {Context.DatabaseApi.ToDateSqlString(begin)} AND {Context.DatabaseApi.ToDateSqlString(end.AddDays(1))})"
+                : $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND ChannelId = {channelId} AND DepartmentId = {departmentId} AND (AddDate BETWEEN {Context.DatabaseApi.ToDateSqlString(begin)} AND {Context.DatabaseApi.ToDateSqlString(end.AddDays(1))})";
+            return Dao.GetIntResult(sqlString);
         }
 
-        public int GetCount(int siteId, int channelId, DateTime begin, DateTime end)
+        public static int GetCount(int siteId, int channelId, DateTime begin, DateTime end)
         {
             var sqlString = channelId == 0
-                ? $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND (AddDate BETWEEN {Helper.ToDateSqlString(begin)} AND {Helper.ToDateSqlString(end.AddDays(1))})"
-                : $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND ChannelId = {channelId} AND (AddDate BETWEEN {Helper.ToDateSqlString(begin)} AND {Helper.ToDateSqlString(end.AddDays(1))})";
-            return Main.Dao.GetIntResult(sqlString);
+                ? $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND (AddDate BETWEEN {Context.DatabaseApi.ToDateSqlString(begin)} AND {Context.DatabaseApi.ToDateSqlString(end.AddDays(1))})"
+                : $"SELECT COUNT(*) AS TotalNum FROM {TableName} WHERE SiteId = {siteId} AND ChannelId = {channelId} AND (AddDate BETWEEN {Context.DatabaseApi.ToDateSqlString(begin)} AND {Context.DatabaseApi.ToDateSqlString(end.AddDays(1))})";
+            return Dao.GetIntResult(sqlString);
         }
 
         public static string GetIdentifierHtml(int siteId, int channelId, IAttributes attributes)
@@ -287,7 +278,7 @@ namespace SS.GovPublic.Provider
             Utils.SelectSingleItem(ddlDepartmentId, attributes.GetString(nameof(ContentAttribute.DepartmentId)));
             pairList.Add(new KeyValuePair<string, DropDownList>("机构", ddlDepartmentId));
 
-            var classInfoList = Main.CategoryClassDao.GetCategoryClassInfoList(siteId);
+            var classInfoList = CategoryClassDao.GetCategoryClassInfoList(siteId);
             foreach (var classInfo in classInfoList)
             {
                 if (classInfo.IsSystem || !classInfo.IsEnabled) continue;
@@ -300,11 +291,11 @@ namespace SS.GovPublic.Provider
                     ID = attributeName,
                     CssClass = "form-control"
                 };
-                var categoryIdList = Main.CategoryDao.GetCategoryIdList(siteId, classInfo.ClassCode);
+                var categoryIdList = CategoryDao.GetCategoryIdList(siteId, classInfo.ClassCode);
                 isLastNodeArray = new bool[categoryIdList.Count];
                 foreach (var categoryId in categoryIdList)
                 {
-                    var categoryInfo = Main.CategoryDao.GetCategoryInfo(categoryId);
+                    var categoryInfo = CategoryDao.GetCategoryInfo(categoryId);
                     var listItem = new ListItem(Utils.GetSelectOptionText(categoryInfo.CategoryName, categoryInfo.ParentsCount, categoryInfo.IsLastNode, isLastNodeArray), categoryInfo.Id.ToString());
                     ddlCategoryId.Items.Add(listItem);
                 }
@@ -367,7 +358,7 @@ $(document).ready(function () {
             }
             contentInfo.Set(nameof(ContentAttribute.DepartmentId), categoryDepartmentId.ToString());
 
-            var classInfoList = Main.CategoryClassDao.GetCategoryClassInfoList(siteId);
+            var classInfoList = CategoryClassDao.GetCategoryClassInfoList(siteId);
             foreach (var classInfo in classInfoList)
             {
                 if (classInfo.IsSystem || !classInfo.IsEnabled) continue;
@@ -379,7 +370,7 @@ $(document).ready(function () {
 
                 //if (attributeValue > 0)
                 //{
-                //    Main.CategoryDao.UpdateContentNum(PublishmentSystemInfo, categoryClassInfo.ContentAttributeName, categoryId);
+                //    CategoryDao.UpdateContentNum(PublishmentSystemInfo, categoryClassInfo.ContentAttributeName, categoryId);
                 //}
             }
 
@@ -401,7 +392,7 @@ $(document).ready(function () {
             }
         }
 
-        public void CreateIdentifier(int siteId, int parentChannelId, bool isAll)
+        public static void CreateIdentifier(int siteId, int parentChannelId, bool isAll)
         {
             var channelIdList = Main.ChannelApi.GetChannelIdList(siteId, parentChannelId);
             channelIdList.Add(parentChannelId);

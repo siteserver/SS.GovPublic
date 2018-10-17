@@ -8,18 +8,9 @@ using SS.GovPublic.Model;
 
 namespace SS.GovPublic.Provider
 {
-    public class DepartmentDao
+    public static class DepartmentDao
     {
-        private readonly string _connectionString;
-        private readonly IDatabaseApi _helper;
-
-        public DepartmentDao()
-        {
-            _connectionString = Context.ConnectionString;
-            _helper = Context.DatabaseApi;
-        }
-
-        private DepartmentInfo GetDepartmentInfo(int departmentId)
+        private static DepartmentInfo GetDepartmentInfo(int departmentId)
         {
             DepartmentInfo departmentInfo = null;
 
@@ -27,10 +18,10 @@ namespace SS.GovPublic.Provider
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(DepartmentInfo.Id), departmentId)
+                Context.DatabaseApi.GetParameter(nameof(DepartmentInfo.Id), departmentId)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters))
             {
                 if (rdr.Read())
                 {
@@ -41,7 +32,7 @@ namespace SS.GovPublic.Provider
             return departmentInfo;
         }
 
-        public string GetDepartmentCode(int departmentId)
+        public static string GetDepartmentCode(int departmentId)
         {
             if (departmentId > 0)
             {
@@ -88,12 +79,12 @@ namespace SS.GovPublic.Provider
             return departmentInfo;
         }
 
-        public List<DepartmentInfo> GetDepartmentInfoList()
+        public static List<DepartmentInfo> GetDepartmentInfoList()
         {
             var list = new List<DepartmentInfo>();
 
             var sqlString = "SELECT Id, DepartmentName, Code, ParentID, ParentsPath, ParentsCount, ChildrenCount, IsLastNode, Taxis, AddDate, Summary, CountOfAdmin FROM siteserver_Department ORDER BY TAXIS";
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 while (rdr.Read())
                 {
@@ -104,17 +95,17 @@ namespace SS.GovPublic.Provider
             return list;
         }
 
-        public List<int> GetDepartmentIdListByParentId(int parentId)
+        public static List<int> GetDepartmentIdListByParentId(int parentId)
         {
             string sqlString =
                 $@"SELECT Id FROM siteserver_Department WHERE ParentID = '{parentId}' ORDER BY Taxis";
             var list = new List<int>();
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 while (rdr.Read())
                 {
-                    var theDepartmentId = _helper.GetInt(rdr, 0);
+                    var theDepartmentId = Context.DatabaseApi.GetInt(rdr, 0);
                     list.Add(theDepartmentId);
                 }
                 rdr.Close();
@@ -123,7 +114,7 @@ namespace SS.GovPublic.Provider
             return list;
         }
 
-        public List<int> GetDepartmentIdListByDepartmentIdCollection(string departmentIdCollection)
+        public static List<int> GetDepartmentIdListByDepartmentIdCollection(string departmentIdCollection)
         {
             var list = new List<int>();
 
@@ -132,11 +123,11 @@ namespace SS.GovPublic.Provider
             string sqlString =
                 $@"SELECT Id FROM siteserver_Department WHERE Id IN ({departmentIdCollection})";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 while (rdr.Read())
                 {
-                    var theDepartmentId = _helper.GetInt(rdr, 0);
+                    var theDepartmentId = Context.DatabaseApi.GetInt(rdr, 0);
                     list.Add(theDepartmentId);
                 }
                 rdr.Close();
@@ -145,7 +136,7 @@ namespace SS.GovPublic.Provider
             return list;
         }
 
-        public List<int> GetDepartmentIdListByFirstDepartmentIdList(List<int> firstIdList)
+        public static List<int> GetDepartmentIdListByFirstDepartmentIdList(List<int> firstIdList)
         {
             var list = new List<int>();
 
@@ -161,11 +152,11 @@ namespace SS.GovPublic.Provider
             string sqlString =
                 $"SELECT Id FROM siteserver_Department WHERE {builder} ORDER BY Taxis";
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 while (rdr.Read())
                 {
-                    var departmentId = _helper.GetInt(rdr, 0);
+                    var departmentId = Context.DatabaseApi.GetInt(rdr, 0);
                     list.Add(departmentId);
                 }
                 rdr.Close();
@@ -174,7 +165,7 @@ namespace SS.GovPublic.Provider
             return list;
         }
 
-        public List<int> GetDepartmentIdListForDescendant(int departmentId)
+        public static List<int> GetDepartmentIdListForDescendant(int departmentId)
         {
             string sqlString = $@"SELECT Id
 FROM siteserver_Department
@@ -185,11 +176,11 @@ WHERE (ParentsPath LIKE '{departmentId},%') OR
 ";
             var list = new List<int>();
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 while (rdr.Read())
                 {
-                    var theDepartmentId = _helper.GetInt(rdr, 0);
+                    var theDepartmentId = Context.DatabaseApi.GetInt(rdr, 0);
                     list.Add(theDepartmentId);
                 }
                 rdr.Close();
@@ -198,7 +189,7 @@ WHERE (ParentsPath LIKE '{departmentId},%') OR
             return list;
         }
 
-        public List<KeyValuePair<int, DepartmentInfo>> GetDepartmentInfoKeyValuePair()
+        public static List<KeyValuePair<int, DepartmentInfo>> GetDepartmentInfoKeyValuePair()
         {
             var list = new List<KeyValuePair<int, DepartmentInfo>>();
 

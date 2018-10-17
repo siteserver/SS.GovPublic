@@ -2,6 +2,7 @@
 using System.Web.UI.WebControls;
 using SS.GovPublic.Core;
 using SS.GovPublic.Model;
+using SS.GovPublic.Provider;
 
 namespace SS.GovPublic.Pages
 {
@@ -21,7 +22,7 @@ namespace SS.GovPublic.Pages
             if (Request.QueryString["Delete"] != null)
             {
                 var ruleId = Utils.ToInt(Request.QueryString["RuleID"]);
-                Main.IdentifierRuleDao.Delete(ruleId);
+                IdentifierRuleDao.Delete(ruleId);
                 LtlMessage.Text = Utils.GetMessageHtml("成功删除规则", true);
             }
             else if ((Request.QueryString["Up"] != null || Request.QueryString["Down"] != null) && Request.QueryString["RuleID"] != null)
@@ -30,11 +31,11 @@ namespace SS.GovPublic.Pages
                 var isDown = Request.QueryString["Down"] != null;
                 if (isDown)
                 {
-                    Main.IdentifierRuleDao.UpdateTaxisToUp(ruleId, SiteId);
+                    IdentifierRuleDao.UpdateTaxisToUp(ruleId, SiteId);
                 }
                 else
                 {
-                    Main.IdentifierRuleDao.UpdateTaxisToDown(ruleId, SiteId);
+                    IdentifierRuleDao.UpdateTaxisToDown(ruleId, SiteId);
                 }
             }
 
@@ -42,7 +43,7 @@ namespace SS.GovPublic.Pages
 
             LtlPreview.Text = PublicManager.GetPreviewIdentifier(SiteId);
 
-            DgContents.DataSource = Main.IdentifierRuleDao.GetRuleInfoList(SiteId);
+            DgContents.DataSource = IdentifierRuleDao.GetRuleInfoList(SiteId);
             DgContents.ItemDataBound += DgContents_ItemDataBound;
             DgContents.DataBind();
 

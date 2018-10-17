@@ -5,7 +5,7 @@ using SS.GovPublic.Model;
 
 namespace SS.GovPublic.Provider
 {
-    public class IdentifierRuleDao
+    public static class IdentifierRuleDao
 	{
         public const string TableName = "ss_govpublic_identifier_rule";
 
@@ -83,16 +83,7 @@ namespace SS.GovPublic.Provider
             }
         };
 
-        private readonly string _connectionString;
-        private readonly IDatabaseApi _helper;
-
-        public IdentifierRuleDao()
-        {
-            _connectionString = Context.ConnectionString;
-            _helper = Context.DatabaseApi;
-        }
-
-        public int Insert(IdentifierRuleInfo ruleInfo)
+        public static int Insert(IdentifierRuleInfo ruleInfo)
         {
             ruleInfo.Taxis = GetMaxTaxis(ruleInfo.SiteId) + 1;
 
@@ -127,24 +118,24 @@ namespace SS.GovPublic.Provider
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(IdentifierRuleInfo.SiteId), ruleInfo.SiteId),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.RuleName), ruleInfo.RuleName),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.IdentifierType), ruleInfo.IdentifierType),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.MinLength), ruleInfo.MinLength),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.Suffix), ruleInfo.Suffix),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.FormatString), ruleInfo.FormatString),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.AttributeName), ruleInfo.AttributeName),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.Sequence), ruleInfo.Sequence),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.Taxis), ruleInfo.Taxis),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.IsSequenceChannelZero), ruleInfo.IsSequenceChannelZero),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.IsSequenceDepartmentZero), ruleInfo.IsSequenceDepartmentZero),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.IsSequenceYearZero), ruleInfo.IsSequenceYearZero)
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.SiteId), ruleInfo.SiteId),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.RuleName), ruleInfo.RuleName),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.IdentifierType), ruleInfo.IdentifierType),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.MinLength), ruleInfo.MinLength),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.Suffix), ruleInfo.Suffix),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.FormatString), ruleInfo.FormatString),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.AttributeName), ruleInfo.AttributeName),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.Sequence), ruleInfo.Sequence),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.Taxis), ruleInfo.Taxis),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.IsSequenceChannelZero), ruleInfo.IsSequenceChannelZero),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.IsSequenceDepartmentZero), ruleInfo.IsSequenceDepartmentZero),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.IsSequenceYearZero), ruleInfo.IsSequenceYearZero)
             };
 
-            return _helper.ExecuteNonQueryAndReturnId(TableName, nameof(IdentifierRuleInfo.Id), _connectionString, sqlString, parameters);
+            return Context.DatabaseApi.ExecuteNonQueryAndReturnId(TableName, nameof(IdentifierRuleInfo.Id), Context.ConnectionString, sqlString, parameters);
         }
 
-        public void Update(IdentifierRuleInfo ruleInfo) 
+        public static void Update(IdentifierRuleInfo ruleInfo) 
 		{
             var sqlString = $@"UPDATE {TableName} SET
                 {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(IdentifierRuleInfo.SiteId)},
@@ -163,37 +154,37 @@ namespace SS.GovPublic.Provider
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(IdentifierRuleInfo.SiteId), ruleInfo.SiteId),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.RuleName), ruleInfo.RuleName),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.IdentifierType), ruleInfo.IdentifierType),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.MinLength), ruleInfo.MinLength),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.Suffix), ruleInfo.Suffix),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.FormatString), ruleInfo.FormatString),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.AttributeName), ruleInfo.AttributeName),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.Sequence), ruleInfo.Sequence),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.Taxis), ruleInfo.Taxis),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.IsSequenceChannelZero), ruleInfo.IsSequenceChannelZero),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.IsSequenceDepartmentZero), ruleInfo.IsSequenceDepartmentZero),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.IsSequenceYearZero), ruleInfo.IsSequenceYearZero),
-                _helper.GetParameter(nameof(IdentifierRuleInfo.Id), ruleInfo.Id)
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.SiteId), ruleInfo.SiteId),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.RuleName), ruleInfo.RuleName),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.IdentifierType), ruleInfo.IdentifierType),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.MinLength), ruleInfo.MinLength),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.Suffix), ruleInfo.Suffix),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.FormatString), ruleInfo.FormatString),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.AttributeName), ruleInfo.AttributeName),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.Sequence), ruleInfo.Sequence),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.Taxis), ruleInfo.Taxis),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.IsSequenceChannelZero), ruleInfo.IsSequenceChannelZero),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.IsSequenceDepartmentZero), ruleInfo.IsSequenceDepartmentZero),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.IsSequenceYearZero), ruleInfo.IsSequenceYearZero),
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.Id), ruleInfo.Id)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters);
         }
 
-		public void Delete(int ruleId)
+		public static void Delete(int ruleId)
 		{
             var sqlString = $"DELETE FROM {TableName} WHERE {nameof(IdentifierRuleInfo.Id)} = @{nameof(IdentifierRuleInfo.Id)}";
 
             var parameters = new[]
 			{
-                _helper.GetParameter(nameof(IdentifierRuleInfo.Id), ruleId)
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.Id), ruleId)
             };
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString, parameters);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString, parameters);
         }
 
-        public IdentifierRuleInfo GetIdentifierRuleInfo(int ruleId)
+        public static IdentifierRuleInfo GetIdentifierRuleInfo(int ruleId)
 		{
             IdentifierRuleInfo ruleInfo = null;
 
@@ -215,10 +206,10 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.Id)} = @{nameof(IdentifierRule
 
             var parameters = new[]
 			{
-                _helper.GetParameter(nameof(IdentifierRuleInfo.Id), ruleId)
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.Id), ruleId)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters))
             {
                 if (rdr.Read())
                 {
@@ -230,7 +221,7 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.Id)} = @{nameof(IdentifierRule
             return ruleInfo;
 		}
 
-        public List<IdentifierRuleInfo> GetRuleInfoList(int siteId)
+        public static List<IdentifierRuleInfo> GetRuleInfoList(int siteId)
         {
             var list = new List<IdentifierRuleInfo>();
 
@@ -252,10 +243,10 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
 
             var parameters = new[]
             {
-                _helper.GetParameter(nameof(IdentifierRuleInfo.SiteId), siteId)
+                Context.DatabaseApi.GetParameter(nameof(IdentifierRuleInfo.SiteId), siteId)
             };
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString, parameters))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString, parameters))
             {
                 while (rdr.Read())
                 {
@@ -312,11 +303,11 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
             return list;
         }
 
-        public bool UpdateTaxisToUp(int ruleId, int siteId)
+        public static bool UpdateTaxisToUp(int ruleId, int siteId)
         {
             //string sqlString =
             //    $"SELECT TOP 1 RuleID, Taxis FROM wcm_GovPublicIdentifierRule WHERE ((Taxis > (SELECT Taxis FROM wcm_GovPublicIdentifierRule WHERE RuleID = {ruleId})) AND SiteId ={siteId}) ORDER BY Taxis";
-            var sqlString = _helper.GetPageSqlString(TableName,
+            var sqlString = Context.DatabaseApi.GetPageSqlString(TableName,
                 $"{nameof(IdentifierRuleInfo.Id)}, {nameof(IdentifierRuleInfo.Taxis)}",
                 $"WHERE (({nameof(IdentifierRuleInfo.Taxis)} > (SELECT {nameof(IdentifierRuleInfo.Taxis)} FROM {TableName} WHERE {nameof(IdentifierRuleInfo.Id)} = {ruleId})) AND {nameof(IdentifierRuleInfo.SiteId)} ={siteId})",
                 $"ORDER BY {nameof(IdentifierRuleInfo.Taxis)}", 0, 1);
@@ -324,7 +315,7 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
             var higherRuleId = 0;
             var higherTaxis = 0;
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read())
                 {
@@ -345,11 +336,11 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
             return false;
         }
 
-        public bool UpdateTaxisToDown(int ruleId, int siteId)
+        public static bool UpdateTaxisToDown(int ruleId, int siteId)
         {
             //string sqlString =
             //    $"SELECT TOP 1 RuleID, Taxis FROM wcm_GovPublicIdentifierRule WHERE ((Taxis < (SELECT Taxis FROM wcm_GovPublicIdentifierRule WHERE RuleID = {ruleId})) AND SiteId = {siteId}) ORDER BY Taxis DESC";
-            var sqlString = _helper.GetPageSqlString(TableName,
+            var sqlString = Context.DatabaseApi.GetPageSqlString(TableName,
                 $"{nameof(IdentifierRuleInfo.Id)}, {nameof(IdentifierRuleInfo.Taxis)}",
                 $"WHERE (({nameof(IdentifierRuleInfo.Taxis)} < (SELECT {nameof(IdentifierRuleInfo.Taxis)} FROM {TableName} WHERE {nameof(IdentifierRuleInfo.Id)} = {ruleId})) AND {nameof(IdentifierRuleInfo.SiteId)} = {siteId})",
                 $"ORDER BY {nameof(IdentifierRuleInfo.Taxis)} DESC", 0, 1);
@@ -357,7 +348,7 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
             var lowerRuleId = 0;
             var lowerTaxis = 0;
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read())
                 {
@@ -378,19 +369,19 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
             return false;
         }
 
-        private int GetMaxTaxis(int siteId)
+        private static int GetMaxTaxis(int siteId)
         {
             var sqlString =
                 $"SELECT MAX({nameof(IdentifierRuleInfo.Taxis)}) FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = {siteId}";
-            return Main.Dao.GetIntResult(sqlString);
+            return Dao.GetIntResult(sqlString);
         }
 
-        private int GetTaxis(int ruleId)
+	    private static int GetTaxis(int ruleId)
         {
             string sqlString = $"SELECT {nameof(IdentifierRuleInfo.Taxis)} FROM {TableName} WHERE {nameof(IdentifierRuleInfo.Id)} = {ruleId}";
             var taxis = 0;
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 if (rdr.Read())
                 {
@@ -402,31 +393,31 @@ FROM {TableName} WHERE {nameof(IdentifierRuleInfo.SiteId)} = @{nameof(Identifier
             return taxis;
         }
 
-        private void SetTaxis(int ruleId, int taxis)
+	    private static void SetTaxis(int ruleId, int taxis)
         {
             string sqlString = $"UPDATE {TableName} SET {nameof(IdentifierRuleInfo.Taxis)} = {taxis} WHERE {nameof(IdentifierRuleInfo.Id)} = {ruleId}";
-            _helper.ExecuteNonQuery(_connectionString, sqlString);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString);
         }
 
-        private IdentifierRuleInfo GetIdentifierRuleInfo(IDataReader rdr)
+	    private static IdentifierRuleInfo GetIdentifierRuleInfo(IDataReader rdr)
         {
             if (rdr == null) return null;
             var i = 0;
             return new IdentifierRuleInfo
             {
-                Id = _helper.GetInt(rdr, i++),
-                SiteId = _helper.GetInt(rdr, i++),
-                RuleName = _helper.GetString(rdr, i++),
-                IdentifierType = _helper.GetString(rdr, i++),
-                MinLength = _helper.GetInt(rdr, i++),
-                Suffix = _helper.GetString(rdr, i++),
-                FormatString = _helper.GetString(rdr, i++),
-                AttributeName = _helper.GetString(rdr, i++),
-                Sequence = _helper.GetInt(rdr, i++),
-                Taxis = _helper.GetInt(rdr, i++),
-                IsSequenceChannelZero = _helper.GetBoolean(rdr, i++),
-                IsSequenceDepartmentZero = _helper.GetBoolean(rdr, i++),
-                IsSequenceYearZero = _helper.GetBoolean(rdr, i)
+                Id = Context.DatabaseApi.GetInt(rdr, i++),
+                SiteId = Context.DatabaseApi.GetInt(rdr, i++),
+                RuleName = Context.DatabaseApi.GetString(rdr, i++),
+                IdentifierType = Context.DatabaseApi.GetString(rdr, i++),
+                MinLength = Context.DatabaseApi.GetInt(rdr, i++),
+                Suffix = Context.DatabaseApi.GetString(rdr, i++),
+                FormatString = Context.DatabaseApi.GetString(rdr, i++),
+                AttributeName = Context.DatabaseApi.GetString(rdr, i++),
+                Sequence = Context.DatabaseApi.GetInt(rdr, i++),
+                Taxis = Context.DatabaseApi.GetInt(rdr, i++),
+                IsSequenceChannelZero = Context.DatabaseApi.GetBoolean(rdr, i++),
+                IsSequenceDepartmentZero = Context.DatabaseApi.GetBoolean(rdr, i++),
+                IsSequenceYearZero = Context.DatabaseApi.GetBoolean(rdr, i)
             };
         }
     }
