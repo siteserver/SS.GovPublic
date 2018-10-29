@@ -16,7 +16,6 @@ namespace SS.GovPublic
         public static IPluginApi PluginApi => Context.PluginApi;
         public static IUtilsApi UtilsApi => Context.UtilsApi;
         public static IConfigApi ConfigApi => Context.ConfigApi;
-        public static IRequest Request => Context.Request;
 
         public override void Startup(IService service)
         {

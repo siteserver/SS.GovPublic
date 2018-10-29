@@ -27,11 +27,10 @@ namespace SS.GovPublic.Pages
         {
             base.OnInit(e);
 
-            AuthRequest = Main.Request;
+            AuthRequest = SiteServer.Plugin.Context.GetCurrentRequest();
+            SiteId = AuthRequest.GetQueryInt("siteId");
 
-            SiteId = Convert.ToInt32(Request.QueryString["siteId"]);
-
-            if (!Main.Request.AdminPermissions.HasSitePermissions(SiteId, Main.PluginId))
+            if (!AuthRequest.AdminPermissions.HasSitePermissions(SiteId, Main.PluginId))
             {
                 HttpContext.Current.Response.Write("<h1>未授权访问</h1>");
                 HttpContext.Current.Response.End();
