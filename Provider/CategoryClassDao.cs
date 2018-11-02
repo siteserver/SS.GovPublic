@@ -14,7 +14,9 @@ namespace SS.GovPublic.Provider
             new TableColumn
             {
                 AttributeName = nameof(CategoryClassInfo.Id),
-                DataType = DataType.Integer
+                DataType = DataType.Integer,
+                IsPrimaryKey = true,
+                IsIdentity = true
             },
             new TableColumn
             {

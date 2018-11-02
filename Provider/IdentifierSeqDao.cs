@@ -13,7 +13,9 @@ namespace SS.GovPublic.Provider
             new TableColumn
             {
                 AttributeName = nameof(IdentifierSeqInfo.Id),
-                DataType = DataType.Integer
+                DataType = DataType.Integer,
+                IsPrimaryKey = true,
+                IsIdentity = true
             },
             new TableColumn
             {
