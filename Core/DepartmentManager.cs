@@ -1,122 +1,96 @@
-﻿using System;
+﻿using SS.GovPublic.Core;
+using SS.GovPublic.Core.Model;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SS.GovPublic.Model;
-using SS.GovPublic.Provider;
+using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core
 {
-    public class DepartmentManager
+    public static class DepartmentManager
     {
-        public static DepartmentInfo GetDepartmentInfo(int departmentId)
+        private static class DepartmentManagerCache
         {
-            var pairList = GetDepartmentInfoKeyValuePair();
-
-            foreach (var pair in pairList)
+            private static readonly object LockObject = new object();
+            private static string GetCacheKey(int siteId)
             {
-                if (pair.Key == departmentId)
+                return $"SS.GovPublic.Core.DepartmentManager.{siteId}";
+            }
+
+            public static List<DepartmentInfo> GetDepartmentInfoListByCache(int siteId)
+            {
+                var cacheKey = GetCacheKey(siteId);
+                var departmentInfoList = CacheUtils.Get<List<DepartmentInfo>>(cacheKey);
+                if (departmentInfoList != null) return departmentInfoList;
+
+                lock (LockObject)
                 {
-                    return pair.Value;
+                    departmentInfoList = CacheUtils.Get<List<DepartmentInfo>>(cacheKey);
+                    if (departmentInfoList == null)
+                    {
+                        departmentInfoList = Main.DepartmentRepository.GetDepartmentInfoList(siteId);
+
+                        CacheUtils.InsertHours(cacheKey, departmentInfoList, 12);
+                    }
                 }
-            }
-            return null;
-        }
 
-        public static string GetThisDepartmentName(int departmentId)
-        {
-            var departmentInfo = GetDepartmentInfo(departmentId);
-            if (departmentInfo != null)
+                return departmentInfoList;
+            }
+
+            public static void Clear(int siteId)
             {
-                return departmentInfo.DepartmentName;
+                var cacheKey = GetCacheKey(siteId);
+                CacheUtils.Remove(cacheKey);
             }
-            return string.Empty;
         }
 
-        public static string GetDepartmentName(int departmentId)
+        public static List<DepartmentInfo> GetDepartmentInfoList(int siteId)
         {
-            if (departmentId <= 0) return string.Empty;
+            return DepartmentManagerCache.GetDepartmentInfoListByCache(siteId);
+        }
 
-            var departmentNameList = new List<string>();
-
-            var parentsPath = GetParentsPath(departmentId);
+        public static List<int> GetDepartmentIdList(int siteId)
+        {
             var departmentIdList = new List<int>();
-            if (!string.IsNullOrEmpty(parentsPath))
+            var departmentInfoList = DepartmentManagerCache.GetDepartmentInfoListByCache(siteId);
+            foreach (var departmentInfo in departmentInfoList)
             {
-                departmentIdList = Utils.StringCollectionToIntList(parentsPath);
+                departmentIdList.Add(departmentInfo.Id);
             }
-            departmentIdList.Add(departmentId);
 
-            foreach (var theDepartmentId in departmentIdList)
+            return departmentIdList;
+        }
+
+        public static List<int> GetDepartmentIdList(int siteId, string userName)
+        {
+            var departmentIdList = new List<int>();
+            var departmentInfoList = DepartmentManagerCache.GetDepartmentInfoListByCache(siteId);
+            foreach (var departmentInfo in departmentInfoList)
             {
-                var departmentInfo = GetDepartmentInfo(theDepartmentId);
-                if (departmentInfo != null)
+                if (StringUtils.In(departmentInfo.UserNames, userName))
                 {
-                    departmentNameList.Add(departmentInfo.DepartmentName);
+                    departmentIdList.Add(departmentInfo.Id);
                 }
             }
 
-            return Utils.ObjectCollectionToString(departmentNameList, " > ");
+            return departmentIdList;
         }
 
-        public static string GetDepartmentCode(int departmentId)
+        public static DepartmentInfo GetDepartmentInfo(int siteId, int departmentId)
         {
-            if (departmentId > 0)
-            {
-                var departmentInfo = GetDepartmentInfo(departmentId);
-                if (departmentInfo != null)
-                {
-                    return departmentInfo.Code;
-                }
-            }
-            return string.Empty;
+            var entries = DepartmentManagerCache.GetDepartmentInfoListByCache(siteId);
+
+            return entries.FirstOrDefault(x => x != null && x.Id == departmentId);
         }
 
-        public static string GetParentsPath(int departmentId)
+        public static string GetDepartmentCode(int siteId, int departmentId)
         {
-            var retval = string.Empty;
-            var departmentInfo = GetDepartmentInfo(departmentId);
-            if (departmentInfo != null)
-            {
-                retval = departmentInfo.ParentsPath;
-            }
-            return retval;
+            var departmentInfo = GetDepartmentInfo(siteId, departmentId);
+            return departmentInfo?.DepartmentCode;
         }
 
-        public static List<int> GetDepartmentIdList()
+        public static void ClearCache(int siteId)
         {
-            var pairList = GetDepartmentInfoKeyValuePair();
-            var list = new List<int>();
-            foreach (var pair in pairList)
-            {
-                list.Add(pair.Key);
-            }
-            return list;
+            DepartmentManagerCache.Clear(siteId);
         }
-
-        public static void ClearCache()
-        {
-            CacheUtils.Remove(CacheKey);
-        }
-
-        public static List<KeyValuePair<int, DepartmentInfo>> GetDepartmentInfoKeyValuePair()
-        {
-            lock (LockObject)
-            {
-                if (CacheUtils.Get(CacheKey) == null)
-                {
-                    var list = DepartmentDao.GetDepartmentInfoKeyValuePair();
-                    CacheUtils.Max(CacheKey, list);
-                    return list;
-                }
-                return CacheUtils.Get(CacheKey) as List<KeyValuePair<int, DepartmentInfo>>;
-            }
-        }
-
-        /****************** Cache *********************/
-
-        private static readonly object LockObject = new object();
-        private const string CacheKey = "SS.GovPublic.Core.DepartmentManager";
     }
 }

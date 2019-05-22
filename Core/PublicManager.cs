@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using SiteServer.Plugin;
-using SS.GovPublic.Model;
-using SS.GovPublic.Provider;
+using SS.GovPublic.Core.Model;
+using SS.GovPublic.Core.Provider;
+using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core
 {
@@ -35,7 +36,7 @@ namespace SS.GovPublic.Core
         {
             var builder = new StringBuilder();
 
-            var ruleInfoList = IdentifierRuleDao.GetRuleInfoList(siteId);
+            var ruleInfoList = Main.IdentifierRuleRepository.GetRuleInfoList(siteId);
             foreach (var ruleInfo in ruleInfoList)
             {
                 var identifierType = EIdentifierTypeUtils.GetEnumType(ruleInfo.IdentifierType);
@@ -105,13 +106,13 @@ namespace SS.GovPublic.Core
         public static bool IsIdentifierChanged(int siteId, int channelId, int departmentId, DateTime effectDate, IContentInfo contentInfo)
         {
             var isIdentifierChanged = false;
-            var ruleInfoList = IdentifierRuleDao.GetRuleInfoList(siteId);
+            var ruleInfoList = Main.IdentifierRuleRepository.GetRuleInfoList(siteId);
             foreach (var ruleInfo in ruleInfoList)
             {
                 var identifierType = EIdentifierTypeUtils.GetEnumType(ruleInfo.IdentifierType);
                 if (identifierType == EIdentifierType.Department)
                 {
-                    if (contentInfo.GetInt(nameof(ContentAttribute.DepartmentId)) != departmentId)
+                    if (contentInfo.Get<int>(nameof(ContentAttribute.DepartmentId)) != departmentId)
                     {
                         isIdentifierChanged = true;
                     }
@@ -125,7 +126,7 @@ namespace SS.GovPublic.Core
                 }
                 else if (identifierType == EIdentifierType.Attribute)
                 {
-                    if (Utils.EqualsIgnoreCase(ruleInfo.AttributeName, ContentAttribute.EffectDate) && Utils.ToDateTime(contentInfo.GetString(ruleInfo.AttributeName)) != effectDate)
+                    if (GovPublicUtils.EqualsIgnoreCase(ruleInfo.AttributeName, ContentAttribute.EffectDate) && TranslateUtils.ToDateTime(contentInfo.Get<string>(ruleInfo.AttributeName)) != effectDate)
                     {
                         isIdentifierChanged = true;
                     }
@@ -139,13 +140,13 @@ namespace SS.GovPublic.Core
             var builder = new StringBuilder();
             var nodeInfo = Main.ChannelApi.GetChannelInfo(siteId, channelId);
 
-            var ruleInfoList = IdentifierRuleDao.GetRuleInfoList(siteId);
+            var ruleInfoList = Main.IdentifierRuleRepository.GetRuleInfoList(siteId);
             foreach (var ruleInfo in ruleInfoList)
             {
                 var identifierType = EIdentifierTypeUtils.GetEnumType(ruleInfo.IdentifierType);
                 if (identifierType == EIdentifierType.Department)
                 {
-                    var departmentCode = DepartmentManager.GetDepartmentCode(departmentId);
+                    var departmentCode = DepartmentManager.GetDepartmentCode(siteId, departmentId);
                     if (ruleInfo.MinLength > 0)
                     {
                         builder.Append(departmentCode.PadLeft(ruleInfo.MinLength, '0')).Append(ruleInfo.Suffix);
@@ -171,7 +172,7 @@ namespace SS.GovPublic.Core
                 {
                     if (ruleInfo.AttributeName == ContentAttribute.AbolitionDate || ruleInfo.AttributeName == ContentAttribute.EffectDate || ruleInfo.AttributeName == ContentAttribute.PublishDate || ruleInfo.AttributeName == nameof(IContentInfo.AddDate))
                     {
-                        var dateTime = Utils.ToDateTime(contentInfo.GetString(ruleInfo.AttributeName));
+                        var dateTime = TranslateUtils.ToDateTime(contentInfo.Get<string>(ruleInfo.AttributeName));
                         if (ruleInfo.MinLength > 0)
                         {
                             builder.Append(dateTime.ToString(ruleInfo.FormatString).PadLeft(ruleInfo.MinLength, '0')).Append(ruleInfo.Suffix);
@@ -183,7 +184,7 @@ namespace SS.GovPublic.Core
                     }
                     else
                     {
-                        var attributeValue = contentInfo.GetString(ruleInfo.AttributeName);
+                        var attributeValue = contentInfo.Get<string>(ruleInfo.AttributeName);
                         if (ruleInfo.MinLength > 0)
                         {
                             builder.Append(attributeValue.PadLeft(ruleInfo.MinLength, '0')).Append(ruleInfo.Suffix);
@@ -208,12 +209,12 @@ namespace SS.GovPublic.Core
                         targetDepartmentId = departmentId;
                     }
                     var targetAddYear = 0;
-                    if (ruleInfo.IsSequenceYearZero)
+                    if (ruleInfo.IsSequenceYearZero && contentInfo.AddDate != null)
                     {
-                        targetAddYear = contentInfo.AddDate.Year;
+                        targetAddYear = contentInfo.AddDate.Value.Year;
                     }
 
-                    var sequence = IdentifierSeqDao.GetSequence(targetSiteId, targetChannelId, targetDepartmentId, targetAddYear, ruleInfo.Sequence);
+                    var sequence = Main.IdentifierSeqRepository.GetSequence(targetSiteId, targetChannelId, targetDepartmentId, targetAddYear, ruleInfo.Sequence);
 
                     if (ruleInfo.MinLength > 0)
                     {

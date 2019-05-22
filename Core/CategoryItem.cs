@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 using SiteServer.Plugin;
-using SS.GovPublic.Model;
+using SS.GovPublic.Core.Model;
 
 namespace SS.GovPublic.Core
 {

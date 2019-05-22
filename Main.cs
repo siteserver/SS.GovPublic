@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using SiteServer.Plugin;
-using SS.GovPublic.Model;
-using SS.GovPublic.Pages;
-using SS.GovPublic.Provider;
+using SS.GovPublic.Core.Model;
+using SS.GovPublic.Core.Pages;
+using SS.GovPublic.Core.Provider;
 
 namespace SS.GovPublic
 {
@@ -17,16 +17,31 @@ namespace SS.GovPublic
         public static IUtilsApi UtilsApi => Context.UtilsApi;
         public static IConfigApi ConfigApi => Context.ConfigApi;
 
+        public static ContentRepository ContentRepository { get; private set; }
+        public static CategoryClassRepository CategoryClassRepository { get; private set; }
+        public static CategoryRepository CategoryRepository { get; private set; }
+        public static DepartmentRepository DepartmentRepository { get; private set; }
+        public static IdentifierRuleRepository IdentifierRuleRepository { get; private set; }
+        public static IdentifierSeqRepository IdentifierSeqRepository { get; private set; }
+
         public override void Startup(IService service)
         {
             PluginId = Id;
 
+            ContentRepository = new ContentRepository();
+            CategoryClassRepository = new CategoryClassRepository();
+            CategoryRepository = new CategoryRepository();
+            DepartmentRepository = new DepartmentRepository();
+            IdentifierRuleRepository = new IdentifierRuleRepository();
+            IdentifierSeqRepository = new IdentifierSeqRepository();
+
             service
-                .AddContentModel(ContentDao.TableName, ContentDao.Columns)
-                .AddDatabaseTable(CategoryClassDao.TableName, CategoryClassDao.Columns)
-                .AddDatabaseTable(CategoryDao.TableName, CategoryDao.Columns)
-                .AddDatabaseTable(IdentifierRuleDao.TableName, IdentifierRuleDao.Columns)
-                .AddDatabaseTable(IdentifierSeqDao.TableName, IdentifierSeqDao.Columns)
+                .AddContentModel(ContentRepository.TableName, ContentRepository.TableColumns, ContentRepository.InputStyles)
+                .AddDatabaseTable(CategoryClassRepository.TableName, CategoryClassRepository.TableColumns)
+                .AddDatabaseTable(CategoryRepository.TableName, CategoryRepository.TableColumns)
+                .AddDatabaseTable(DepartmentRepository.TableName, DepartmentRepository.TableColumns)
+                .AddDatabaseTable(IdentifierRuleRepository.TableName, IdentifierRuleRepository.TableColumns)
+                .AddDatabaseTable(IdentifierSeqRepository.TableName, IdentifierSeqRepository.TableColumns)
                 .AddSiteMenu(siteId => new Menu
                 {
                     Text = "主动信息公开",
@@ -36,17 +51,17 @@ namespace SS.GovPublic
                         new Menu
                         {
                             Text = "信息采集",
-                            Href = PageMain.GetRedirectUrl(siteId, $"@/cms/pageContentAdd.aspx?siteId={siteId}")
+                            Href = PageMain.GetRedirectUrl(siteId, UtilsApi.GetAdminUrl($"cms/pageContentAdd.aspx?siteId={siteId}"))
                         },
                         new Menu
                         {
                             Text = "信息管理",
-                            Href = PageMain.GetRedirectUrl(siteId, $"@/cms/pageContentSearch.aspx?siteId={siteId}")
+                            Href = PageMain.GetRedirectUrl(siteId, UtilsApi.GetAdminUrl($"cms/pageContentSearch.aspx?siteId={siteId}"))
                         },
                         new Menu
                         {
                             Text = "信息审核",
-                            Href = PageMain.GetRedirectUrl(siteId, $"@/cms/pageContentSearch.aspx?isCheckOnly=true&siteId={siteId}")
+                            Href = PageMain.GetRedirectUrl(siteId, UtilsApi.GetAdminUrl($"cms/pageContentSearch.aspx?isCheckOnly=true&siteId={siteId}"))
                         },
                         new Menu
                         {
@@ -83,14 +98,13 @@ namespace SS.GovPublic
 
         private string Service_ContentFormLoad(object sender, ContentFormLoadEventArgs e)
         { 
-            if(e.AttributeName == ContentAttribute.Identifier)
+            if(e.AttributeName == ContentAttribute.Identifier && e.Form.TryGetValue(ContentAttribute.Identifier, out var identifier))
             {
-                var identifier = e.Form.GetString(nameof(ContentAttribute.Identifier));
                 return $@"
 <div class=""form-group form-row"">
     <label class=""col-sm-1 col-form-label text-right"">信息分类</label>
     <div class=""col-sm-10"">
-        {ContentDao.GetCategoriesHtml(e.SiteId, e.ChannelId, e.Form)}
+        {ContentRepository.GetCategoriesHtml(e.SiteId, e.ChannelId, e.Form)}
     </div>
     <div class=""col-sm-1"">
        
@@ -114,7 +128,7 @@ namespace SS.GovPublic
 
         private void Service_ContentFormSubmited(object sender, ContentFormSubmitEventArgs e)
         {
-            ContentDao.ContentFormSubmited(e.SiteId, e.ChannelId, e.ContentInfo, e.Form);
+            ContentRepository.ContentFormSubmited(e.SiteId, e.ChannelId, e.ContentInfo, e.Form);
         }
     }
 }
