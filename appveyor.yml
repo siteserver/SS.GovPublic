@@ -27,10 +27,10 @@
     - packages -> **\packages.config
 
   before_build:
-    - dotnet restore SS.GovPublic.Core.sln
+    - dotnet restore SS.GovPublic.sln
 
   build:
-    project: SS.GovPublic.Core.sln # path to Visual Studio solution or project
+    project: SS.GovPublic.sln # path to Visual Studio solution or project
     publish_nuget: true
 
   deploy:
@@ -71,10 +71,10 @@
     - packages -> **\packages.config
 
   before_build:
-    - dotnet restore SS.GovPublic.Core.sln
+    - dotnet restore SS.GovPublic.sln
 
   build:
-    project: SS.GovPublic.Core.sln # path to Visual Studio solution or project
+    project: SS.GovPublic.sln # path to Visual Studio solution or project
     publish_nuget: true
 
   deploy:
