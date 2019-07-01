@@ -20,12 +20,12 @@ namespace SS.GovPublic.Core.Pages
 
         public static string GetOpenWindowStringToAdd(int siteId, string classCode)
         {
-            return GovPublicUtils.GetOpenLayerString("添加节点", $"{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}", 500, 460);
+            return GovPublicUtils.GetOpenLayerString("添加节点", GovPublicUtils.GetPluginUrl($"pages/{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}"), 500, 460);
         }
 
         public static string GetOpenWindowStringToEdit(int siteId, string classCode, int categoryId)
         {
-            return GovPublicUtils.GetOpenLayerString("修改节点", $"{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}&categoryId={categoryId}", 520, 460);
+            return GovPublicUtils.GetOpenLayerString("修改节点", GovPublicUtils.GetPluginUrl($"pages/{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}&categoryId={categoryId}"), 520, 460);
         }
 
 		public void Page_Load(object sender, EventArgs e)

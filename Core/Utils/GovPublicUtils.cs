@@ -13,6 +13,11 @@ namespace SS.GovPublic.Core.Utils
     {
         public const string HidePopWin = "window.parent.layer.closeAll();";
 
+        public static string GetPluginUrl(string url)
+        {
+            return Main.PluginApi.GetPluginUrl(Main.PluginId, url);
+        }
+
         public static string GetMessageHtml(string message, bool isSuccess)
         {
             return isSuccess

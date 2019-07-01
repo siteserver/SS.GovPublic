@@ -2,6 +2,7 @@
 using System.Text;
 using SiteServer.Plugin;
 using SS.GovPublic.Core.Model;
+using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core
 {
@@ -349,7 +350,7 @@ $(document).ready(function(){{
 
         public static string GetLoadingGovPublicCategoriesUrl(int siteId)
         {
-            return $"AjaxService.aspx?siteId={siteId}&type={TypeGetLoadingGovPublicCategories}";
+            return GovPublicUtils.GetPluginUrl($"pages/AjaxService.aspx?siteId={siteId}&type={TypeGetLoadingGovPublicCategories}");
         }
 
         public static string GetLoadingGovPublicCategoriesParameters(int siteId, string classCode, ECategoryLoadingType loadingType)

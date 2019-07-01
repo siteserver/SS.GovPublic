@@ -20,13 +20,13 @@ namespace SS.GovPublic.Core.Pages
 
         public static string GetRedirectUrl(int siteId, string classCode)
         {
-            return $"{nameof(PageCategory)}.aspx?siteId={siteId}&classCode={classCode}";
+            return GovPublicUtils.GetPluginUrl($"pages/{nameof(PageCategory)}.aspx?siteId={siteId}&classCode={classCode}");
         }
 
         public static string GetRedirectUrl(int siteId, string classCode, int currentCategoryId)
         {
             return currentCategoryId != 0
-                ? $"{nameof(PageCategory)}.aspx?siteId={siteId}&classCode={classCode}&currentCategoryId={currentCategoryId}"
+                ? GovPublicUtils.GetPluginUrl($"pages/{nameof(PageCategory)}.aspx?siteId={siteId}&classCode={classCode}&currentCategoryId={currentCategoryId}")
                 : GetRedirectUrl(siteId, classCode);
         }
 

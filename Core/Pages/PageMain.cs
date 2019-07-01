@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web;
+using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core.Pages
 {
@@ -7,7 +8,7 @@ namespace SS.GovPublic.Core.Pages
     {
         public static string GetRedirectUrl(int siteId, string linkUrl)
         {
-            return $"pages/{nameof(PageMain)}.aspx?siteId={siteId}&linkUrl={HttpUtility.UrlEncode(linkUrl)}";
+            return GovPublicUtils.GetPluginUrl($"pages/{nameof(PageMain)}.aspx?siteId={siteId}&linkUrl={HttpUtility.UrlEncode(linkUrl)}");
         }
 
         public string ContentModelPluginId => Main.PluginId;

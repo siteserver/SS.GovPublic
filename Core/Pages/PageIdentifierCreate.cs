@@ -12,7 +12,7 @@ namespace SS.GovPublic.Core.Pages
 
         public static string GetRedirectUrl(int siteId)
         {
-            return $"pages/{nameof(PageIdentifierCreate)}.aspx?siteId={siteId}";
+            return GovPublicUtils.GetPluginUrl($"pages/{nameof(PageIdentifierCreate)}.aspx?siteId={siteId}");
         }
 
         public void Page_Load(object sender, EventArgs e)
