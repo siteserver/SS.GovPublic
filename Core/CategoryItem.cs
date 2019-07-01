@@ -349,7 +349,7 @@ $(document).ready(function(){{
 
         public static string GetLoadingGovPublicCategoriesUrl(int siteId)
         {
-            return $"AjaxService.aspx?siteId={siteId}&type={TypeGetLoadingGovPublicCategories}";
+            return Utils.GetPluginUrl($"pages/AjaxService.aspx?siteId={siteId}&type={TypeGetLoadingGovPublicCategories}");
         }
 
         public static string GetLoadingGovPublicCategoriesParameters(int siteId, string classCode, ECategoryLoadingType loadingType)

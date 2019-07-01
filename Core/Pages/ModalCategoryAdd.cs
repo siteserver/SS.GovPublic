@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-using SS.GovPublic.Core;
 using SS.GovPublic.Core.Model;
-using SS.GovPublic.Core.Provider;
 
 namespace SS.GovPublic.Core.Pages
 {
@@ -19,12 +17,12 @@ namespace SS.GovPublic.Core.Pages
 
         public static string GetOpenWindowStringToAdd(int siteId, string classCode)
         {
-            return Utils.GetOpenLayerString("添加节点", $"{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}", 500, 460);
+            return Utils.GetOpenLayerString("添加节点", Utils.GetPluginUrl($"pages/{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}"), 500, 460);
         }
 
         public static string GetOpenWindowStringToEdit(int siteId, string classCode, int categoryId)
         {
-            return Utils.GetOpenLayerString("修改节点", $"{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}&categoryId={categoryId}", 520, 460);
+            return Utils.GetOpenLayerString("修改节点", Utils.GetPluginUrl($"pages/{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}&categoryId={categoryId}"), 520, 460);
         }
 
 		public void Page_Load(object sender, EventArgs e)

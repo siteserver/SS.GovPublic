@@ -22,7 +22,8 @@ namespace SS.GovPublic.Core.Pages
 
         public static string GetRedirectUrl(int siteId, string redirectUrl)
         {
-            return $"pages/{nameof(PageInit)}.aspx?siteId={siteId}&redirectUrl={HttpUtility.UrlEncode(redirectUrl)}";
+            return Utils.GetPluginUrl(
+                $"pages/pages/{nameof(PageInit)}.aspx?siteId={siteId}&redirectUrl={HttpUtility.UrlEncode(redirectUrl)}");
         }
 
         public void Page_Load(object sender, EventArgs e)

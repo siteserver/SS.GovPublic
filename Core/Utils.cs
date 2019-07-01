@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using SiteServer.Plugin;
 
 namespace SS.GovPublic.Core
 {
@@ -14,6 +15,11 @@ namespace SS.GovPublic.Core
         public const string PluginId = "SS.GovPublic";
 
         public const string HidePopWin = "window.parent.layer.closeAll();";
+
+        public static string GetPluginUrl(string url)
+        {
+            return Context.PluginApi.GetPluginUrl(PluginId, url);
+        }
 
         public static string GetMessageHtml(string message, bool isSuccess)
         {

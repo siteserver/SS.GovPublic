@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Web.UI.WebControls;
-using SS.GovPublic.Core;
 using SS.GovPublic.Core.Model;
-using SS.GovPublic.Core.Provider;
 
 namespace SS.GovPublic.Core.Pages
 {
@@ -13,7 +11,7 @@ namespace SS.GovPublic.Core.Pages
 
         public static string GetRedirectUrl(int siteId)
         {
-            return $"{nameof(PageCategoryClass)}.aspx?siteId={siteId}";
+            return Utils.GetPluginUrl($"pages/{nameof(PageCategoryClass)}.aspx?siteId={siteId}");
         }
 
         public void Page_Load(object sender, EventArgs e)

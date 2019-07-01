@@ -18,7 +18,7 @@ namespace SS.GovPublic.Core.Pages
 
         public static string GetRedirectUrl(int siteId)
         {
-            return $"{nameof(PageAnalysis)}.aspx?siteId={siteId}";
+            return Utils.GetPluginUrl($"pages/{nameof(PageAnalysis)}.aspx?siteId={siteId}");
         }
 
         public void Page_Load(object sender, EventArgs e)

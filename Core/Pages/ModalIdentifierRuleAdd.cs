@@ -28,12 +28,12 @@ namespace SS.GovPublic.Core.Pages
 
         public static string GetOpenWindowStringToAdd(int siteId)
         {
-            return Utils.GetOpenLayerString("添加规则", $"{nameof(ModalIdentifierRuleAdd)}.aspx?siteId={siteId}", 520, 640);
+            return Utils.GetOpenLayerString("添加规则", Utils.GetPluginUrl($"pages/{nameof(ModalIdentifierRuleAdd)}.aspx?siteId={siteId}"), 520, 640);
         }
 
         public static string GetOpenWindowStringToEdit(int siteId, int ruleId)
         {
-            return Utils.GetOpenLayerString("修改规则", $"{nameof(ModalIdentifierRuleAdd)}.aspx?siteId={siteId}&ruleId={ruleId}", 520, 640);
+            return Utils.GetOpenLayerString("修改规则", Utils.GetPluginUrl($"pages/{nameof(ModalIdentifierRuleAdd)}.aspx?siteId={siteId}&ruleId={ruleId}"), 520, 640);
         }
 
         public void Page_Load(object sender, EventArgs e)

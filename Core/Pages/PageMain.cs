@@ -7,7 +7,7 @@ namespace SS.GovPublic.Core.Pages
     {
         public static string GetRedirectUrl(int siteId, string linkUrl)
         {
-            return $"pages/{nameof(PageMain)}.aspx?siteId={siteId}&linkUrl={HttpUtility.UrlEncode(linkUrl)}";
+            return Utils.GetPluginUrl($"pages/{nameof(PageMain)}.aspx?siteId={siteId}&linkUrl={HttpUtility.UrlEncode(linkUrl)}");
         }
 
         public string ContentModelPluginId => Utils.PluginId;

@@ -17,12 +17,12 @@ namespace SS.GovPublic.Core.Pages
 
         public static string GetOpenWindowStringToAdd(int siteId)
         {
-            return Utils.GetOpenLayerString("添加分类法", $"{nameof(ModalCategoryClassAdd)}.aspx?siteId={siteId}", 300, 460);
+            return Utils.GetOpenLayerString("添加分类法", Utils.GetPluginUrl($"pages/{nameof(ModalCategoryClassAdd)}.aspx?siteId={siteId}"), 300, 460);
         }
 
         public static string GetOpenWindowStringToEdit(int siteId, int classId)
         {
-            return Utils.GetOpenLayerString("编辑分类法", $"{nameof(ModalCategoryClassAdd)}.aspx?siteId={siteId}&classId={classId}", 300, 460);
+            return Utils.GetOpenLayerString("编辑分类法", Utils.GetPluginUrl($"pages/{nameof(ModalCategoryClassAdd)}.aspx?siteId={siteId}&classId={classId}"), 300, 460);
         }
 
         public void Page_Load(object sender, EventArgs e)
