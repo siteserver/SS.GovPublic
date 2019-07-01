@@ -3,7 +3,6 @@ using System.Web.UI.WebControls;
 using SS.GovPublic.Core;
 using SS.GovPublic.Core.Model;
 using SS.GovPublic.Core.Provider;
-using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core.Pages
 {
@@ -27,11 +26,11 @@ namespace SS.GovPublic.Core.Pages
                 try
                 {
                     Main.CategoryClassRepository.Delete(id);
-                    LtlMessage.Text = GovPublicUtils.GetMessageHtml("成功删除分类法", true);
+                    LtlMessage.Text = Utils.GetMessageHtml("成功删除分类法", true);
                 }
                 catch (Exception ex)
                 {
-                    LtlMessage.Text = GovPublicUtils.GetMessageHtml($"删除分类法失败，{ex.Message}", false);
+                    LtlMessage.Text = Utils.GetMessageHtml($"删除分类法失败，{ex.Message}", false);
                 }
             }
             else if ((Request.QueryString["Up"] != null || Request.QueryString["Down"] != null) && Request.QueryString["ClassCode"] != null)

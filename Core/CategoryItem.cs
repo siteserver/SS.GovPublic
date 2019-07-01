@@ -89,7 +89,7 @@ namespace SS.GovPublic.Core
 
         private CategoryTreeItem()
         {
-            var treeDirectoryUrl = Main.UtilsApi.GetAdminUrl("assets/icons/tree/");
+            var treeDirectoryUrl = Context.UtilsApi.GetAdminUrl("assets/icons/tree/");
             _iconFolderUrl = treeDirectoryUrl + "folder.gif";
             _iconEmptyUrl = treeDirectoryUrl + "empty.gif";
             _iconMinusUrl = treeDirectoryUrl + "minus.png";
@@ -326,7 +326,7 @@ function loadingChannelsOnLoad(paths){{
             script = script.Replace("{iconMinusUrl}", item._iconMinusUrl);
             script = script.Replace("{iconPlusUrl}", item._iconPlusUrl);
 
-            script = script.Replace("{iconLoadingUrl}",Main.UtilsApi.GetAdminUrl("assets/icons/loading.gif"));
+            script = script.Replace("{iconLoadingUrl}", Context.UtilsApi.GetAdminUrl("assets/icons/loading.gif"));
 
             script = script.Replace("loadingChannels", $"loadingChannels_{classCode}");
             script = script.Replace("displayChildren", $"displayChildren_{classCode}");

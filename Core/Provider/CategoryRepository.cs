@@ -5,7 +5,6 @@ using Datory;
 using SiteServer.Plugin;
 using SS.GovPublic.Core;
 using SS.GovPublic.Core.Model;
-using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core.Provider
 {
@@ -71,7 +70,7 @@ namespace SS.GovPublic.Core.Provider
 
             if (!string.IsNullOrEmpty(categoryInfo.ParentsPath) || categoryInfo.ParentsPath != "0")
             {
-                _repository.Increment(Attr.ChildrenCount, Q.WhereIn(Attr.Id, GovPublicUtils.StringCollectionToIntList(categoryInfo.ParentsPath)));
+                _repository.Increment(Attr.ChildrenCount, Q.WhereIn(Attr.Id, Utils.StringCollectionToIntList(categoryInfo.ParentsPath)));
             }
 
             // var sqlString =
@@ -188,7 +187,7 @@ namespace SS.GovPublic.Core.Provider
         {
             if (string.IsNullOrEmpty(parentsPath)) return;
 
-            _repository.Decrement(Attr.ChildrenCount, Q.WhereIn(Attr.Id, GovPublicUtils.StringCollectionToIntList(parentsPath)), subtractNum);
+            _repository.Decrement(Attr.ChildrenCount, Q.WhereIn(Attr.Id, Utils.StringCollectionToIntList(parentsPath)), subtractNum);
 
             // string sqlString =
             //     $"UPDATE {TableName} SET {nameof(CategoryInfo.ChildrenCount)} = {nameof(CategoryInfo.ChildrenCount)} - {subtractNum} WHERE {nameof(CategoryInfo.Id)} IN ({parentsPath})";

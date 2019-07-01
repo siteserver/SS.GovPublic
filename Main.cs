@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SiteServer.Plugin;
+using SS.GovPublic.Core;
 using SS.GovPublic.Core.Model;
 using SS.GovPublic.Core.Pages;
 using SS.GovPublic.Core.Provider;
@@ -8,15 +9,6 @@ namespace SS.GovPublic
 {
     public class Main : PluginBase
     {
-        public static string PluginId { get; private set; }
-
-        public static IAdminApi AdminApi => Context.AdminApi;
-        public static IContentApi ContentApi => Context.ContentApi;
-        public static IChannelApi ChannelApi => Context.ChannelApi;
-        public static IPluginApi PluginApi => Context.PluginApi;
-        public static IUtilsApi UtilsApi => Context.UtilsApi;
-        public static IConfigApi ConfigApi => Context.ConfigApi;
-
         public static ContentRepository ContentRepository { get; private set; }
         public static CategoryClassRepository CategoryClassRepository { get; private set; }
         public static CategoryRepository CategoryRepository { get; private set; }
@@ -26,8 +18,6 @@ namespace SS.GovPublic
 
         public override void Startup(IService service)
         {
-            PluginId = Id;
-
             ContentRepository = new ContentRepository();
             CategoryClassRepository = new CategoryClassRepository();
             CategoryRepository = new CategoryRepository();
@@ -51,17 +41,17 @@ namespace SS.GovPublic
                         new Menu
                         {
                             Text = "信息采集",
-                            Href = PageMain.GetRedirectUrl(siteId, UtilsApi.GetAdminUrl($"cms/pageContentAdd.aspx?siteId={siteId}"))
+                            Href = PageMain.GetRedirectUrl(siteId, Context.UtilsApi.GetAdminUrl($"cms/pageContentAdd.aspx?siteId={siteId}"))
                         },
                         new Menu
                         {
                             Text = "信息管理",
-                            Href = PageMain.GetRedirectUrl(siteId, UtilsApi.GetAdminUrl($"cms/pageContentSearch.aspx?siteId={siteId}"))
+                            Href = PageMain.GetRedirectUrl(siteId, Context.UtilsApi.GetAdminUrl($"cms/contents.cshtml?siteId={siteId}"))
                         },
                         new Menu
                         {
                             Text = "信息审核",
-                            Href = PageMain.GetRedirectUrl(siteId, UtilsApi.GetAdminUrl($"cms/pageContentSearch.aspx?isCheckOnly=true&siteId={siteId}"))
+                            Href = PageMain.GetRedirectUrl(siteId, Context.UtilsApi.GetAdminUrl($"cms/pageContentSearch.aspx?isCheckOnly=true&siteId={siteId}"))
                         },
                         new Menu
                         {
@@ -80,6 +70,11 @@ namespace SS.GovPublic
                         },
                         new Menu
                         {
+                            Text = "部门设置",
+                            Href = "pages/departments.html"
+                        },
+                        new Menu
+                        {
                             Text = "信息公开设置",
                             Href = PageInit.GetRedirectUrl(siteId, PageSettings.GetRedirectUrl(siteId))
                         },
@@ -93,14 +88,15 @@ namespace SS.GovPublic
 
             service.ContentFormSubmit += Service_ContentFormSubmited; // 页面提交处理函数
             service.ContentFormLoad += Service_ContentFormLoad; // // 页面加载处理函数
-
         }
 
         private string Service_ContentFormLoad(object sender, ContentFormLoadEventArgs e)
-        { 
-            if(e.AttributeName == ContentAttribute.Identifier && e.Form.TryGetValue(ContentAttribute.Identifier, out var identifier))
-            {
-                return $@"
+        {
+            if (!StringUtils.EqualsIgnoreCase(e.AttributeName,  ContentAttribute.Identifier)) return null;
+
+            e.Form.TryGetValue(ContentAttribute.Identifier, out var identifier);
+
+            return $@"
 <div class=""form-group form-row"">
     <label class=""col-sm-1 col-form-label text-right"">信息分类</label>
     <div class=""col-sm-10"">
@@ -121,9 +117,7 @@ namespace SS.GovPublic
     </div>
 </div>
                     ";
-            }
 
-            return null;
         }
 
         private void Service_ContentFormSubmited(object sender, ContentFormSubmitEventArgs e)

@@ -5,7 +5,6 @@ using System.Web.UI.WebControls;
 using SiteServer.Plugin;
 using SS.GovPublic.Core.Model;
 using Datory;
-using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core.Provider
 {
@@ -286,15 +285,15 @@ namespace SS.GovPublic.Core.Provider
                 ID = "categoryChannelId",
                 CssClass = "form-control"
             };
-            var channelIdList = Main.ChannelApi.GetChannelIdList(siteId);
+            var channelIdList = Context.ChannelApi.GetChannelIdList(siteId);
             var nodeCount = channelIdList.Count;
             var isLastNodeArray = new bool[nodeCount];
             foreach (var theChannelId in channelIdList)
             {
-                var nodeInfo = Main.ChannelApi.GetChannelInfo(siteId, theChannelId);
-                var listItem = new ListItem(GovPublicUtils.GetSelectOptionText(nodeInfo.ChannelName, nodeInfo.ParentsCount, nodeInfo.LastNode, isLastNodeArray),
+                var nodeInfo = Context.ChannelApi.GetChannelInfo(siteId, theChannelId);
+                var listItem = new ListItem(Utils.GetSelectOptionText(nodeInfo.ChannelName, nodeInfo.ParentsCount, nodeInfo.LastNode, isLastNodeArray),
                     nodeInfo.Id.ToString());
-                if (nodeInfo.ContentModelPluginId != Main.PluginId)
+                if (nodeInfo.ContentModelPluginId != Utils.PluginId)
                 {
                     listItem.Value = "0";
                     listItem.Attributes.Add("disabled", "disabled");
@@ -302,7 +301,7 @@ namespace SS.GovPublic.Core.Provider
                 }
                 ddlChannelId.Items.Add(listItem);
             }
-            GovPublicUtils.SelectSingleItem(ddlChannelId, channelId.ToString());
+            Utils.SelectSingleItem(ddlChannelId, channelId.ToString());
             pairList.Add(new KeyValuePair<string, DropDownList>("主题", ddlChannelId));
 
             var ddlDepartmentId = new DropDownList
@@ -318,7 +317,7 @@ namespace SS.GovPublic.Core.Provider
                 ddlDepartmentId.Items.Add(listItem);
             }
 
-            GovPublicUtils.SelectSingleItem(ddlDepartmentId, TranslateUtils.Get<int>(attributes, ContentAttribute.DepartmentId).ToString());
+            Utils.SelectSingleItem(ddlDepartmentId, TranslateUtils.Get<int>(attributes, ContentAttribute.DepartmentId).ToString());
             pairList.Add(new KeyValuePair<string, DropDownList>("机构", ddlDepartmentId));
 
 
@@ -340,10 +339,10 @@ namespace SS.GovPublic.Core.Provider
                 foreach (var categoryId in categoryIdList)
                 {
                     var categoryInfo = Main.CategoryRepository.GetCategoryInfo(categoryId);
-                    var listItem = new ListItem(GovPublicUtils.GetSelectOptionText(categoryInfo.CategoryName, categoryInfo.ParentsCount, categoryInfo.IsLastNode, isLastNodeArray), categoryInfo.Id.ToString());
+                    var listItem = new ListItem(Utils.GetSelectOptionText(categoryInfo.CategoryName, categoryInfo.ParentsCount, categoryInfo.IsLastNode, isLastNodeArray), categoryInfo.Id.ToString());
                     ddlCategoryId.Items.Add(listItem);
                 }
-                GovPublicUtils.SelectSingleItem(ddlCategoryId, attributeValue);
+                Utils.SelectSingleItem(ddlCategoryId, attributeValue);
                 pairList.Add(new KeyValuePair<string, DropDownList>(classInfo.ClassName, ddlCategoryId));
             }
 
@@ -360,9 +359,9 @@ namespace SS.GovPublic.Core.Provider
                     count = 0;
                 }
                 builder.Append($@"
-<div class=""col-xs-2 control-label"">{keyValuePair.Key}分类</div>
+<div class=""col-xs-2 control-label mt-2"">{keyValuePair.Key}分类</div>
 <div class=""col-xs-4"">
-    {GovPublicUtils.GetControlRenderHtml(keyValuePair.Value)}
+    {Utils.GetControlRenderHtml(keyValuePair.Value)}
 </div>
 ");
                 count++;
@@ -438,7 +437,7 @@ $(document).ready(function () {
 
         public void CreateIdentifier(int siteId, int parentChannelId, bool isAll)
         {
-            var channelIdList = Main.ChannelApi.GetChannelIdList(siteId, parentChannelId);
+            var channelIdList = Context.ChannelApi.GetChannelIdList(siteId, parentChannelId);
             channelIdList.Add(parentChannelId);
             foreach (var channelId in channelIdList)
             {

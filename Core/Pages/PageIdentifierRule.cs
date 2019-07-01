@@ -3,7 +3,6 @@ using System.Web.UI.WebControls;
 using SS.GovPublic.Core;
 using SS.GovPublic.Core.Model;
 using SS.GovPublic.Core.Provider;
-using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core.Pages
 {
@@ -15,7 +14,7 @@ namespace SS.GovPublic.Core.Pages
 
         public static string GetRedirectUrl(int siteId)
         {
-            return $"pages/{nameof(PageIdentifierRule)}.aspx?siteId={siteId}";
+            return $"{nameof(PageIdentifierRule)}.aspx?siteId={siteId}";
         }
 
         public void Page_Load(object sender, EventArgs e)
@@ -24,7 +23,7 @@ namespace SS.GovPublic.Core.Pages
             {
                 var ruleId = TranslateUtils.ToInt(Request.QueryString["RuleID"]);
                 Main.IdentifierRuleRepository.Delete(ruleId);
-                LtlMessage.Text = GovPublicUtils.GetMessageHtml("成功删除规则", true);
+                LtlMessage.Text = Utils.GetMessageHtml("成功删除规则", true);
             }
             else if ((Request.QueryString["Up"] != null || Request.QueryString["Down"] != null) && Request.QueryString["RuleID"] != null)
             {

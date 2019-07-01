@@ -3,22 +3,20 @@ using System.Collections.Generic;
 using System.Text;
 using SiteServer.Plugin;
 using SS.GovPublic.Core.Model;
-using SS.GovPublic.Core.Provider;
-using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core
 {
-	public class PublicManager
+	public static class PublicManager
 	{
         public static List<IChannelInfo> GetPublicChannelInfoList(int siteId)
         {
             var channelInfoList = new List<IChannelInfo>();
 
-            var channelIdList = Main.ChannelApi.GetChannelIdList(siteId);
+            var channelIdList = Context.ChannelApi.GetChannelIdList(siteId);
             foreach (var channelId in channelIdList)
             {
-                var channelInfo = Main.ChannelApi.GetChannelInfo(siteId, channelId);
-                if (channelInfo.ContentModelPluginId == Main.PluginId)
+                var channelInfo = Context.ChannelApi.GetChannelInfo(siteId, channelId);
+                if (channelInfo.ContentModelPluginId == Utils.PluginId)
                 {
                     channelInfoList.Add(channelInfo);
                 }
@@ -126,7 +124,7 @@ namespace SS.GovPublic.Core
                 }
                 else if (identifierType == EIdentifierType.Attribute)
                 {
-                    if (GovPublicUtils.EqualsIgnoreCase(ruleInfo.AttributeName, ContentAttribute.EffectDate) && TranslateUtils.ToDateTime(contentInfo.Get<string>(ruleInfo.AttributeName)) != effectDate)
+                    if (Utils.EqualsIgnoreCase(ruleInfo.AttributeName, ContentAttribute.EffectDate) && TranslateUtils.ToDateTime(contentInfo.Get<string>(ruleInfo.AttributeName)) != effectDate)
                     {
                         isIdentifierChanged = true;
                     }
@@ -137,8 +135,11 @@ namespace SS.GovPublic.Core
 
         public static string GetIdentifier(int siteId, int channelId, int departmentId, IContentInfo contentInfo)
         {
+            if (contentInfo == null) return string.Empty;
+            var channelInfo = Context.ChannelApi.GetChannelInfo(siteId, channelId);
+            if (channelInfo == null) return string.Empty;
+
             var builder = new StringBuilder();
-            var nodeInfo = Main.ChannelApi.GetChannelInfo(siteId, channelId);
 
             var ruleInfoList = Main.IdentifierRuleRepository.GetRuleInfoList(siteId);
             foreach (var ruleInfo in ruleInfoList)
@@ -158,7 +159,7 @@ namespace SS.GovPublic.Core
                 }
                 else if (identifierType == EIdentifierType.Channel)
                 {
-                    var channelCode = nodeInfo.IndexName;
+                    var channelCode = channelInfo.Id.ToString();
                     if (ruleInfo.MinLength > 0)
                     {
                         builder.Append(channelCode.PadLeft(ruleInfo.MinLength, '0')).Append(ruleInfo.Suffix);
@@ -201,7 +202,7 @@ namespace SS.GovPublic.Core
                     var targetChannelId = 0;
                     if (ruleInfo.IsSequenceChannelZero)
                     {
-                        targetChannelId = nodeInfo.Id;
+                        targetChannelId = channelInfo.Id;
                     }
                     var targetDepartmentId = 0;
                     if (ruleInfo.IsSequenceDepartmentZero)

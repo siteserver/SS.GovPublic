@@ -1,6 +1,4 @@
-﻿using SS.GovPublic.Core.Utils;
-
-namespace SS.GovPublic.Core
+﻿namespace SS.GovPublic.Core
 {
     public class AlertUtils
     {
@@ -14,7 +12,7 @@ namespace SS.GovPublic.Core
 event && event.preventDefault();
 swal({{
   title: '{title}',
-  text: '{GovPublicUtils.ReplaceNewline(text, string.Empty)}',
+  text: '{Utils.ReplaceNewline(text, string.Empty)}',
   icon: 'error',
   button: '关 闭',
 }});";
@@ -38,7 +36,7 @@ swal({{
 event && event.preventDefault();
 swal({{
   title: '{title}',
-  text: '{GovPublicUtils.ReplaceNewline(text, string.Empty)}',
+  text: '{Utils.ReplaceNewline(text, string.Empty)}',
   icon: 'success',
   button: '{button}',
 }}){scripts};";
@@ -51,7 +49,7 @@ swal({{
 event && event.preventDefault();
 swal({{
   title: '{title}',
-  text: '{GovPublicUtils.ReplaceNewline(text, string.Empty)}',
+  text: '{Utils.ReplaceNewline(text, string.Empty)}',
   icon: 'warning',
   buttons: {{
     cancel: '{btnCancel}',
@@ -82,7 +80,7 @@ swal({{
 event && event.preventDefault();
 swal({{
   title: '{title}',
-  text: '{GovPublicUtils.ReplaceNewline(text, string.Empty)}',
+  text: '{Utils.ReplaceNewline(text, string.Empty)}',
   icon: 'warning',
   buttons: {{
 cancel: {{

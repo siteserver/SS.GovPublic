@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using SS.GovPublic.Core;
-using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core.Pages
 {
@@ -19,11 +18,11 @@ namespace SS.GovPublic.Core.Pages
         private string _redirectUrl;
 
         public string UrlModalChannelSelect
-            => Main.UtilsApi.GetAdminUrl($"cms/modalchannelselect.aspx?siteId={SiteId}");
+            => SiteServer.Plugin.Context.UtilsApi.GetAdminUrl($"cms/modalchannelselect.aspx?siteId={SiteId}");
 
         public static string GetRedirectUrl(int siteId, string redirectUrl)
         {
-            return $"{nameof(PageInit)}.aspx?siteId={siteId}&redirectUrl={HttpUtility.UrlEncode(redirectUrl)}";
+            return $"pages/{nameof(PageInit)}.aspx?siteId={siteId}&redirectUrl={HttpUtility.UrlEncode(redirectUrl)}";
         }
 
         public void Page_Load(object sender, EventArgs e)
@@ -32,7 +31,7 @@ namespace SS.GovPublic.Core.Pages
             SiteId = request.GetQueryInt("siteId");
             _redirectUrl = request.GetQueryString("redirectUrl");
 
-            if (!request.AdminPermissions.HasSitePermissions(SiteId, Main.PluginId))
+            if (!request.AdminPermissions.HasSitePermissions(SiteId, Utils.PluginId))
             {
                 HttpContext.Current.Response.Write("<h1>未授权访问</h1>");
                 HttpContext.Current.Response.End();
@@ -52,10 +51,10 @@ namespace SS.GovPublic.Core.Pages
         private List<string> GetChannelIndexList()
         {
             var indexList = new List<string>();
-            var channelIdList = Main.ChannelApi.GetChannelIdList(SiteId);
+            var channelIdList = SiteServer.Plugin.Context.ChannelApi.GetChannelIdList(SiteId);
             foreach (var channelId in channelIdList)
             {
-                var channelInfo = Main.ChannelApi.GetChannelInfo(SiteId, channelId);
+                var channelInfo = SiteServer.Plugin.Context.ChannelApi.GetChannelInfo(SiteId, channelId);
                 if (!string.IsNullOrEmpty(channelInfo?.IndexName))
                 {
                     if (!indexList.Contains(channelInfo.IndexName))
@@ -93,7 +92,7 @@ namespace SS.GovPublic.Core.Pages
                     if (string.IsNullOrEmpty(item)) continue;
 
                     //count为栏目的级别
-                    var count = (GovPublicUtils.GetStartCount('－', item) == 0) ? GovPublicUtils.GetStartCount('-', item) : GovPublicUtils.GetStartCount('－', item);
+                    var count = (Utils.GetStartCount('－', item) == 0) ? Utils.GetStartCount('-', item) : Utils.GetStartCount('－', item);
                     var channelName = item.Substring(count, item.Length - count);
                     var channelIndex = string.Empty;
                     count++;
@@ -105,7 +104,7 @@ namespace SS.GovPublic.Core.Pages
                             channelIndex = channelName.Trim();
                         }
 
-                        if (GovPublicUtils.Contains(channelName, "(") && GovPublicUtils.Contains(channelName, ")"))
+                        if (Utils.Contains(channelName, "(") && Utils.Contains(channelName, ")"))
                         {
                             var length = channelName.IndexOf(')') - channelName.IndexOf('(');
                             if (length > 0)
@@ -133,18 +132,18 @@ namespace SS.GovPublic.Core.Pages
                         }
 
                         var parentId = (int)insertedChannelIdHashtable[count];
-                        var parentNodeInfo = Main.ChannelApi.GetChannelInfo(SiteId, parentId);
+                        var parentNodeInfo = SiteServer.Plugin.Context.ChannelApi.GetChannelInfo(SiteId, parentId);
 
-                        var channelInfo = Main.ChannelApi.NewInstance(SiteId);
+                        var channelInfo = SiteServer.Plugin.Context.ChannelApi.NewInstance(SiteId);
 
                         channelInfo.ParentId = parentId;
                         channelInfo.ChannelName = channelName;
                         channelInfo.IndexName = channelIndex;
-                        channelInfo.ContentModelPluginId = Main.PluginId;
+                        channelInfo.ContentModelPluginId = Utils.PluginId;
                         channelInfo.ChannelTemplateId = parentNodeInfo.ChannelTemplateId;
                         channelInfo.ContentTemplateId = parentNodeInfo.ContentTemplateId;
 
-                        var insertedChannelId = Main.ChannelApi.Insert(SiteId, channelInfo);
+                        var insertedChannelId = SiteServer.Plugin.Context.ChannelApi.Insert(SiteId, channelInfo);
                         insertedChannelIdHashtable[count + 1] = insertedChannelId;
                     }
                 }

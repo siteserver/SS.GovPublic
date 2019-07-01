@@ -3,7 +3,6 @@ using System.Web.UI.WebControls;
 using SS.GovPublic.Core;
 using SS.GovPublic.Core.Model;
 using SS.GovPublic.Core.Provider;
-using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core.Pages
 {
@@ -20,12 +19,12 @@ namespace SS.GovPublic.Core.Pages
 
         public static string GetOpenWindowStringToAdd(int siteId, string classCode)
         {
-            return GovPublicUtils.GetOpenLayerString("添加节点", $"{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}", 500, 460);
+            return Utils.GetOpenLayerString("添加节点", $"{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}", 500, 460);
         }
 
         public static string GetOpenWindowStringToEdit(int siteId, string classCode, int categoryId)
         {
-            return GovPublicUtils.GetOpenLayerString("修改节点", $"{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}&categoryId={categoryId}", 520, 460);
+            return Utils.GetOpenLayerString("修改节点", $"{nameof(ModalCategoryAdd)}.aspx?siteId={siteId}&classCode={classCode}&categoryId={categoryId}", 520, 460);
         }
 
 		public void Page_Load(object sender, EventArgs e)
@@ -44,7 +43,7 @@ namespace SS.GovPublic.Core.Pages
                 foreach (var theCategoryId in categoryIdList)
                 {
                     var categoryInfo = Main.CategoryRepository.GetCategoryInfo(theCategoryId);
-                    var listitem = new ListItem(GovPublicUtils.GetSelectOptionText(categoryInfo.CategoryName, categoryInfo.ParentsCount, categoryInfo.IsLastNode, isLastNodeArray), theCategoryId.ToString());
+                    var listitem = new ListItem(Utils.GetSelectOptionText(categoryInfo.CategoryName, categoryInfo.ParentsCount, categoryInfo.IsLastNode, isLastNodeArray), theCategoryId.ToString());
                     DdlParentId.Items.Add(listitem);
                 }
             }
@@ -91,9 +90,9 @@ namespace SS.GovPublic.Core.Pages
                 Main.CategoryRepository.Update(categoryInfo);
             }
 
-            LtlMessage.Text = GovPublicUtils.GetMessageHtml("分类设置成功！", true);
+            LtlMessage.Text = Utils.GetMessageHtml("分类设置成功！", true);
 
-            GovPublicUtils.CloseModalPage(Page);
+            Utils.CloseModalPage(Page);
         }
 	}
 }

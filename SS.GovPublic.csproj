@@ -13,7 +13,7 @@
     <Description>SiteServer CMS 电子政务信息公开插件</Description>
     <PackageLicense>GPL-3.0</PackageLicense>
     <PackageProjectUrl>https://github.com/siteserver/SS.GovPublic</PackageProjectUrl>
-    <PackageIconUrl>https://www.siteserver.cn/plugins/ss/govpublic/logo.png</PackageIconUrl>
+    <PackageIconUrl>https://www.siteserver.cn/plugins/ss/govpublic/logo.svg</PackageIconUrl>
     <Copyright>Copyright © SiteServer CMS</Copyright>
     <PackageTags>SiteServer CMS GovPublic Plugin</PackageTags>
     <RepositoryUrl>https://github.com/siteserver/SS.GovPublic</RepositoryUrl>
@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
-    <PackageReference Include="SiteServer.Plugin" Version="2.3.7" />
+    <PackageReference Include="SiteServer.Plugin" Version="2.3.11" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,6 +37,10 @@
 
   <ItemGroup>
     <Compile Remove="Core\Controls\SqlPager.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\Pages\" />
   </ItemGroup>
 
 </Project>

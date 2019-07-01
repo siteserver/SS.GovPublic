@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace SS.GovPublic.Core.Utils
+namespace SS.GovPublic.Core
 {
     public static class StringUtils
     {

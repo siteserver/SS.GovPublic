@@ -3,7 +3,6 @@ using System.Web.UI.WebControls;
 using SS.GovPublic.Core.Controls;
 using SS.GovPublic.Core;
 using SS.GovPublic.Core.Provider;
-using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core.Pages
 {
@@ -19,7 +18,7 @@ namespace SS.GovPublic.Core.Pages
 
         public static string GetRedirectUrl(int siteId)
         {
-            return $"pages/{nameof(PageAnalysis)}.aspx?siteId={siteId}";
+            return $"{nameof(PageAnalysis)}.aspx?siteId={siteId}";
         }
 
         public void Page_Load(object sender, EventArgs e)

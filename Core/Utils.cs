@@ -7,10 +7,12 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace SS.GovPublic.Core.Utils
+namespace SS.GovPublic.Core
 {
-    public static class GovPublicUtils
+    public static class Utils
     {
+        public const string PluginId = "SS.GovPublic";
+
         public const string HidePopWin = "window.parent.layer.closeAll();";
 
         public static string GetMessageHtml(string message, bool isSuccess)

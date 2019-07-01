@@ -3,7 +3,6 @@ using System.Web.UI.WebControls;
 using SS.GovPublic.Core;
 using SS.GovPublic.Core.Model;
 using SS.GovPublic.Core.Provider;
-using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core.Pages
 {
@@ -18,12 +17,12 @@ namespace SS.GovPublic.Core.Pages
 
         public static string GetOpenWindowStringToAdd(int siteId)
         {
-            return GovPublicUtils.GetOpenLayerString("添加分类法", $"{nameof(ModalCategoryClassAdd)}.aspx?siteId={siteId}", 300, 460);
+            return Utils.GetOpenLayerString("添加分类法", $"{nameof(ModalCategoryClassAdd)}.aspx?siteId={siteId}", 300, 460);
         }
 
         public static string GetOpenWindowStringToEdit(int siteId, int classId)
         {
-            return GovPublicUtils.GetOpenLayerString("编辑分类法", $"{nameof(ModalCategoryClassAdd)}.aspx?siteId={siteId}&classId={classId}", 300, 460);
+            return Utils.GetOpenLayerString("编辑分类法", $"{nameof(ModalCategoryClassAdd)}.aspx?siteId={siteId}&classId={classId}", 300, 460);
         }
 
         public void Page_Load(object sender, EventArgs e)
@@ -39,7 +38,7 @@ namespace SS.GovPublic.Core.Pages
             TbClassName.Text = classInfo.ClassName;
             TbClassCode.Text = classInfo.ClassCode;
             TbClassCode.Enabled = false;
-            GovPublicUtils.SelectSingleItemIgnoreCase(DdlIsEnabled, classInfo.IsEnabled.ToString());
+            Utils.SelectSingleItemIgnoreCase(DdlIsEnabled, classInfo.IsEnabled.ToString());
             if (classInfo.IsSystem)
             {
                 DdlIsEnabled.Enabled = false;
@@ -70,7 +69,7 @@ namespace SS.GovPublic.Core.Pages
                 }
                 catch (Exception ex)
                 {
-                    LtlMessage.Text = GovPublicUtils.GetMessageHtml($"分类法修改失败：{ex.Message}！", false);
+                    LtlMessage.Text = Utils.GetMessageHtml($"分类法修改失败：{ex.Message}！", false);
                 }
             }
             else
@@ -79,11 +78,11 @@ namespace SS.GovPublic.Core.Pages
                 var classCodeList = Main.CategoryClassRepository.GetClassCodeList(SiteId);
                 if (classNameList.IndexOf(TbClassName.Text) != -1)
                 {
-                    LtlMessage.Text = GovPublicUtils.GetMessageHtml("分类法添加失败，分类法名称已存在！", false);
+                    LtlMessage.Text = Utils.GetMessageHtml("分类法添加失败，分类法名称已存在！", false);
                 }
                 else if (classCodeList.IndexOf(TbClassCode.Text) != -1)
                 {
-                    LtlMessage.Text = GovPublicUtils.GetMessageHtml("分类法添加失败，分类代码已存在！", false);
+                    LtlMessage.Text = Utils.GetMessageHtml("分类法添加失败，分类代码已存在！", false);
                 }
                 else
                 {
@@ -107,14 +106,14 @@ namespace SS.GovPublic.Core.Pages
                     }
                     catch (Exception ex)
                     {
-                        LtlMessage.Text = GovPublicUtils.GetMessageHtml($"分类法添加失败：{ex.Message}！", false);
+                        LtlMessage.Text = Utils.GetMessageHtml($"分类法添加失败：{ex.Message}！", false);
                     }
                 }
             }
 
             if (isChanged)
             {
-                GovPublicUtils.CloseModalPage(Page);
+                Utils.CloseModalPage(Page);
             }
         }
     }

@@ -3,7 +3,6 @@ using System.Web.UI.WebControls;
 using SS.GovPublic.Core;
 using SS.GovPublic.Core.Model;
 using SS.GovPublic.Core.Provider;
-using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core.Pages
 {
@@ -42,7 +41,7 @@ namespace SS.GovPublic.Core.Pages
                 {
                     Main.CategoryRepository.Delete(TranslateUtils.ToInt(categoryId));
                 }
-                LtlMessage.Text = GovPublicUtils.GetMessageHtml("成功删除所选节点", true);
+                LtlMessage.Text = Utils.GetMessageHtml("成功删除所选节点", true);
             }
             else if (Request.QueryString["categoryId"] != null && (Request.QueryString["subtract"] != null || Request.QueryString["add"] != null))
             {

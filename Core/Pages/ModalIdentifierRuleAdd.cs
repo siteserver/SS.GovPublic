@@ -4,7 +4,6 @@ using SiteServer.Plugin;
 using SS.GovPublic.Core;
 using SS.GovPublic.Core.Model;
 using SS.GovPublic.Core.Provider;
-using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core.Pages
 {
@@ -29,12 +28,12 @@ namespace SS.GovPublic.Core.Pages
 
         public static string GetOpenWindowStringToAdd(int siteId)
         {
-            return GovPublicUtils.GetOpenLayerString("添加规则", $"{nameof(ModalIdentifierRuleAdd)}.aspx?siteId={siteId}", 520, 640);
+            return Utils.GetOpenLayerString("添加规则", $"{nameof(ModalIdentifierRuleAdd)}.aspx?siteId={siteId}", 520, 640);
         }
 
         public static string GetOpenWindowStringToEdit(int siteId, int ruleId)
         {
-            return GovPublicUtils.GetOpenLayerString("修改规则", $"{nameof(ModalIdentifierRuleAdd)}.aspx?siteId={siteId}&ruleId={ruleId}", 520, 640);
+            return Utils.GetOpenLayerString("修改规则", $"{nameof(ModalIdentifierRuleAdd)}.aspx?siteId={siteId}&ruleId={ruleId}", 520, 640);
         }
 
         public void Page_Load(object sender, EventArgs e)
@@ -71,13 +70,13 @@ namespace SS.GovPublic.Core.Pages
                 DdlAttributeName.Items.Add(new ListItem(tableColumn.DisplayName + "(" + tableColumn.AttributeName + ")", tableColumn.AttributeName));
             }
 
-            GovPublicUtils.AddListItems(DdlIsSequenceChannelZero);
-            GovPublicUtils.AddListItems(DdlIsSequenceDepartmentZero);
-            GovPublicUtils.AddListItems(DdlIsSequenceYearZero);
+            Utils.AddListItems(DdlIsSequenceChannelZero);
+            Utils.AddListItems(DdlIsSequenceDepartmentZero);
+            Utils.AddListItems(DdlIsSequenceYearZero);
 
-            GovPublicUtils.SelectSingleItemIgnoreCase(DdlIsSequenceChannelZero, true.ToString());
-            GovPublicUtils.SelectSingleItemIgnoreCase(DdlIsSequenceDepartmentZero, false.ToString());
-            GovPublicUtils.SelectSingleItemIgnoreCase(DdlIsSequenceYearZero, true.ToString());
+            Utils.SelectSingleItemIgnoreCase(DdlIsSequenceChannelZero, true.ToString());
+            Utils.SelectSingleItemIgnoreCase(DdlIsSequenceDepartmentZero, false.ToString());
+            Utils.SelectSingleItemIgnoreCase(DdlIsSequenceYearZero, true.ToString());
 
             if (_ruleId > 0)
             {
@@ -85,16 +84,16 @@ namespace SS.GovPublic.Core.Pages
                 if (ruleInfo != null)
                 {
                     TbRuleName.Text = ruleInfo.RuleName;
-                    GovPublicUtils.SelectSingleItemIgnoreCase(DdlIdentifierType, ruleInfo.IdentifierType);
-                    GovPublicUtils.SelectSingleItemIgnoreCase(DdlAttributeName, ruleInfo.AttributeName);
+                    Utils.SelectSingleItemIgnoreCase(DdlIdentifierType, ruleInfo.IdentifierType);
+                    Utils.SelectSingleItemIgnoreCase(DdlAttributeName, ruleInfo.AttributeName);
                     TbMinLength.Text = ruleInfo.MinLength.ToString();
                     TbFormatString.Text = ruleInfo.FormatString;
                     TbSuffix.Text = ruleInfo.Suffix;
                     TbSequence.Text = ruleInfo.Sequence.ToString();
 
-                    GovPublicUtils.SelectSingleItemIgnoreCase(DdlIsSequenceChannelZero, ruleInfo.IsSequenceChannelZero.ToString());
-                    GovPublicUtils.SelectSingleItemIgnoreCase(DdlIsSequenceDepartmentZero, ruleInfo.IsSequenceDepartmentZero.ToString());
-                    GovPublicUtils.SelectSingleItemIgnoreCase(DdlIsSequenceYearZero, ruleInfo.IsSequenceYearZero.ToString());
+                    Utils.SelectSingleItemIgnoreCase(DdlIsSequenceChannelZero, ruleInfo.IsSequenceChannelZero.ToString());
+                    Utils.SelectSingleItemIgnoreCase(DdlIsSequenceDepartmentZero, ruleInfo.IsSequenceDepartmentZero.ToString());
+                    Utils.SelectSingleItemIgnoreCase(DdlIsSequenceYearZero, ruleInfo.IsSequenceYearZero.ToString());
                 }
             }
 
@@ -156,12 +155,12 @@ namespace SS.GovPublic.Core.Pages
                     if (identifierRuleInfo.Id == ruleInfo.Id) continue;
                     if (identifierType != EIdentifierType.Attribute && identifierRuleInfo.IdentifierType == ruleInfo.IdentifierType)
                     {
-                        LtlMessage.Text = GovPublicUtils.GetMessageHtml("规则修改失败，本类型规则只能添加一次！", false);
+                        LtlMessage.Text = Utils.GetMessageHtml("规则修改失败，本类型规则只能添加一次！", false);
                         return;
                     }
                     if (identifierRuleInfo.RuleName == TbRuleName.Text)
                     {
-                        LtlMessage.Text = GovPublicUtils.GetMessageHtml("规则修改失败，规则名称已存在！", false);
+                        LtlMessage.Text = Utils.GetMessageHtml("规则修改失败，规则名称已存在！", false);
                         return;
                     }
                 }
@@ -177,12 +176,12 @@ namespace SS.GovPublic.Core.Pages
                     var ruleIdentifierType = EIdentifierTypeUtils.GetEnumType(thrRuleInfo.IdentifierType);
                     if (identifierType != EIdentifierType.Attribute && identifierType == ruleIdentifierType)
                     {
-                        LtlMessage.Text = GovPublicUtils.GetMessageHtml("规则添加失败，本类型规则只能添加一次！", false);
+                        LtlMessage.Text = Utils.GetMessageHtml("规则添加失败，本类型规则只能添加一次！", false);
                         return;
                     }
                     if (thrRuleInfo.RuleName == TbRuleName.Text)
                     {
-                        LtlMessage.Text = GovPublicUtils.GetMessageHtml("规则添加失败，规则名称已存在！", false);
+                        LtlMessage.Text = Utils.GetMessageHtml("规则添加失败，规则名称已存在！", false);
                         return;
                     }
                 }
@@ -209,7 +208,7 @@ namespace SS.GovPublic.Core.Pages
                 Main.IdentifierRuleRepository.Insert(ruleInfo);
             }
 
-            GovPublicUtils.CloseModalPage(Page);
+            Utils.CloseModalPage(Page);
         }
 	}
 }

@@ -21,7 +21,7 @@ namespace SS.GovPublic.Core.Pages
 
         private ConfigInfo _configInfo;
 
-        public ConfigInfo ConfigInfo => _configInfo ?? (_configInfo = Main.ConfigApi.GetConfig<ConfigInfo>(Main.PluginId, SiteId) ?? new ConfigInfo());
+        public ConfigInfo ConfigInfo => _configInfo ?? (_configInfo = SiteServer.Plugin.Context.ConfigApi.GetConfig<ConfigInfo>(Utils.PluginId, SiteId) ?? new ConfigInfo());
 
         protected override void OnInit(EventArgs e)
         {
@@ -30,7 +30,7 @@ namespace SS.GovPublic.Core.Pages
             AuthRequest = SiteServer.Plugin.Context.AuthenticatedRequest;
             SiteId = AuthRequest.GetQueryInt("siteId");
 
-            if (!AuthRequest.AdminPermissions.HasSitePermissions(SiteId, Main.PluginId))
+            if (!AuthRequest.AdminPermissions.HasSitePermissions(SiteId, Utils.PluginId))
             {
                 HttpContext.Current.Response.Write("<h1>未授权访问</h1>");
                 HttpContext.Current.Response.End();

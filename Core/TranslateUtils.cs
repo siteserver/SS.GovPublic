@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SS.GovPublic.Core.Utils
+namespace SS.GovPublic.Core
 {
     public static class TranslateUtils
     {

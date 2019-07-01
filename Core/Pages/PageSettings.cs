@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web.UI.WebControls;
 using SS.GovPublic.Core;
-using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core.Pages
 {
@@ -11,14 +10,14 @@ namespace SS.GovPublic.Core.Pages
 
         public static string GetRedirectUrl(int siteId)
         {
-            return $"pages/{nameof(PageSettings)}.aspx?siteId={siteId}";
+            return $"{nameof(PageSettings)}.aspx?siteId={siteId}";
         }
 
         public void Page_Load(object sender, EventArgs e)
         {
             if (IsPostBack) return;
 
-            GovPublicUtils.SelectSingleItem(DdlIsPublisherRelatedDepartmentId, ConfigInfo.IsPublisherRelatedDepartmentId.ToString());
+            Utils.SelectSingleItem(DdlIsPublisherRelatedDepartmentId, ConfigInfo.IsPublisherRelatedDepartmentId.ToString());
         }
 
         public void Submit_OnClick(object sender, EventArgs e)
@@ -27,8 +26,8 @@ namespace SS.GovPublic.Core.Pages
 
             ConfigInfo.IsPublisherRelatedDepartmentId = TranslateUtils.ToBool(DdlIsPublisherRelatedDepartmentId.SelectedValue);
 
-            Main.ConfigApi.SetConfig(Main.PluginId, SiteId, ConfigInfo);
-            LtlMessage.Text = GovPublicUtils.GetMessageHtml("信息公开设置修改成功！", true);
+            SiteServer.Plugin.Context.ConfigApi.SetConfig(Utils.PluginId, SiteId, ConfigInfo);
+            LtlMessage.Text = Utils.GetMessageHtml("信息公开设置修改成功！", true);
         }
     }
 }

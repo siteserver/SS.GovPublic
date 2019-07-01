@@ -2,7 +2,6 @@
 using SS.GovPublic.Core.Model;
 using System.Collections.Generic;
 using System.Linq;
-using SS.GovPublic.Core.Utils;
 
 namespace SS.GovPublic.Core
 {
@@ -85,7 +84,7 @@ namespace SS.GovPublic.Core
         public static string GetDepartmentCode(int siteId, int departmentId)
         {
             var departmentInfo = GetDepartmentInfo(siteId, departmentId);
-            return departmentInfo?.DepartmentCode;
+            return departmentInfo?.DepartmentCode ?? string.Empty;
         }
 
         public static void ClearCache(int siteId)
