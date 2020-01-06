@@ -38,8 +38,8 @@ var utils = {
 
   dateDiffInDays: function (a, b) {
     // Discard the time and time-zone information.
-    const utc1 = new Date(a.getFullYear(), a.getMonth(), a.getDate());
-    const utc2 = new Date(b.getFullYear(), b.getMonth(), b.getDate());
+    var  utc1 = new Date(a.getFullYear(), a.getMonth(), a.getDate());
+    var utc2 = new Date(b.getFullYear(), b.getMonth(), b.getDate());
 
     return Math.floor((utc1 - utc2) / PER_DAY);
   },

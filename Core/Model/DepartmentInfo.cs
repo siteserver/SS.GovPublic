@@ -2,7 +2,7 @@
 
 namespace SS.GovPublic.Core.Model
 {
-    [Table("ss_govpublic_department")]
+    [Table("ss_gov_public_department")]
     public class DepartmentInfo : Entity
     {
         [TableColumn]

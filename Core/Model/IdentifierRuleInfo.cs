@@ -2,7 +2,7 @@
 
 namespace SS.GovPublic.Core.Model
 {
-    [Table("ss_govpublic_identifier_rule")]
+    [Table("ss_gov_public_identifier_rule")]
     public class IdentifierRuleInfo : Entity
     {
         [TableColumn]

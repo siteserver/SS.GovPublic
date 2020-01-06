@@ -3,7 +3,7 @@ using Datory;
 
 namespace SS.GovPublic.Core.Model
 {
-    [Table("ss_govpublic_category")]
+    [Table("ss_gov_public_category")]
     public class CategoryInfo : Entity
     {
         [TableColumn]

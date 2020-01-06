@@ -2,7 +2,7 @@
 
 namespace SS.GovPublic.Core.Model
 {
-    [Table("ss_govpublic_identifier_seq")]
+    [Table("ss_gov_public_identifier_seq")]
     public class IdentifierSeqInfo : Entity
     {
         [TableColumn]

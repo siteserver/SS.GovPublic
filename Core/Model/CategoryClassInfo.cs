@@ -2,7 +2,7 @@
 
 namespace SS.GovPublic.Core.Model
 {
-    [Table("ss_govpublic_category_class")]
+    [Table("ss_gov_public_category_class")]
     public class CategoryClassInfo : Entity
     {
         [TableColumn]

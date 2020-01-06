@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
-    <PackageReference Include="SiteServer.Plugin" Version="2.3.11" />
+    <PackageReference Include="SiteServer.Plugin" Version="2.3.15" />
   </ItemGroup>
 
   <ItemGroup>
