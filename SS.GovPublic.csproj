@@ -13,7 +13,7 @@
     <Description>SiteServer CMS 电子政务信息公开插件</Description>
     <PackageLicense>GPL-3.0</PackageLicense>
     <PackageProjectUrl>https://github.com/siteserver/SS.GovPublic</PackageProjectUrl>
-    <PackageIconUrl>https://www.siteserver.cn/plugins/ss/govpublic/logo.svg</PackageIconUrl>
+    <PackageIconUrl>https://storage.sscms.com/plugins/ss.govpublic/logo.svg</PackageIconUrl>
     <Copyright>Copyright © SiteServer CMS</Copyright>
     <PackageTags>SiteServer CMS GovPublic Plugin</PackageTags>
     <RepositoryUrl>https://github.com/siteserver/SS.GovPublic</RepositoryUrl>
